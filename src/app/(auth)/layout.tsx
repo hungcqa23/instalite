@@ -4,11 +4,11 @@ import { usePathname } from 'next/navigation';
 
 const testimonials = [
   {
-    path: '/auth/login',
+    path: '/login',
     text: '“A game-changing social app that seamlessly blends sleek design, innovative features, and user-friendly functionality.”'
   },
   {
-    path: '/auth/register',
+    path: '/register',
     text: '“InstaLite is my go-to social app, redefining the world of social networking.”'
   }
 ];
@@ -18,6 +18,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  console.log(pathname);
 
   return (
     <div className='flex h-screen w-screen justify-center md:justify-normal'>
@@ -30,7 +31,7 @@ export default function AuthLayout({
           <p className='w-3/4'>
             {testimonials.find(t => t.path === pathname)?.text}
           </p>
-          <p className='mt-3 w-3/4 font-semibold'>AHung DepTry</p>
+          <p className='mt-3 w-3/4 font-semibold'>{123}</p>
         </div>
       </div>
       <div className='relative h-full basis-1/2 p-10 font-medium text-black'>
