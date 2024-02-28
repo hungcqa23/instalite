@@ -4,12 +4,19 @@ import { usePathname } from 'next/navigation';
 
 const testimonials = [
   {
-    path: '/login',
-    text: '“A game-changing social app that seamlessly blends sleek design, innovative features, and user-friendly functionality.”'
+    path: 'login',
+    text: '“A game-changing social app that seamlessly blends sleek design, innovative features, and user-friendly functionality.”',
+    title: 'Log in'
   },
   {
-    path: '/register',
-    text: '“InstaLite is my go-to social app, redefining the world of social networking.”'
+    path: 'register',
+    text: '“InstaLite is my go-to social app, redefining the world of social networking.”',
+    title: 'Register'
+  },
+  {
+    path: 'forgot-password',
+    text: '“InstaLite is my go-to social app, redefining the world of social networking.”',
+    title: 'Forgot Password'
   }
 ];
 export default function AuthLayout({
@@ -29,13 +36,15 @@ export default function AuthLayout({
         </div>
         <div className='text-white'>
           <p className='w-3/4'>
-            {testimonials.find(t => t.path === pathname)?.text}
+            {testimonials.find(t => `/${t.path}` === pathname)?.text}
           </p>
           <p className='mt-3 w-3/4 font-semibold'>{123}</p>
         </div>
       </div>
       <div className='relative h-full basis-1/2 p-10 font-medium text-black'>
-        <p className='absolute right-10 top-10 text-right text-sm'>Login</p>
+        <p className='absolute right-10 top-10 text-right text-sm'>
+          {testimonials.find(t => `/${t.path}` === pathname)?.title}
+        </p>
         <div className='flex h-full items-center justify-center '>
           <div className='w-[21.875rem]'>{children}</div>
         </div>
