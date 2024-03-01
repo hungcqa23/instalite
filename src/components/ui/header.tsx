@@ -7,17 +7,22 @@ import {
   Bell,
   UserRound,
   MessageCircleHeartIcon,
-  AlignRightIcon
+  AlignRightIcon,
+  Settings,
+  Bookmark,
+  LogOut,
+  Sun
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Popover from './popover';
+import { Button } from './button';
 
 export default function Header() {
   return (
     <header className='flex h-16 w-full items-center justify-center gap-32'>
       <Link href={'/'}>
-        <Image src='/orbit.svg' alt='logo' width={46} height={46} />
+        <Image src='/orbit.svg' alt='logo' width={42} height={42} />
       </Link>
 
       <div className='flex gap-2'>
@@ -44,7 +49,20 @@ export default function Header() {
       <Popover
         placement='bottom-end'
         renderPopover={
-          <ul className='shadow-default h-52 w-60 rounded-xl'></ul>
+          <nav className='shadow-default flex w-60 flex-col gap-1 rounded-lg px-2 py-3'>
+            <button className='flex h-10 w-56 items-center gap-2 rounded-md pl-2 text-base font-medium hover:bg-gray-50'>
+              <Settings size={22} /> Setting
+            </button>
+            <button className='flex h-10 w-56 items-center gap-2 rounded-md pl-2 text-base font-medium hover:bg-gray-50'>
+              <Sun /> Switch Appearance
+            </button>
+            <button className='flex h-10 w-56 items-center gap-2 rounded-md pl-2 text-base font-medium hover:bg-gray-50'>
+              <Bookmark size={22} /> Saved
+            </button>
+            <button className='flex h-10 w-56 items-center gap-2 rounded-md pl-2 text-base font-medium hover:bg-gray-50'>
+              <LogOut size={22} /> Log out
+            </button>
+          </nav>
         }
       >
         <button className='duration-400 flex h-8 w-8 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:text-black'>
