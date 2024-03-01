@@ -16,16 +16,15 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import Popover from './popover';
-import { Button } from './button';
 
 export default function Header() {
   return (
-    <header className='flex h-16 w-full items-center justify-center gap-32'>
-      <Link href={'/'}>
+    <header className='fixed top-0 flex h-16 w-full items-center justify-center bg-white lg:gap-32'>
+      <Link href={'/'} className='hidden shrink-0 md:block'>
         <Image src='/orbit.svg' alt='logo' width={42} height={42} />
       </Link>
 
-      <div className='flex gap-2'>
+      <div className='flex md:gap-2'>
         <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black'>
           <Home className='h-7 w-7 ' />
         </button>
@@ -49,7 +48,7 @@ export default function Header() {
       <Popover
         placement='bottom-end'
         renderPopover={
-          <nav className='shadow-default flex w-60 flex-col gap-1 rounded-lg px-2 py-3'>
+          <nav className='z-20 flex w-60 flex-col gap-1 rounded-lg bg-white px-2 py-3 shadow-default'>
             <button className='flex h-10 w-56 items-center gap-2 rounded-md pl-2 text-base font-medium hover:bg-gray-50'>
               <Settings size={22} /> Setting
             </button>
