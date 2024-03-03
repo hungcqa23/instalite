@@ -1,3 +1,4 @@
+import IconProfile from '@/components/ui/icon-profile';
 import Link from 'next/link';
 
 export default function SuggestedBar() {
@@ -5,21 +6,18 @@ export default function SuggestedBar() {
     <div className='hidden w-80 flex-col xl:flex'>
       <div className='mt-9 flex flex-col gap-6'>
         {/* Profile */}
-        {/* <div className='flex items-center gap-2 px-4'>
-          <Profile src={profile?.profilePicture} to={`/${profile?._id}`} />
+        <div className='flex items-center gap-2 px-4'>
+          <IconProfile className='h-10 w-10' />
 
           <div className='flex flex-col'>
-            <Link
-              href={`/${profile?.username.toLowerCase()}`}
-              className='text-sm font-semibold'
-            >
-              {profile?.username.toLowerCase()}
+            <Link href={`/`} className='text-sm font-semibold'>
+              An Hưng
             </Link>
             <p className='text-sm font-normal leading-4 text-gray-500'>
-              {profile?.fullname}
+              Cao Quảng An Hưng
             </p>
           </div>
-        </div> */}
+        </div>
 
         {/* <SuggestedList /> */}
         <div>
