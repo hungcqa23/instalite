@@ -23,7 +23,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} overflow-x-hidden overflow-y-hidden`}
       >
-        <Header />
+        {/* <Header /> */}
         {children}
       </body>
     </html>

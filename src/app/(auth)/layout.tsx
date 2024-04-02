@@ -10,13 +10,18 @@ const testimonials = [
   },
   {
     path: 'register',
-    text: '“InstaLite is my go-to social app, redefining the world of social networking.”',
+    text: '“Instalite is my go-to social app, redefining the world of social networking.”',
     title: 'Register'
   },
   {
     path: 'forgot-password',
-    text: '“InstaLite is my go-to social app, redefining the world of social networking.”',
+    text: '“Instalite is my go-to social app, redefining the world of social networking.”',
     title: 'Forgot Password'
+  },
+  {
+    path: 'reset-password',
+    text: '“Instalite is my go-to social app, redefining the world of social networking.”',
+    title: 'Reset Password'
   }
 ];
 export default function AuthLayout({
@@ -38,7 +43,9 @@ export default function AuthLayout({
           <p className='w-3/4'>
             {testimonials.find(t => `/${t.path}` === pathname)?.text}
           </p>
-          <p className='mt-3 w-3/4 font-semibold'>{123}</p>
+          <p className='mt-3 w-3/4 font-semibold'>
+            Cao Quảng An Hưng - user of Instalite
+          </p>
         </div>
       </div>
       <div className='relative h-full basis-1/2 p-10 font-medium text-black'>

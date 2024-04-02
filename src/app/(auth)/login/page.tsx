@@ -1,44 +1,55 @@
+// 'use client';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+// import { useState } from 'react';
 
 export default function Login() {
+  // const [showPassword, setShowPassword] = useState(false);
+
+  // const togglePasswordVisibility = () => {
+  //   setShowPassword(!showPassword);
+  // };
   return (
     <form className='h-full w-full'>
-      <p className='h-8 text-center text-xl font-semibold'>Log in</p>
+      <p className='mb-2 h-8 text-center text-xl font-semibold'>Log in</p>
       <div>
         <label htmlFor='email' className='mb-2 block text-sm font-semibold'>
           Email
         </label>
         <input
           type='text'
-          name='username'
-          id='username'
+          name='email'
+          id='email'
           className='block h-9 w-full rounded-md border border-gray-300 pl-3 text-sm font-medium outline-none placeholder:font-medium placeholder:text-gray-400 focus:ring-1 focus:ring-gray-300'
           placeholder='Enter your email here...'
         />
         <p className='min-h-[20px]'></p>
       </div>
       <div>
-        <label htmlFor='email' className='mb-2 block text-sm font-semibold'>
+        <label htmlFor='password' className='mb-2 block text-sm font-semibold'>
           Password
         </label>
         <input
-          type='text'
-          name='username'
-          id='username'
+          type='password'
+          // type= {showPassword ? 'text' : 'password'}
+          name='password'
+          id='password'
           className='block h-9 w-full rounded-md border border-gray-300 pl-3 text-sm font-medium outline-none placeholder:font-medium placeholder:text-gray-400 focus:ring-1 focus:ring-gray-300'
           placeholder='Enter your password here...'
         />
         <p className='min-h-[20px]'></p>
       </div>
-
       <div className='text-right'>
         <Button className='pr-0' variant={'link'} asChild>
-          <Link href='forgot-password'>Forgot password?</Link>
+          <Link
+            href='forgot-password'
+            className='font-semibold hover:no-underline'
+          >
+            Forgot password?
+          </Link>
         </Button>
       </div>
       <Button className='w-full font-semibold'>Log in</Button>
-
       <div className='relative mt-8'>
         <div className='absolute inset-0 flex items-center'>
           <span className='w-full border-t'></span>
@@ -47,9 +58,8 @@ export default function Login() {
           <span className='bg-white px-2 text-gray-400'>Or continue with</span>
         </div>
       </div>
-
       <Button
-        className='mt-2 flex w-full items-center gap-1'
+        className='mt-3 flex w-full items-center gap-1 font-semibold'
         variant={'outline'}
       >
         <svg
@@ -78,6 +88,19 @@ export default function Login() {
         </svg>
         Sign in with Google
       </Button>
+
+      <div className='mt-4 text-center'>
+        <span className='text-md'>Don&apos;t have an account?</span>
+        <Button
+          className='text-md pl-2 pr-0 font-semibold'
+          variant={'link'}
+          asChild
+        >
+          <Link href='register' className='hover:no-underline'>
+            Sign up
+          </Link>
+        </Button>
+      </div>
     </form>
   );
 }
