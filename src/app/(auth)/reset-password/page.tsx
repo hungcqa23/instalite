@@ -1,38 +1,97 @@
+'use client';
+import React from 'react';
 import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+
+const formSchema = z
+  .object({
+    password: z.string().min(3, {
+      message: 'Password must be at least 3 characters.'
+    }),
+    passwordConfirm: z.string()
+  })
+  .refine(
+    data => {
+      return data.password === data.passwordConfirm;
+    },
+    {
+      message: 'Password do not match',
+      path: ['passwordConfirm'] // field that message belongs to
+    }
+  );
 
 export default function ResetPassword() {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      password: '',
+      passwordConfirm: ''
+    }
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
   return (
-    <form className='h-full w-full'>
+    <Form {...form}>
       <p className='mb-4 h-8 text-center text-xl font-semibold'>
         Reset Password
       </p>
-      <div>
-        <label htmlFor='password' className='mb-2 block text-sm font-semibold'>
-          New Password
-        </label>
-        <input
-          type='password'
+      <form onSubmit={form.handleSubmit(onSubmit)} className='h-full w-full'>
+        <FormField
+          control={form.control}
           name='password'
-          id='password'
-          className='block h-9 w-full rounded-md border border-gray-300 pl-3 text-sm font-medium outline-none placeholder:font-medium placeholder:text-gray-400 focus:ring-1 focus:ring-gray-300'
-          placeholder='Enter your new password'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>New Password</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder='Enter your new password'
+                  {...field}
+                  type='password'
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
         <p className='min-h-[20px]'></p>
-      </div>
-      <div>
-        <label htmlFor='password' className='mb-2 block text-sm font-semibold'>
-          Confirm New Password
-        </label>
-        <input
-          type='password'
-          name='password'
-          id='password'
-          className='block h-9 w-full rounded-md border border-gray-300 pl-3 text-sm font-medium outline-none placeholder:font-medium placeholder:text-gray-400 focus:ring-1 focus:ring-gray-300'
-          placeholder='Confirm your new password'
+        <FormField
+          control={form.control}
+          name='passwordConfirm'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Confirm Password</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder='Confirm your new password'
+                  {...field}
+                  type='password'
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        <p className='min-h-[20px]'></p>
-      </div>
-      <Button className='mt-4 w-full font-semibold'>Reset your password</Button>
-    </form>
+        <p className='min-h-[30px]'></p>
+        <Button className='w-full font-semibold' type='submit'>
+          Reset Password
+        </Button>
+      </form>
+    </Form>
   );
 }
