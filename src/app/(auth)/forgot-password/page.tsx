@@ -1,13 +1,71 @@
+'use client';
+import React from 'react';
 import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 
+const formSchema = z.object({
+  email: z.string().email()
+});
+
 export default function ForgotPassword() {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: ''
+    }
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
+
   return (
-    <form className='h-full w-full'>
-      <p className='h-8 text-center text-2xl font-semibold md:text-xl'>
-        Forgot Password
-      </p>
-      <p className='py-2 pb-4 text-sm'>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='h-full w-full'>
+        <p className='h-8 text-center text-xl font-semibold'>Forgot Password</p>
+        <p className='py-2 pb-4'>
+          Please enter the email address you&apos;d like your password reset
+          information sent to{' '}
+        </p>
+        <FormField
+          control={form.control}
+          name='email'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder='Enter your email' {...field} type='email' />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <p className='min-h-[20px]'></p>
+        <Button className='w-full font-semibold'>Request password reset</Button>
+      </form>{' '}
+    </Form>
+  );
+}
+
+{
+  /* <form className='h-full w-full'>
+      <p className='h-8 text-center text-xl font-semibold'>Forgot Password</p>
+      <p className='py-2 pb-4'>
         Please enter the email address you&apos;d like your password reset
         information sent to{' '}
       </p>
@@ -26,6 +84,5 @@ export default function ForgotPassword() {
       </div>
 
       <Button className='w-full font-semibold'>Request password reset</Button>
-    </form>
-  );
+    </form> */
 }
