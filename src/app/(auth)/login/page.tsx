@@ -43,7 +43,7 @@ export default function Login() {
         <Button className='pr-0' variant={'link'} asChild>
           <Link
             href='forgot-password'
-            className='font-semibold hover:no-underline'
+            className='font-semibold hover:underline'
           >
             Forgot password?
           </Link>

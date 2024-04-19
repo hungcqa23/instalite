@@ -1,5 +1,5 @@
 import IconProfile from '@/components/ui/icon-profile';
-import SuggestedBar from './main/suggested-bar';
+import SuggestedBar from './(main)/suggested-bar';
 
 export default function Home() {
   return (

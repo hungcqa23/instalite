@@ -49,7 +49,7 @@ export default function AuthLayout({
         </div>
       </div>
       <div className='relative h-full basis-1/2 p-10 font-medium text-black'>
-        <p className='absolute right-10 top-10 text-right text-sm'>
+        <p className='absolute right-10 top-10 hidden text-right text-sm md:inline'>
           {testimonials.find(t => `/${t.path}` === pathname)?.title}
         </p>
         <div className='flex h-full items-center justify-center '>
