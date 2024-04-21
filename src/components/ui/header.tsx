@@ -36,7 +36,7 @@ export default function Header() {
   );
 
   return (
-    <header className=' fixed top-0 flex h-16 w-full items-center justify-center lg:gap-52'>
+    <header className='h-17 fixed top-0 flex w-full items-center justify-center p-1 lg:gap-52'>
       <Link
         href={'/'}
         className='hidden shrink-0 transition-transform duration-200 hover:scale-110 md:flex'
@@ -45,19 +45,19 @@ export default function Header() {
       </Link>
 
       <div className='flex md:gap-2'>
-        <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black'>
+        <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white'>
           <Home className='h-7 w-7 ' />
         </button>
-        <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black'>
+        <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white'>
           <Search className='h-7 w-7 ' />
         </button>
-        <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black'>
+        <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white'>
           <SquarePen className='h-7 w-7 ' />
         </button>
-        <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black'>
+        <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white'>
           <Bell className='h-7 w-7 ' />
         </button>
-        <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black'>
+        <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white'>
           <UserRound className='h-7 w-7 ' />
         </button>
         {/* <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black'>
