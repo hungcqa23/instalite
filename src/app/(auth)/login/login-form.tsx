@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,14 +11,16 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import authApi from '@/app/api/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { LoginBody, LoginBodyType } from '@/app/schema-validations/auth.schema';
 import Link from 'next/link';
+import { useToast } from '@/components/ui/use-toast';
+import { getCookie, getCookies } from 'cookies-next';
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
     defaultValues: {
@@ -30,9 +31,31 @@ export default function LoginForm() {
 
   async function onSubmit(values: LoginBodyType) {
     if (loading) return setLoading(true);
-
+    toast({
+      title: 'Logging in',
+      description: 'Please wait...'
+    });
     try {
-      // const result = await authApi.login(values);
+      const result = await fetch('http://localhost:8000/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json());
+      console.log(result);
+      await fetch('/api/auth', {
+        method: 'POST',
+        body: JSON.stringify({
+          result
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
     } catch (error: any) {
       // handleErrorApi({
       //   error,
@@ -51,13 +74,14 @@ export default function LoginForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder='Enter your email' {...field} type='email' />
+                <Input placeholder='Enter your email' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <p className='min-h-[20px]'></p>
+
         <FormField
           control={form.control}
           name='password'
@@ -75,6 +99,7 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
+        <p className='min-h-[20px]'></p>
         <div className='text-right'>
           <Button className='pr-0' variant={'link'} asChild>
             <Link
@@ -85,7 +110,7 @@ export default function LoginForm() {
             </Link>
           </Button>
         </div>
-        <p className='min-h-[20px]'></p>
+
         <Button className='w-full font-semibold' type='submit'>
           Login
         </Button>

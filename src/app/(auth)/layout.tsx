@@ -30,7 +30,6 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  console.log(pathname);
 
   return (
     <div className='flex h-screen w-screen justify-center md:justify-normal'>
