@@ -29,14 +29,18 @@ import {
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import { useTheme } from 'next-themes';
 
-export default function Header() {
+interface HeaderProps {
+  activeTab: 'home' | 'search' | 'lite' | 'notification' | 'me';
+}
+
+export default function Header({ activeTab }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   const [logoSrc, setLogoSrc] = useState(
-    theme === 'dark' ? '/orbit-light.svg' : '/orbit.svg'
+    theme === 'light' || 'system' ? '/orbit.svg' : '/orbit-light.svg'
   );
 
   return (
-    <header className='h-17 fixed top-0 flex w-full items-center justify-center p-1 lg:gap-52'>
+    <header className='h-17 fixed top-0 flex w-full items-center justify-center lg:gap-52'>
       <Link
         href={'/'}
         className='hidden shrink-0 transition-transform duration-200 hover:scale-110 md:flex'
@@ -45,21 +49,33 @@ export default function Header() {
       </Link>
 
       <div className='flex md:gap-2'>
-        <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white'>
+        <button
+          className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'home' ? 'text-black dark:text-zinc-50' : 'text-zinc-400'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+        >
           <Home className='h-7 w-7 ' />
         </button>
-        <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white'>
+        <button
+          className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'search' ? 'text-black dark:text-zinc-50' : 'text-zinc-400'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+        >
           <Search className='h-7 w-7 ' />
         </button>
-        <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white'>
+        <button
+          className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'lite' ? 'text-black dark:text-zinc-50' : 'text-zinc-400'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+        >
           <SquarePen className='h-7 w-7 ' />
         </button>
-        <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white'>
+        <button
+          className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'notification' ? 'text-black dark:text-zinc-50' : 'text-zinc-400'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+        >
           <Bell className='h-7 w-7 ' />
         </button>
-        <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white'>
-          <UserRound className='h-7 w-7 ' />
-        </button>
+        <Link href='/me'>
+          <button
+            className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg  transition-colors ${activeTab === 'me' ? 'text-black dark:text-zinc-50' : 'text-zinc-400'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+          >
+            <UserRound className='h-7 w-7' />
+          </button>
+        </Link>
         {/* <button className='duration-400 flex h-16 w-24 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-gray-200 hover:text-black'>
           <MessageCircleHeartIcon className='h-7 w-7 ' />
         </button> */}
@@ -89,7 +105,7 @@ export default function Header() {
             <DropdownMenuPortal>
               <DropdownMenuSubContent className=' dark:bg-black'>
                 <DropdownMenuItem
-                  className='rounded-md'
+                  className='rounded-md font-medium'
                   onClick={() => {
                     setTheme('light');
                     setLogoSrc('/orbit.svg');
@@ -99,7 +115,7 @@ export default function Header() {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  className='rounded-md'
+                  className='rounded-md font-medium'
                   onClick={() => {
                     setTheme('dark');
                     setLogoSrc('/orbit-light.svg');
