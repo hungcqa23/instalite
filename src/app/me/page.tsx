@@ -1,13 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import Header from '@/components/ui/header';
-import { cookies } from 'next/headers';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Grid2X2, Image, Bookmark, Repeat2 } from 'lucide-react';
+import { Grid2X2, Image, Bookmark, Repeat2, Search } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -18,15 +16,7 @@ import { Label } from '@/components/ui/label';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 export default function MeProfile() {
@@ -37,9 +27,9 @@ export default function MeProfile() {
   // console.log(accessToken, refreshToken);
 
   return (
-    <main className='mt-16 flex h-screen w-screen flex-col items-center justify-start overflow-y-auto'>
+    <main className='mt-16 flex h-screen w-screen flex-col items-center justify-start overflow-scroll '>
       <Header activeTab='me' />
-      <div className='mt-4   w-[559px] items-start justify-center '>
+      <div className='mt-4 w-[559px] items-start justify-center '>
         <div className='flex h-[80px] justify-between '>
           <div className='mt-4 flex flex-col items-start justify-start space-y-2'>
             <p className='text-lg font-medium'>AnHyng DepTry</p>
@@ -73,6 +63,14 @@ export default function MeProfile() {
                   Followers
                 </DialogTitle>
               </DialogHeader>
+              <div className='flex flex-row items-center justify-center border-b-2 border-t-2 border-gray-300 py-2'>
+                <Search className=' text-gray-400' />
+                <Input
+                  placeholder='Search for user'
+                  className='border-none focus-visible:ring-0'
+                />
+              </div>
+              <div className='h-[300px]'></div>
             </DialogContent>
           </Dialog>
 
@@ -84,12 +82,21 @@ export default function MeProfile() {
                 </p>
               </Button>
             </DialogTrigger>
-            <DialogContent className='dark:bg-zinc-950 sm:max-w-[500px]'>
+            <DialogContent className='w-[456px] dark:bg-zinc-950 sm:max-w-[500px]'>
               <DialogHeader>
                 <DialogTitle className='flex justify-center text-sm font-bold'>
                   Following
                 </DialogTitle>
               </DialogHeader>
+
+              <div className='flex flex-row items-center justify-center border-b-2 border-t-2 border-gray-300 py-2'>
+                <Search className=' text-gray-400' />
+                <Input
+                  placeholder='Search for user'
+                  className='border-none focus-visible:ring-0'
+                />
+              </div>
+              <div className='h-[300px]'></div>
             </DialogContent>
           </Dialog>
         </div>
@@ -99,6 +106,21 @@ export default function MeProfile() {
           since the 1500s, when an unknown printer took a galley of type and
           scrambled it to make a type specimen book.
         </div>
+        {/* Visit other account profile */}
+        {/* <div className='flex flex-row gap-2'>
+          <Button
+            className='mt-3.5 w-full text-sm dark:bg-zinc-50 dark:hover:bg-zinc-50'
+            variant={'default'}
+          >
+            Follow
+          </Button>
+          <Button
+            className='mt-3.5 w-full text-sm dark:bg-zinc-950 dark:hover:bg-transparent'
+            variant={'outline'}
+          >
+            Mention
+          </Button>
+        </div> */}
         <Dialog>
           <DialogTrigger asChild>
             <Button
@@ -193,7 +215,7 @@ export default function MeProfile() {
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value='post'>
+            <TabsContent value='post' className='text-sm'>
               <p>
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry. Lorem Ipsum has been the industrys standard dummy text
@@ -237,9 +259,15 @@ export default function MeProfile() {
                 and scrambled it to make a type specimen book.
               </p>
             </TabsContent>
-            <TabsContent value='image'>Image</TabsContent>
-            <TabsContent value='saved'>Saved</TabsContent>
-            <TabsContent value='repost'>Repost</TabsContent>
+            <TabsContent value='image' className='text-sm'>
+              Image
+            </TabsContent>
+            <TabsContent value='saved' className='text-sm'>
+              Saved
+            </TabsContent>
+            <TabsContent value='repost' className='text-sm'>
+              Repost
+            </TabsContent>
           </Tabs>
         </div>
       </div>

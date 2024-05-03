@@ -4,9 +4,9 @@ import Header from '@/components/ui/header';
 
 export default function Home() {
   return (
-    <main className='mt-16 h-screen w-screen overflow-y-auto'>
+    <main className='mt-16 h-screen w-screen overflow-scroll'>
       <Header activeTab='home' />
-      <div className='flex items-start justify-center xl:justify-end'>
+      <div className='flex items-center justify-center  xl:justify-center'>
         <div className='mt-2 w-full max-w-[30rem] xl:mr-[calc((100%-30rem)/2-16rem)]'>
           <div className='flex h-12 w-full items-center justify-between border-b border-gray-200 py-2'>
             <div className='flex items-center gap-2'>
@@ -22,7 +22,7 @@ export default function Home() {
           </div>
         </div>
 
-        <SuggestedBar />
+        {/* <SuggestedBar /> */}
       </div>
     </main>
   );

@@ -36,7 +36,7 @@ interface HeaderProps {
 export default function Header({ activeTab }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   const [logoSrc, setLogoSrc] = useState(
-    theme === 'light' || 'system' ? '/orbit.svg' : '/orbit-light.svg'
+    theme === 'dark' ? '/orbit-light.svg' : '/orbit.svg'
   );
 
   return (
@@ -49,29 +49,35 @@ export default function Header({ activeTab }: HeaderProps) {
       </Link>
 
       <div className='flex md:gap-2'>
+        <Link href='/'>
+          <button
+            className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'home' ? 'text-black dark:text-zinc-50' : 'text-zinc-400    dark:text-zinc-700'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+          >
+            <Home className='h-7 w-7 ' />
+          </button>
+        </Link>
+        <Link href='/search'>
+          <button
+            className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'search' ? 'text-black dark:text-zinc-50' : 'text-zinc-400 dark:text-zinc-700'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+          >
+            <Search className='h-7 w-7 ' />
+          </button>
+        </Link>
         <button
-          className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'home' ? 'text-black dark:text-zinc-50' : 'text-zinc-400'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
-        >
-          <Home className='h-7 w-7 ' />
-        </button>
-        <button
-          className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'search' ? 'text-black dark:text-zinc-50' : 'text-zinc-400'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
-        >
-          <Search className='h-7 w-7 ' />
-        </button>
-        <button
-          className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'lite' ? 'text-black dark:text-zinc-50' : 'text-zinc-400'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+          className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'lite' ? 'text-black dark:text-zinc-50' : 'text-zinc-400 dark:text-zinc-700'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
         >
           <SquarePen className='h-7 w-7 ' />
         </button>
-        <button
-          className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'notification' ? 'text-black dark:text-zinc-50' : 'text-zinc-400'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
-        >
-          <Bell className='h-7 w-7 ' />
-        </button>
+        <Link href='/notification'>
+          <button
+            className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'notification' ? 'text-black dark:text-zinc-50' : 'text-zinc-400 dark:text-zinc-700'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+          >
+            <Bell className='h-7 w-7 ' />
+          </button>
+        </Link>
         <Link href='/me'>
           <button
-            className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg  transition-colors ${activeTab === 'me' ? 'text-black dark:text-zinc-50' : 'text-zinc-400'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+            className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg  transition-colors ${activeTab === 'me' ? ' text-black dark:text-zinc-50' : '  text-zinc-400  dark:text-zinc-700'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
           >
             <UserRound className='h-7 w-7' />
           </button>
@@ -83,7 +89,7 @@ export default function Header({ activeTab }: HeaderProps) {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button className='duration-400 flex h-8 w-8 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:text-black focus:outline-none dark:hover:text-zinc-50'>
+          <button className='duration-400 flex h-8 w-8 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:text-black focus:outline-none dark:text-zinc-700 dark:hover:text-zinc-50'>
             <AlignRightIcon className='h-7 w-7' />
           </button>
         </DropdownMenuTrigger>
