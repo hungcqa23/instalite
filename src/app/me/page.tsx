@@ -27,15 +27,16 @@ export default function MeProfile() {
   // console.log(accessToken, refreshToken);
 
   return (
-    <main className='mt-16 flex h-screen w-screen flex-col items-center justify-start overflow-scroll '>
+    <main className='mt-16 flex h-screen w-screen flex-col items-center justify-start overflow-hidden'>
       <Header activeTab='me' />
       <div className='mt-4 w-[559px] items-start justify-center '>
-        <div className='flex h-[80px] justify-between '>
+        <div className='flex h-20 justify-between '>
           <div className='mt-4 flex flex-col items-start justify-start space-y-2'>
             <p className='text-lg font-medium'>AnHyng DepTry</p>
             <p className='text-sm font-light'>andrehelokity</p>
           </div>
-          <Avatar className='h-[80px] w-[80px]'>
+
+          <Avatar className='static h-20 w-20'>
             <AvatarImage src='https://github.com/shadcn.png' alt='@shadcn' />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
@@ -43,7 +44,7 @@ export default function MeProfile() {
         <div className='mt-4 flex justify-between text-sm'>
           <Button
             variant={'link'}
-            className='cursor-default hover:no-underline'
+            className='cursor-default p-0 hover:no-underline'
           >
             <p className='font-light'>
               <span className='font-normal'>2</span> posts
@@ -51,7 +52,7 @@ export default function MeProfile() {
           </Button>
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant={'link'} className='hover:no-underline'>
+              <Button variant={'link'} className='p-0 hover:no-underline'>
                 <p className='font-light'>
                   <span className='font-normal'>50</span> followers
                 </p>
@@ -76,7 +77,7 @@ export default function MeProfile() {
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant={'link'} className='hover:no-underline'>
+              <Button variant={'link'} className='p-0 hover:no-underline'>
                 <p className='font-light'>
                   <span className='font-normal'>74</span> following
                 </p>

@@ -40,7 +40,7 @@ export default function Header({ activeTab }: HeaderProps) {
   );
 
   return (
-    <header className='h-17 fixed top-0 flex w-full items-center justify-center lg:gap-52'>
+    <header className='h-17 fixed top-0 flex w-full items-center justify-center bg-white lg:gap-52'>
       <Link
         href={'/'}
         className='hidden shrink-0 transition-transform duration-200 hover:scale-110 md:flex'

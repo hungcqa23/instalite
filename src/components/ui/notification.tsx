@@ -45,16 +45,14 @@ export default function NotificationItem({
         </div>
         <div className='flex w-[350px] flex-col'>
           <div className='flex flex-row items-end gap-1.5'>
-            <p className='text-[13px] font-bold'>AnHung DepTry</p>
-            <span className='text-[10px] font-normal text-gray-600'>
-              1 minutes
-            </span>
+            <p className='text-[0.8125rem] font-bold'>AnHung DepTry</p>
+            <span className='text-xs font-normal text-gray-500'>1 minutes</span>
           </div>
-          <p className='mt-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-normal text-gray-950 dark:text-gray-200'>
+          <p className='mt-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-sm text-gray-950 dark:text-gray-200'>
             {notification.message}
           </p>
           {notification.liteContent ? (
-            <p className='mt-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-light text-gray-600'>
+            <p className='mt-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-sm text-gray-600'>
               {notification.liteContent}
             </p>
           ) : (

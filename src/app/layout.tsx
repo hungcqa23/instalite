@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body
-        className={`${inter.className} overflow-x-hidden overflow-y-hidden`}
+        className={`${inter.className} overflow-x-hidden overflow-y-scroll`}
       >
         <ThemeProvider
           attribute='class'
