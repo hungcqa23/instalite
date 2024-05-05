@@ -100,7 +100,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({ children }) => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button className='rounded-xl'>Post</Button>
+            <Button className='rounded-3xl'>Post</Button>
           </div>
         </div>
       </DialogContent>
