@@ -30,7 +30,7 @@ export default function NotificationItem({
       className='flex h-fit w-full max-w-full flex-col items-start justify-center border-b-[1px] border-gray-300 py-2 dark:border-gray-800'
     >
       <div className='flex w-full max-w-full flex-row gap-3'>
-        <div className='relative ms-1 block '>
+        <div className='relative ms-1 block'>
           <Avatar className='h-8 w-8'>
             <AvatarImage src='https://github.com/shadcn.png' alt='@shadcn' />
             <AvatarFallback>CN</AvatarFallback>
@@ -43,10 +43,10 @@ export default function NotificationItem({
             height={15}
           />
         </div>
-        <div className='flex w-[350px] flex-col'>
+        <div className='flex w-[21.875rem] flex-col '>
           <div className='flex flex-row items-end gap-1.5'>
-            <p className='text-[0.8125rem] font-bold'>AnHung DepTry</p>
-            <span className='text-xs font-normal text-gray-500'>1 minutes</span>
+            <span className='text-[0.8125rem] font-bold'>AnHung DepTry</span>
+            <p className='text-xs font-normal text-gray-500'>1 minutes</p>
           </div>
           <p className='mt-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-sm text-gray-950 dark:text-gray-200'>
             {notification.message}
@@ -60,12 +60,14 @@ export default function NotificationItem({
           )}
         </div>
         {notification.type === NotificationType.Follow ? (
-          <Button
-            className='mt-1 h-8 w-[100px] text-sm hover:bg-transparent dark:bg-zinc-950 dark:hover:bg-zinc-950'
-            variant={'outline'}
-          >
-            Follow
-          </Button>
+          <div className='flex flex-col justify-center'>
+            <Button
+              className='h-8 rounded-lg px-7 text-sm hover:bg-transparent dark:bg-zinc-950 dark:hover:bg-zinc-950'
+              variant={'outline'}
+            >
+              Follow
+            </Button>
+          </div>
         ) : (
           <div></div>
         )}

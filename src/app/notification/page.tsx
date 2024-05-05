@@ -64,7 +64,7 @@ export default function NotificationPage() {
     }
   ];
   return (
-    <main className='mt-16 flex h-screen w-screen flex-col items-center justify-start overflow-scroll'>
+    <main className='mt-16 flex h-screen w-screen flex-col items-center justify-start overflow-hidden'>
       <Header activeTab='notification' />
       <div className='h-fit w-[32rem] items-start justify-center '>
         {List({

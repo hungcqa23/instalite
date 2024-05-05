@@ -12,9 +12,20 @@ import {
   Bookmark,
   LogOut
 } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,6 +39,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import { useTheme } from 'next-themes';
+import { Textarea } from '@/components/ui/textarea';
+import CreateLiteDialog from '@/components/ui/create-lite-dialog';
 
 interface HeaderProps {
   activeTab: 'home' | 'search' | 'lite' | 'notification' | 'me';
@@ -36,11 +49,11 @@ interface HeaderProps {
 export default function Header({ activeTab }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   const [logoSrc, setLogoSrc] = useState(
-    theme === 'dark' ? '/orbit-light.svg' : '/orbit.svg'
+    theme === 'light' ? '/orbit.svg' : '/orbit-light.svg'
   );
 
   return (
-    <header className='h-17 fixed top-0 flex w-full items-center justify-center bg-white lg:gap-52'>
+    <header className='h-17 fixed top-0 z-50 flex w-full items-center justify-center bg-white dark:bg-zinc-950 lg:gap-52'>
       <Link
         href={'/'}
         className='hidden shrink-0 transition-transform duration-200 hover:scale-110 md:flex'
@@ -63,11 +76,13 @@ export default function Header({ activeTab }: HeaderProps) {
             <Search className='h-7 w-7 ' />
           </button>
         </Link>
-        <button
-          className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'lite' ? 'text-black dark:text-zinc-50' : 'text-zinc-400 dark:text-zinc-700'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
-        >
-          <SquarePen className='h-7 w-7 ' />
-        </button>
+        <CreateLiteDialog>
+          <button
+            className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'lite' ? 'text-black dark:text-zinc-50' : 'text-zinc-400 dark:text-zinc-700'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+          >
+            <SquarePen className='h-7 w-7 ' />
+          </button>
+        </CreateLiteDialog>
         <Link href='/notification'>
           <button
             className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'notification' ? 'text-black dark:text-zinc-50' : 'text-zinc-400 dark:text-zinc-700'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}

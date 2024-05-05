@@ -29,7 +29,7 @@ export default function MeProfile() {
   return (
     <main className='mt-16 flex h-screen w-screen flex-col items-center justify-start overflow-hidden'>
       <Header activeTab='me' />
-      <div className='mt-4 w-[559px] items-start justify-center '>
+      <div className='mt-4 w-[34.9375rem] items-start justify-center '>
         <div className='flex h-20 justify-between '>
           <div className='mt-4 flex flex-col items-start justify-start space-y-2'>
             <p className='text-lg font-medium'>AnHyng DepTry</p>
@@ -58,7 +58,7 @@ export default function MeProfile() {
                 </p>
               </Button>
             </DialogTrigger>
-            <DialogContent className='dark:bg-zinc-950 sm:max-w-[500px]'>
+            <DialogContent className='dark:bg-zinc-950 sm:max-w-[31.25rem]'>
               <DialogHeader>
                 <DialogTitle className='flex justify-center text-sm font-bold'>
                   Followers
@@ -137,8 +137,8 @@ export default function MeProfile() {
                 Profile
               </DialogTitle>
             </DialogHeader>
-            <div className='flex flex-col'>
-              <div className='flex flex-row justify-between'>
+            <div className='flex flex-col gap-1'>
+              <div className='flex flex-row justify-between '>
                 <div className='flex flex-col'>
                   <Label className='text-sm font-semibold'>Username</Label>
                   <Input
