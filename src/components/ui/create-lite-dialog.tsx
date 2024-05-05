@@ -49,7 +49,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({ children }) => {
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className='overflow-y-auto dark:bg-stone-950 sm:max-w-[34rem]'>
+      <DialogContent className='overflow-y-auto dark:bg-zinc-950 sm:max-w-[34rem]'>
         <DialogHeader>
           <DialogTitle className='flex justify-center text-sm font-bold'>
             New Lite
@@ -85,17 +85,17 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({ children }) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align='start'
-                className='-ms-3 w-56 rounded-xl dark:bg-zinc-950 '
+                className='-ms-3 w-56 rounded-xl dark:bg-zinc-950'
               >
-                <DropdownMenuItem className='ms-1 cursor-pointer rounded-md font-medium hover:bg-transparent'>
+                <DropdownMenuItem className='ms-1 cursor-pointer rounded-md font-medium'>
                   Anyone can answer
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className='ms-1  cursor-pointer rounded-md font-medium hover:bg-transparent'>
+                <DropdownMenuItem className='ms-1  cursor-pointer rounded-md font-medium'>
                   Following users
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className='ms-1  cursor-pointer rounded-md font-medium hover:bg-transparent'>
+                <DropdownMenuItem className='ms-1  cursor-pointer rounded-md font-medium'>
                   Only users mentioned
                 </DropdownMenuItem>
               </DropdownMenuContent>
