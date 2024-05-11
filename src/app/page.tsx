@@ -2,7 +2,7 @@ import IconProfile from '@/components/ui/icon-profile';
 import SuggestedBar from './(main)/suggested-bar';
 import Header from '@/components/ui/header';
 import { Lite } from '@/types/lite.type';
-import LiteItem from '@/components/ui/lite';
+import LiteItem from '@/components/ui/LiteItem';
 
 export default function Home() {
   const testLite: Lite = {
