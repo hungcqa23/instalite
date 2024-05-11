@@ -30,7 +30,7 @@ export default function NotificationItem({
       className='flex h-fit w-full max-w-full flex-col items-start justify-center border-b-[1px] border-gray-300 py-2 dark:border-gray-800'
     >
       <div className='flex w-full max-w-full flex-row gap-3'>
-        <div className='relative ms-1 block'>
+        <div className='relative z-[-1] ms-1 block'>
           <Avatar className='h-8 w-8'>
             <AvatarImage src='https://github.com/shadcn.png' alt='@shadcn' />
             <AvatarFallback>CN</AvatarFallback>

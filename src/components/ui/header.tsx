@@ -12,10 +12,11 @@ import {
   Bookmark,
   LogOut
 } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { useTheme } from 'next-themes';
 import {
   Dialog,
   DialogContent,
@@ -24,6 +25,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -37,23 +39,20 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
-import { useTheme } from 'next-themes';
-import { Textarea } from '@/components/ui/textarea';
 import CreateLiteDialog from '@/components/ui/create-lite-dialog';
+import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
+import { usePathname } from 'next/navigation';
 
-interface HeaderProps {
-  activeTab: 'home' | 'search' | 'lite' | 'notification' | 'me';
-}
-
-export default function Header({ activeTab }: HeaderProps) {
+export default function Header() {
   const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
+  const activeTab = pathname.split('/')[1] || '';
   const [logoSrc, setLogoSrc] = useState(
     theme === 'light' ? '/orbit.svg' : '/orbit-light.svg'
   );
 
   return (
-    <header className='h-17 fixed top-0 z-50 flex w-full items-center justify-center bg-white dark:bg-zinc-950 lg:gap-52'>
+    <header className='h-17 fixed top-0 flex w-full items-center justify-center bg-white py-1 dark:bg-zinc-950 lg:gap-52'>
       <Link
         href={'/'}
         className='hidden shrink-0 transition-transform duration-200 hover:scale-110 md:flex'
@@ -64,35 +63,65 @@ export default function Header({ activeTab }: HeaderProps) {
       <div className='flex md:gap-2'>
         <Link href='/'>
           <button
-            className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'home' ? 'text-black dark:text-zinc-50' : 'text-zinc-400    dark:text-zinc-700'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+            className={`${clsx(
+              'duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white',
+              {
+                'text-black dark:text-zinc-50': activeTab === 'home',
+                'text-zinc-400 dark:text-zinc-700': activeTab !== 'home'
+              }
+            )}`}
           >
             <Home className='h-7 w-7 ' />
           </button>
         </Link>
         <Link href='/search'>
           <button
-            className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'search' ? 'text-black dark:text-zinc-50' : 'text-zinc-400 dark:text-zinc-700'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+            className={`${clsx(
+              'duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white',
+              {
+                'text-black dark:text-zinc-50': activeTab === 'search',
+                'text-zinc-400 dark:text-zinc-700': activeTab !== 'search'
+              }
+            )}`}
           >
             <Search className='h-7 w-7 ' />
           </button>
         </Link>
         <CreateLiteDialog>
           <button
-            className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'lite' ? 'text-black dark:text-zinc-50' : 'text-zinc-400 dark:text-zinc-700'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+            className={`${clsx(
+              'duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white',
+              {
+                'text-black dark:text-zinc-50': activeTab === 'lite',
+                'text-zinc-400 dark:text-zinc-700': activeTab !== 'lite'
+              }
+            )}`}
           >
             <SquarePen className='h-7 w-7 ' />
           </button>
         </CreateLiteDialog>
         <Link href='/notification'>
           <button
-            className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors ${activeTab === 'notification' ? 'text-black dark:text-zinc-50' : 'text-zinc-400 dark:text-zinc-700'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+            className={`${clsx(
+              'duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white',
+              {
+                'text-black dark:text-zinc-50': activeTab === 'notification',
+                'text-zinc-400 dark:text-zinc-700': activeTab !== 'notification'
+              }
+            )}`}
           >
             <Bell className='h-7 w-7 ' />
           </button>
         </Link>
         <Link href='/me'>
           <button
-            className={`duration-400 flex h-16 w-24 items-center justify-center rounded-lg  transition-colors ${activeTab === 'me' ? ' text-black dark:text-zinc-50' : '  text-zinc-400  dark:text-zinc-700'} hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white`}
+            className={`${clsx(
+              'duration-400 flex h-16 w-24 items-center justify-center rounded-lg transition-colors hover:bg-gray-200 hover:text-black dark:hover:bg-gray-700/40 dark:hover:text-white',
+              {
+                'text-black dark:text-zinc-50': activeTab === 'me',
+                'text-zinc-400 dark:text-zinc-700': activeTab !== 'me'
+              }
+            )}`}
           >
             <UserRound className='h-7 w-7' />
           </button>

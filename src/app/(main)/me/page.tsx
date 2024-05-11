@@ -27,8 +27,7 @@ export default function MeProfile() {
   // console.log(accessToken, refreshToken);
 
   return (
-    <main className='mt-16 flex h-screen w-screen flex-col items-center justify-start overflow-hidden'>
-      <Header activeTab='me' />
+    <>
       <div className='mt-4 w-[34.9375rem] items-start justify-center '>
         <div className='flex h-20 justify-between '>
           <div className='mt-4 flex flex-col items-start justify-start space-y-2'>
@@ -272,6 +271,6 @@ export default function MeProfile() {
           </Tabs>
         </div>
       </div>
-    </main>
+    </>
   );
 }
