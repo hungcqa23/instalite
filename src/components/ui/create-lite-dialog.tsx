@@ -1,4 +1,5 @@
 'use client';
+
 import React, { ReactNode, useState } from 'react';
 import {
   Dialog,
@@ -23,7 +24,11 @@ interface CreateLiteDialogProps {
   children: ReactNode;
 }
 
-const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({ children }) => {
+const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
+  children
+}: {
+  children: ReactNode;
+}) => {
   const [text, setText] = useState('');
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {

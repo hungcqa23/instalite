@@ -1,3 +1,4 @@
+'use client';
 import { Lite } from '@/types/lite.type';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -19,13 +20,17 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu';
+import { useState } from 'react';
+import clsx from 'clsx';
 
 export default function LiteItem({ lite }: { lite: Lite }) {
+  const [liked, setLiked] = useState(false);
+
   return (
-    <div className='flex h-[180px] w-[29.25rem] flex-col  px-1.5 '>
-      <div className=' my-3 flex flex-row items-center justify-between'>
+    <div className='flex h-[11.25rem] w-full max-w-[29.25rem] flex-col p-2 sm:p-0'>
+      <div className='my-3 flex flex-row items-center justify-between'>
         <div className='flex flex-row items-end'>
-          <Avatar className='h-8 w-8'>
+          <Avatar className='z-[-1] h-9 w-9'>
             <AvatarImage src={lite.avatar} alt='@shadcn' />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
@@ -78,12 +83,29 @@ export default function LiteItem({ lite }: { lite: Lite }) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
       <div className='mb-3 text-[13px]'>{lite.content}</div>
       <div className='flex flex-row justify-between'>
         <div className='ms-0.5 flex flex-row gap-3'>
-          <Heart className='h-5 w-5 cursor-pointer' />
-          <MessageCircle className='h-5 w-5 cursor-pointer' />
+          <button
+            onClick={() => {
+              console.log('Hello World!');
+              console.log(liked);
+              setLiked(prev => !liked);
+            }}
+          >
+            <Heart
+              className={`${clsx(
+                'h-5 w-5 cursor-pointer transition-colors duration-300',
+                {
+                  'fill-red-500 stroke-red-500': liked,
+                  'fill-white stroke-black': !liked
+                }
+              )}`}
+            />
+          </button>
 
+          <MessageCircle className='h-5 w-5 cursor-pointer' />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Repeat2 className='h-5 w-5 cursor-pointer' />
@@ -107,6 +129,7 @@ export default function LiteItem({ lite }: { lite: Lite }) {
         </div>
         <Bookmark className='me-1.5 h-5 w-5 cursor-pointer' />
       </div>
+
       <div className='mt-1 flex flex-row gap-1 text-xs font-light'>
         <div>{lite.replysCount} replied lites </div>
         <div>·</div>

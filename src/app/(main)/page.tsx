@@ -1,7 +1,7 @@
 import SuggestedBar from '@/app/(main)/suggested-bar';
 import IconProfile from '@/components/ui/icon-profile';
+import LiteItem from '@/components/ui/lite-item';
 import { Lite } from '@/types/lite.type';
-import React from 'react';
 
 const testLite: Lite = {
   avatar:
@@ -18,8 +18,8 @@ export default function Home() {
     <>
       {/* Main concept list xl:mr-[calc((100%-30rem)/2-16rem)] */}
       <div className='flex w-full justify-center xl:justify-normal'>
-        <div className='mr-20 mt-2 w-full max-w-[30rem] xl:ml-[calc((100%-30rem)/2)]'>
-          <div className='flex h-12 w-full items-center justify-between border-b border-gray-200 py-2'>
+        <div className='mt-2 flex w-full max-w-[30rem] flex-col xl:ml-[calc((100%-30rem)/2)] xl:mr-20'>
+          <div className='hidden h-12 w-full items-center justify-between border-b border-gray-200 py-2 sm:flex'>
             <div className='flex items-center gap-2'>
               <IconProfile />
               <p className='text-sm font-light text-gray-400'>
@@ -31,6 +31,10 @@ export default function Home() {
               Post
             </button>
           </div>
+
+          {Array.from({ length: 20 }).map((_, index) => (
+            <LiteItem lite={testLite} key={index} />
+          ))}
         </div>
 
         <SuggestedBar />

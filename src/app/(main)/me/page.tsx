@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import Header from '@/components/ui/header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Grid2X2, Image, Bookmark, Repeat2, Search } from 'lucide-react';
+import { Grid2X2, ImageIcon, Bookmark, Repeat2, Search } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -28,83 +28,85 @@ export default function MeProfile() {
 
   return (
     <>
-      <div className='mt-4 w-[34.9375rem] items-start justify-center '>
-        <div className='flex h-20 justify-between '>
-          <div className='mt-4 flex flex-col items-start justify-start space-y-2'>
-            <p className='text-lg font-medium'>AnHyng DepTry</p>
-            <p className='text-sm font-light'>andrehelokity</p>
+      <div className='mt-4 max-w-[34.9375rem] items-start justify-center'>
+        <div className='flex flex-col'>
+          <div className='flex h-20 justify-between '>
+            <div className='mt-4 flex flex-col items-start justify-start space-y-2'>
+              <p className='text-lg font-medium'>AnHyng DepTry</p>
+              <p className='text-sm font-light'>andrehelokity</p>
+            </div>
+
+            <Avatar className='static h-20 w-20'>
+              <AvatarImage src='https://github.com/shadcn.png' alt='@shadcn' />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
           </div>
+          <div className='mt-4 flex justify-between text-sm'>
+            <Button
+              variant={'link'}
+              className='cursor-default p-0 hover:no-underline'
+            >
+              <p className='font-light'>
+                <span className='font-normal'>2</span> posts
+              </p>
+            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant={'link'} className='p-0 hover:no-underline'>
+                  <p className='font-light'>
+                    <span className='font-normal'>50</span> followers
+                  </p>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className='dark:bg-zinc-950 sm:max-w-[31.25rem]'>
+                <DialogHeader>
+                  <DialogTitle className='flex justify-center text-sm font-bold'>
+                    Followers
+                  </DialogTitle>
+                </DialogHeader>
+                <div className='flex flex-row items-center justify-center border-b-2 border-t-2 border-gray-300 py-2'>
+                  <Search className=' text-gray-400' />
+                  <Input
+                    placeholder='Search for user'
+                    className='border-none focus-visible:ring-0'
+                  />
+                </div>
+                <div className='h-[300px]'></div>
+              </DialogContent>
+            </Dialog>
 
-          <Avatar className='static h-20 w-20'>
-            <AvatarImage src='https://github.com/shadcn.png' alt='@shadcn' />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-        </div>
-        <div className='mt-4 flex justify-between text-sm'>
-          <Button
-            variant={'link'}
-            className='cursor-default p-0 hover:no-underline'
-          >
-            <p className='font-light'>
-              <span className='font-normal'>2</span> posts
-            </p>
-          </Button>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant={'link'} className='p-0 hover:no-underline'>
-                <p className='font-light'>
-                  <span className='font-normal'>50</span> followers
-                </p>
-              </Button>
-            </DialogTrigger>
-            <DialogContent className='dark:bg-zinc-950 sm:max-w-[31.25rem]'>
-              <DialogHeader>
-                <DialogTitle className='flex justify-center text-sm font-bold'>
-                  Followers
-                </DialogTitle>
-              </DialogHeader>
-              <div className='flex flex-row items-center justify-center border-b-2 border-t-2 border-gray-300 py-2'>
-                <Search className=' text-gray-400' />
-                <Input
-                  placeholder='Search for user'
-                  className='border-none focus-visible:ring-0'
-                />
-              </div>
-              <div className='h-[300px]'></div>
-            </DialogContent>
-          </Dialog>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant={'link'} className='p-0 hover:no-underline'>
+                  <p className='font-light'>
+                    <span className='font-normal'>74</span> following
+                  </p>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className='w-[456px] dark:bg-zinc-950 sm:max-w-[500px]'>
+                <DialogHeader>
+                  <DialogTitle className='flex justify-center text-sm font-bold'>
+                    Following
+                  </DialogTitle>
+                </DialogHeader>
 
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant={'link'} className='p-0 hover:no-underline'>
-                <p className='font-light'>
-                  <span className='font-normal'>74</span> following
-                </p>
-              </Button>
-            </DialogTrigger>
-            <DialogContent className='w-[456px] dark:bg-zinc-950 sm:max-w-[500px]'>
-              <DialogHeader>
-                <DialogTitle className='flex justify-center text-sm font-bold'>
-                  Following
-                </DialogTitle>
-              </DialogHeader>
-
-              <div className='flex flex-row items-center justify-center border-b-2 border-t-2 border-gray-300 py-2'>
-                <Search className=' text-gray-400' />
-                <Input
-                  placeholder='Search for user'
-                  className='border-none focus-visible:ring-0'
-                />
-              </div>
-              <div className='h-[300px]'></div>
-            </DialogContent>
-          </Dialog>
-        </div>
-        <div className='mt-3.5 text-sm'>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industrys standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
+                <div className='flex flex-row items-center justify-center border-b-2 border-t-2 border-gray-300 py-2'>
+                  <Search className=' text-gray-400' />
+                  <Input
+                    placeholder='Search for user'
+                    className='border-none focus-visible:ring-0'
+                  />
+                </div>
+                <div className='h-[300px]'></div>
+              </DialogContent>
+            </Dialog>
+          </div>
+          <div className='mt-3.5 max-w-full text-sm'>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industrys standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled it to make a type specimen book.
+          </div>
         </div>
         {/* Visit other account profile */}
         {/* <div className='flex flex-row gap-2'>
@@ -193,25 +195,29 @@ export default function MeProfile() {
                 className='shadow-none data-[state=active]:shadow-none  relative flex h-9 w-32 gap-1.5 rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 text-base font-semibold uppercase text-muted-foreground transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground'
                 value='post'
               >
-                <Grid2X2 /> Post
+                <Grid2X2 className='h-8 w-8 md:h-6 md:w-6' />{' '}
+                <span className='hidden md:inline'>Post</span>
               </TabsTrigger>
               <TabsTrigger
                 className='shadow-none data-[state=active]:shadow-none  relative flex h-9 w-32 gap-1.5 rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 text-base font-semibold uppercase text-muted-foreground transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground'
                 value='image'
               >
-                <Image /> Image
+                <ImageIcon className='h-8 w-8 md:h-6 md:w-6' />{' '}
+                <span className='hidden md:inline'>Image</span>
               </TabsTrigger>
               <TabsTrigger
                 className='shadow-none data-[state=active]:shadow-none relative flex h-9 w-32 gap-1.5 rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 text-base font-semibold uppercase text-muted-foreground transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground'
                 value='saved'
               >
-                <Bookmark /> Saved
+                <Bookmark className='h-8 w-8 md:h-6 md:w-6' />
+                <span className='hidden md:inline'> Saved</span>
               </TabsTrigger>
               <TabsTrigger
                 className='shadow-none data-[state=active]:shadow-none relative flex h-9 w-32 gap-1.5 rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 text-base font-semibold uppercase text-muted-foreground transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground'
                 value='repost'
               >
-                <Repeat2 /> Repost
+                <Repeat2 className='h-8 w-8 md:h-6 md:w-6' />{' '}
+                <span className='hidden md:inline'>Repost</span>
               </TabsTrigger>
             </TabsList>
 

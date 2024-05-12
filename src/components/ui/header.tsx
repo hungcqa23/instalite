@@ -47,17 +47,14 @@ export default function Header() {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const activeTab = pathname.split('/')[1] || '';
-  const [logoSrc, setLogoSrc] = useState(
-    theme === 'light' ? '/orbit.svg' : '/orbit-light.svg'
-  );
 
   return (
-    <header className='h-17 fixed top-0 flex w-full items-center justify-center bg-white py-1 dark:bg-zinc-950 lg:gap-52'>
+    <header className='h-17 fixed top-0 flex w-full items-center justify-center gap-2 bg-white py-1 dark:bg-zinc-950 lg:gap-52'>
       <Link
         href={'/'}
         className='hidden shrink-0 transition-transform duration-200 hover:scale-110 md:flex'
       >
-        <Image src={logoSrc} alt='logo' width={30} height={30} />
+        <Image src={'/orbit.svg'} alt='logo' width={30} height={30} />
       </Link>
 
       <div className='flex md:gap-2'>
@@ -158,7 +155,6 @@ export default function Header() {
                   className='rounded-md font-medium'
                   onClick={() => {
                     setTheme('light');
-                    setLogoSrc('/orbit.svg');
                   }}
                 >
                   Light
@@ -168,7 +164,6 @@ export default function Header() {
                   className='rounded-md font-medium'
                   onClick={() => {
                     setTheme('dark');
-                    setLogoSrc('/orbit-light.svg');
                   }}
                 >
                   Dark
