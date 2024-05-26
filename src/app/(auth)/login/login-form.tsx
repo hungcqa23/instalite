@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,11 +15,14 @@ import { useForm } from 'react-hook-form';
 import { LoginBody, LoginBodyType } from '@/app/schema-validations/auth.schema';
 import Link from 'next/link';
 import { useToast } from '@/components/ui/use-toast';
-import { getCookie, getCookies } from 'cookies-next';
+import authApiRequest from '@/api-request/auth';
+import { cookies } from 'next/headers';
+import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
     defaultValues: {
@@ -31,36 +33,53 @@ export default function LoginForm() {
 
   async function onSubmit(values: LoginBodyType) {
     if (loading) return setLoading(true);
+
     toast({
       title: 'Logging in',
       description: 'Please wait...'
     });
+
     try {
-      const result = await fetch('http://localhost:8000/auth/login', {
-        method: 'POST',
-        body: JSON.stringify({
-          email: values.email,
-          password: values.password
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(res => res.json());
-      console.log(result);
-      await fetch('/api/auth', {
-        method: 'POST',
-        body: JSON.stringify({
-          result
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+      const res = await authApiRequest.login(values);
+
+      setTimeout(() => {
+        toast({
+          title: 'Logged in',
+          description: 'Welcome back'
+        });
+      }, 1000);
+      router.push('/');
+      // await fetch('/api/auth', {
+      //   method: 'POST',
+      //   body: JSON.stringify({
+      //     result
+      //   }),
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   }
+      // });
     } catch (error: any) {
       // handleErrorApi({
       //   error,
       //   setError: form.setError
       // });
+      console.log(error);
+      const status = error.status as number;
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: error.message
+      });
+
+      form.setError('email', {
+        type: 'server',
+        message: 'Please check your email and password'
+      });
+
+      form.setError('password', {
+        type: 'server',
+        message: 'Please check your email and password'
+      });
     }
   }
 
@@ -99,6 +118,7 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
+
         <p className='min-h-[20px]'></p>
         <div className='text-right'>
           <Button className='pr-0' variant={'link'} asChild>
@@ -125,6 +145,7 @@ export default function LoginForm() {
             </span>
           </div>
         </div>
+
         <Button
           className='mt-4 flex w-full items-center gap-1 font-semibold'
           variant={'outline'}

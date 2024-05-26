@@ -5,4 +5,5 @@ export interface Lite {
   content: string;
   replysCount: number;
   likesCount: number;
+  url?: string;
 }

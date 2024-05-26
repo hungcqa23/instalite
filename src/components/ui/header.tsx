@@ -6,11 +6,9 @@ import {
   SquarePen,
   Bell,
   UserRound,
-  MessageCircleHeartIcon,
   AlignRightIcon,
   Settings,
-  Bookmark,
-  LogOut
+  Bookmark
 } from 'lucide-react';
 import clsx from 'clsx';
 import Image from 'next/image';
@@ -42,9 +40,11 @@ import {
 import CreateLiteDialog from '@/components/ui/create-lite-dialog';
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import { usePathname } from 'next/navigation';
+import ButtonLogout from '@/app/(main)/ui/button-logout';
 
 export default function Header() {
   const { theme, setTheme } = useTheme();
+  console.log(theme);
   const pathname = usePathname();
   const activeTab = pathname.split('/')[1] || '';
 
@@ -128,19 +128,24 @@ export default function Header() {
         </button> */}
       </div>
 
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <button className='duration-400 flex h-8 w-8 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:text-black focus:outline-none dark:text-zinc-700 dark:hover:text-zinc-50'>
             <AlignRightIcon className='h-7 w-7' />
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className='border- z-20 flex w-60 flex-col gap-1 rounded-lg bg-white px-2 py-3 shadow-default dark:bg-black '>
+
+        <DropdownMenuContent
+          className='z-20 flex w-60 flex-col gap-1 rounded-lg border bg-white px-2 py-3 shadow-default dark:bg-black'
+          align='end'
+        >
           <DropdownMenuItem className='rounded-md'>
             <button className='flex h-6 w-56 items-center gap-2 pl-2 text-base font-medium '>
               <Settings size={22} /> Setting
             </button>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
+
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className='rounded-md'>
               <button className='flex h-6 w-56 items-center gap-2 rounded-md pl-2 text-base font-medium  '>
@@ -172,17 +177,15 @@ export default function Header() {
             </DropdownMenuPortal>
           </DropdownMenuSub>
           <DropdownMenuSeparator />
+
           <DropdownMenuItem className='rounded-md'>
             <button className='flex h-6 w-56 items-center gap-2 rounded-md pl-2 text-base font-medium '>
               <Bookmark size={22} /> Saved
             </button>
           </DropdownMenuItem>
+
           <DropdownMenuSeparator />
-          <DropdownMenuItem className='rounded-md'>
-            <button className='flex h-6 w-56 items-center gap-2 rounded-md pl-2 text-base font-medium '>
-              <LogOut size={22} /> Log out
-            </button>
-          </DropdownMenuItem>
+          <ButtonLogout />
         </DropdownMenuContent>
       </DropdownMenu>
     </header>

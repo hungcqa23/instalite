@@ -1,6 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import Header from '@/components/ui/header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Grid2X2, ImageIcon, Bookmark, Repeat2, Search } from 'lucide-react';
 import {
@@ -102,7 +101,7 @@ export default function MeProfile() {
             </Dialog>
           </div>
           <div className='mt-3.5 max-w-full text-sm'>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
+            Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industrys standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
             and scrambled it to make a type specimen book.

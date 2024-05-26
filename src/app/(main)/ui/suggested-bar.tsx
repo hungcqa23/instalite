@@ -1,4 +1,7 @@
+import SuggestedFriend from '@/app/(main)/ui/suggested-friend';
 import IconProfile from '@/components/ui/icon-profile';
+import List from '@/components/ui/list';
+import { User } from '@/types/user.type';
 import Link from 'next/link';
 
 export default function SuggestedBar() {
@@ -27,13 +30,20 @@ export default function SuggestedBar() {
             </span>
           </div>
 
-          {/* {!isLoading &&
-            List<User>({
-              listItems: recommendationData?.data.users || [],
-              mapFn: (user: User) => (
-                <SuggestedFriend key={user._id} user={user} />
-              )
-            })} */}
+          {/* {List<User>({
+            listItems: [],
+            mapFn: (user: User) => (
+              <SuggestedFriend key={user._id} user={user} />
+            )
+          })} */}
+          <SuggestedFriend
+            user={{
+              _id: '1',
+              username: 'An Hưng',
+              fullName: 'Cao Quảng An Hưng',
+              followersCount: 0
+            }}
+          />
         </div>
       </div>
     </div>
