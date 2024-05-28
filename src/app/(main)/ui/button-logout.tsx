@@ -12,7 +12,6 @@ export default function ButtonLogout() {
   const handleLogout = async () => {
     try {
       const res = await authApiRequest.logout();
-      console.log(await res.json());
       cookieStore.delete('access_token');
       cookieStore.delete('refresh_token');
       router.push('/login');
