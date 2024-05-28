@@ -40,27 +40,6 @@ const userList: User[] = [
     followersCount: 500,
     fullName: 'Faker',
     username: 'faker'
-  },
-  {
-    id: '6',
-    avatar: 'https://pbs.twimg.com/media/F_TSzsLaoAAErQe.jpg:large',
-    followersCount: 500,
-    fullName: 'Faker',
-    username: 'faker'
-  },
-  {
-    id: '7',
-    avatar: 'https://pbs.twimg.com/media/F_TSzsLaoAAErQe.jpg:large',
-    followersCount: 500,
-    fullName: 'Faker',
-    username: 'faker'
-  },
-  {
-    id: '8',
-    avatar: 'https://pbs.twimg.com/media/F_TSzsLaoAAErQe.jpg:large',
-    followersCount: 500,
-    fullName: 'Faker',
-    username: 'faker'
   }
 ];
 export default function SearchPage() {

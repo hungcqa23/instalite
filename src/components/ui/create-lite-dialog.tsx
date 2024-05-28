@@ -52,9 +52,9 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
   };
 
   return (
-    <Dialog>
+    <Dialog modal={false}>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className='overflow-y-auto dark:bg-zinc-950 sm:max-w-[34rem]'>
+      <DialogContent className=' dark:bg-zinc-950 sm:max-w-[34rem]'>
         <DialogHeader>
           <DialogTitle className='flex justify-center text-sm font-bold'>
             New Lite
@@ -70,7 +70,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
               <div className='text-sm font-semibold'>AnHung DepTry</div>
               <textarea
                 placeholder='Write something...'
-                className=' w-[28rem] resize-none bg-transparent py-1 text-sm outline-none'
+                className=' max-h-[60vh] w-[28rem] resize-none overflow-y-auto bg-transparent py-1 text-sm outline-none'
                 style={{
                   overflowY: text.split('\n').length > 1 ? 'auto' : 'hidden'
                 }}

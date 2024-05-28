@@ -1,33 +1,30 @@
-'use client';
-
 import authApiRequest from '@/api-request/auth';
+import { Button } from '@/components/ui/button';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { LogOut } from 'lucide-react';
-import { cookies } from 'next/headers';
+// import { cookies } from 'next/headers';
 import { useRouter } from 'next/navigation';
 
 export default function ButtonLogout() {
   const router = useRouter();
-  const cookieStore = cookies();
-  const handleLogout = async () => {
-    try {
-      const res = await authApiRequest.logout();
-      cookieStore.delete('access_token');
-      cookieStore.delete('refresh_token');
-      router.push('/login');
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const cookieStore = cookies();
+  // const handleLogout = async () => {
+  //   try {
+  //     const res = await authApiRequest.logout();
+  //     cookieStore.delete('access_token');
+  //     cookieStore.delete('refresh_token');
+  //     router.push('/login');
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
-    <DropdownMenuItem className='rounded-md'>
-      <button
-        className='flex h-6 w-56 items-center gap-2 rounded-md pl-2 text-base font-medium'
-        onClick={handleLogout}
-      >
-        <LogOut size={22} /> Log out
-      </button>
+    <DropdownMenuItem
+      className='flex h-6 w-56 gap-2 rounded-md py-4 pl-3 text-base font-medium'
+      // onClick={handleLogout}
+    >
+      <LogOut size={22} /> Log out
     </DropdownMenuItem>
   );
 }
