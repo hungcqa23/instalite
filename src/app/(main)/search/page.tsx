@@ -7,35 +7,35 @@ import { Search } from 'lucide-react';
 
 const userList: User[] = [
   {
-    id: '1',
+    _id: '1',
     avatar: 'https://pbs.twimg.com/media/F_TSzsLaoAAErQe.jpg:large',
     followersCount: 500,
     fullName: 'Faker',
     username: 'faker'
   },
   {
-    id: '2',
+    _id: '2',
     avatar: 'https://pbs.twimg.com/media/F_TSzsLaoAAErQe.jpg:large',
     followersCount: 500,
     fullName: 'Faker',
     username: 'faker'
   },
   {
-    id: '3',
+    _id: '3',
     avatar: 'https://pbs.twimg.com/media/F_TSzsLaoAAErQe.jpg:large',
     followersCount: 500,
     fullName: 'Faker',
     username: 'faker'
   },
   {
-    id: '4',
+    _id: '4',
     avatar: 'https://pbs.twimg.com/media/F_TSzsLaoAAErQe.jpg:large',
     followersCount: 500,
     fullName: 'Faker',
     username: 'faker'
   },
   {
-    id: '5',
+    _id: '5',
     avatar: 'https://pbs.twimg.com/media/F_TSzsLaoAAErQe.jpg:large',
     followersCount: 500,
     fullName: 'Faker',
@@ -56,7 +56,7 @@ export default function SearchPage() {
 
         {List({
           listItems: userList,
-          mapFn: user => <UserItem key={user.id} user={user} />,
+          mapFn: user => <UserItem key={user._id} user={user} />,
           as: 'ul'
         })}
       </div>

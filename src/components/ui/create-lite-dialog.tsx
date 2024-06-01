@@ -52,7 +52,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
   };
 
   return (
-    <Dialog modal={false}>
+    <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className=' dark:bg-zinc-950 sm:max-w-[34rem]'>
         <DialogHeader>

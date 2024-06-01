@@ -5,7 +5,7 @@ import { Lite } from '@/types/lite.type';
 
 const testLite: Lite = {
   avatar:
-    'https://scontent.fsgn24-1.fna.fbcdn.net/v/t39.30808-1/341166095_1287695245513783_5677951521827952093_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFTRxizbOenNB2VWOiV780vZSIHvA1DtEtlIge8DUO0S2UYcbCV2vnLZ7WOaVBj8WmtdGTbsuwfG2Kr9eo01lac&_nc_ohc=nMzMoOMx3AAQ7kNvgFnwmRL&_nc_ht=scontent.fsgn24-1.fna&oh=00_AfDWzyyHgcqEZ8r4dSd8egUT2DcGnWIOMMPJ6FHa7Jpz8A&oe=663D6D7B',
+    'https://scontent.cdninstagram.com/v/t51.29350-15/447077438_978175286926900_4717450693372967518_n.jpg?stp=dst-jpg_e15&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMDgweDEwODAuc2RyLmYyOTM1MCJ9&_nc_ht=scontent.cdninstagram.com&_nc_cat=104&_nc_ohc=hUv-Cemq_nUQ7kNvgHN17WZ&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=MzM4MDE5MjkxMTcyNjk0NTQxNw%3D%3D.2-ccb7-5&oh=00_AYDBpLiL2Uw0v8Xxe3fcIyA3NwI1JzlTYsau_NeVAPfD-w&oe=6660E307&_nc_sid=10d13b',
   content:
     'Aenean vitae porttitor magna, non venenatis tortor. In hac habitasse platea dictumst. Morbi sagittis, ante et condimentum malesuada, lectus arcu faucibus urna, eget eleifend ipsum metus et ligula.',
   createdAt: 'a hour ago',
@@ -15,14 +15,14 @@ const testLite: Lite = {
 };
 const testLite1: Lite = {
   avatar:
-    'https://scontent.cdninstagram.com/v/t51.29350-15/442650677_1724665738058698_104126375099075557_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDE0NDAuc2RyLmYyOTM1MCJ9&_nc_ht=scontent.cdninstagram.com&_nc_cat=110&_nc_ohc=3V5mbtAs3TsQ7kNvgHRrHr4&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=MzM2NzgwNjg4ODQzNDQwNDQxMQ%3D%3D.2-ccb7-5&oh=00_AYAIAeQ9NUByRtE46Kw-RgXVcP6nLusw7wn3jjwpH3PjJw&oe=664726B6&_nc_sid=10d13b',
+    'https://scontent-iad3-1.cdninstagram.com/v/t51.29350-15/446592648_1922152721578822_1948576158759031871_n.jpg?stp=dst-jpegr_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDI1NjAuaGRyLmYyOTM1MCJ9&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=110&_nc_ohc=07VHeFcx0lgQ7kNvgGK-VQT&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=MzM4MDI0Njg4ODUzNDkwODU4OQ%3D%3D.2-ccb7-5&oh=00_AYA_70zWxvwXP9Jhbvj5o0T2kP0HcSpHJBOEe-denvOc0g&oe=665EDC89&_nc_sid=10d13b',
   content:
     'Aenean vitae porttitor magna, non venenatis tortor. In hac habitasse platea dictumst. Morbi sagittis, ante et condimentum malesuada, lectus arcu faucibus urna, eget eleifend ipsum metus et ligula.',
   createdAt: 'a hour ago',
   likesCount: 1067,
   replysCount: 2,
   username: 'anhung_dep_try',
-  url: 'https://scontent.cdninstagram.com/v/t51.29350-15/442650677_1724665738058698_104126375099075557_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDE0NDAuc2RyLmYyOTM1MCJ9&_nc_ht=scontent.cdninstagram.com&_nc_cat=110&_nc_ohc=3V5mbtAs3TsQ7kNvgHRrHr4&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=MzM2NzgwNjg4ODQzNDQwNDQxMQ%3D%3D.2-ccb7-5&oh=00_AYAIAeQ9NUByRtE46Kw-RgXVcP6nLusw7wn3jjwpH3PjJw&oe=664726B6&_nc_sid=10d13b'
+  url: 'https://images.unsplash.com/photo-1717201410616-205a82d7e3f9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 };
 export default function Home() {
   return (
