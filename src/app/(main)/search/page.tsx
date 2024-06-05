@@ -5,6 +5,10 @@ import UserItem from '@/components/ui/user';
 import { User } from '@/types/user.type';
 import { Search } from 'lucide-react';
 
+export const metadata = {
+  title: 'Search'
+};
+
 const userList: User[] = [
   {
     _id: '1',

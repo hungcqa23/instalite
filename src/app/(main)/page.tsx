@@ -1,4 +1,5 @@
 import SuggestedBar from '@/app/(main)/ui/suggested-bar';
+import CreateLiteDialog from '@/components/ui/create-lite-dialog';
 import IconProfile from '@/components/ui/icon-profile';
 import LiteItem from '@/components/ui/lite-item';
 import { Lite } from '@/types/lite.type';
@@ -31,16 +32,19 @@ export default function Home() {
       <div className='mb-2 flex w-full justify-center xl:justify-normal'>
         <div className='mt-2 flex w-full max-w-[30rem] flex-col xl:ml-[calc((100%-30rem)/2)] xl:mr-20'>
           <div className='mb-4 hidden h-12 w-full items-center justify-between border-b border-gray-200 py-2 sm:flex'>
-            <div className='flex items-center gap-2'>
-              <IconProfile />
-              <p className='text-sm font-light text-gray-400'>
-                Starting with instalite
-              </p>
-            </div>
-
-            <button className='h-7 w-14 rounded-full bg-gray-300 text-sm font-semibold text-white'>
-              Post
-            </button>
+            <CreateLiteDialog>
+              <div className='flex w-96 cursor-text items-center gap-2 '>
+                <IconProfile />
+                <p className='ms-2  cursor-text text-sm font-light text-gray-400'>
+                  What&apos;s on your mind?
+                </p>
+              </div>
+            </CreateLiteDialog>
+            <CreateLiteDialog>
+              <button className='h-7 w-14 rounded-full bg-gray-300 text-sm font-semibold text-white'>
+                Post
+              </button>
+            </CreateLiteDialog>
           </div>
 
           <div className='flex flex-col items-center'>

@@ -3,6 +3,10 @@ import List from '@/components/ui/list';
 import NotificationItem from '@/app/(main)/notification/notification-item';
 import { Notification, NotificationType } from '@/types/notification.type';
 
+export const metadata = {
+  title: 'Notification'
+};
+
 const myNotification: Notification[] = [
   {
     liteId: '1',

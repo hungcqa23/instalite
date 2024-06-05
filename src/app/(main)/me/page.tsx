@@ -18,6 +18,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+
+export const metadata = {
+  title: 'AnHyng DepTry (@andrehelokity)'
+};
+
 export default function MeProfile() {
   // const cookieStore = cookies();
   // const accessToken = cookieStore.get('access_token');
@@ -108,7 +113,7 @@ export default function MeProfile() {
           </div>
         </div>
         {/* Visit other account profile */}
-        {/* <div className='flex flex-row gap-2'>
+        <div className='flex flex-row gap-2'>
           <Button
             className='mt-3.5 w-full text-sm dark:bg-zinc-50 dark:hover:bg-zinc-50'
             variant={'default'}
@@ -121,7 +126,7 @@ export default function MeProfile() {
           >
             Mention
           </Button>
-        </div> */}
+        </div>
         <Dialog>
           <DialogTrigger asChild>
             <Button
@@ -195,7 +200,7 @@ export default function MeProfile() {
                 value='post'
               >
                 <Grid2X2 className='h-8 w-8 md:h-6 md:w-6' />{' '}
-                <span className='hidden md:inline'>Post</span>
+                <span className='hidden md:inline'>Lite</span>
               </TabsTrigger>
               <TabsTrigger
                 className='shadow-none data-[state=active]:shadow-none  relative flex h-9 w-32 gap-1.5 rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 text-base font-semibold uppercase text-muted-foreground transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground'
@@ -216,7 +221,7 @@ export default function MeProfile() {
                 value='repost'
               >
                 <Repeat2 className='h-8 w-8 md:h-6 md:w-6' />{' '}
-                <span className='hidden md:inline'>Repost</span>
+                <span className='hidden md:inline'>Relite</span>
               </TabsTrigger>
             </TabsList>
 

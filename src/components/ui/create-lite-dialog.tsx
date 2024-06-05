@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useState, useEffect, useRef } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -30,25 +30,25 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
   children: ReactNode;
 }) => {
   const [text, setText] = useState('');
+  const [privacy, setPrivacy] = useState('Anyone can answer');
 
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(event.target.value);
-    const textarea = event.target;
-    const lineHeight = parseFloat(window.getComputedStyle(textarea).lineHeight);
-    const previousRows = textarea.rows;
-    textarea.rows = 1; // Reset rows to calculate height accurately
-    const currentRows = Math.ceil(textarea.scrollHeight / lineHeight);
-    textarea.rows = currentRows;
-    // Check if the number of rows has changed, if so, force a reflow to adjust the height
-    if (currentRows !== previousRows) {
-      const container = textarea.parentElement;
-      if (container) {
-        const tempDisplay = container.style.display;
-        container.style.display = 'none'; // Hide container temporarily to force reflow
-        container.offsetHeight; // Trigger reflow
-        container.style.display = tempDisplay; // Restore display property
-      }
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      // Reset height to auto to measure the scroll height accurately
+      textareaRef.current.style.height = 'auto';
+      // Set height based on scroll height
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
+  }, [text]);
+
+  const handleSelectPrivacy = (option: string) => {
+    setPrivacy(option);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value);
   };
 
   return (
@@ -69,38 +69,45 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
             <div className='ms-2.5 flex flex-col'>
               <div className='text-sm font-semibold'>AnHung DepTry</div>
               <textarea
+                ref={textareaRef}
                 placeholder='Write something...'
-                className=' max-h-[60vh] w-[28rem] resize-none overflow-y-auto bg-transparent py-1 text-sm outline-none'
-                style={{
-                  overflowY: text.split('\n').length > 1 ? 'auto' : 'hidden'
-                }}
+                className=' max-h-[60vh] w-[28rem] resize-none overflow-y-auto bg-transparent py-1 text-sm font-normal outline-none'
                 rows={1}
                 value={text}
                 onChange={handleChange}
               />
-              <Image className='mt-1 cursor-pointer' />
+              <Image className='mt-2 cursor-pointer' />
             </div>
           </div>
           <div className='mt-2 flex flex-row items-center justify-between '>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <div className='cursor-pointer text-sm font-medium'>
-                  Anyone can answer
+                  {privacy}
                 </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align='start'
                 className='-ms-3 w-56 rounded-xl dark:bg-zinc-950'
               >
-                <DropdownMenuItem className='ms-1 cursor-pointer rounded-md font-medium'>
+                <DropdownMenuItem
+                  className='ms-1 cursor-pointer rounded-md font-medium'
+                  onClick={() => handleSelectPrivacy('Anyone can answer')}
+                >
                   Anyone can answer
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className='ms-1  cursor-pointer rounded-md font-medium'>
+                <DropdownMenuItem
+                  className='ms-1  cursor-pointer rounded-md font-medium'
+                  onClick={() => handleSelectPrivacy('Following users')}
+                >
                   Following users
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className='ms-1  cursor-pointer rounded-md font-medium'>
+                <DropdownMenuItem
+                  className='ms-1  cursor-pointer rounded-md font-medium'
+                  onClick={() => handleSelectPrivacy('Only users mentioned')}
+                >
                   Only users mentioned
                 </DropdownMenuItem>
               </DropdownMenuContent>

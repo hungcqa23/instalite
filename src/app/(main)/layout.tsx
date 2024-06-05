@@ -1,5 +1,15 @@
 import Header from '@/components/ui/header';
 
+export const metadata = {
+  // title: "The Wild Oasis",
+  title: {
+    template: '%s • Instalite',
+    default: 'Home • Instalite'
+  },
+  description:
+    'A game-changing social media app that seamlessly blends sleek design, innovative features, and user-friendly functionality.'
+};
+
 export default function MainLayout({
   children
 }: {
