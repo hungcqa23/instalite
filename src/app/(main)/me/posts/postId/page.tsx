@@ -2,7 +2,6 @@ import { Lite } from '@/types/lite.type';
 import LiteItem from '@/components/ui/lite-item';
 import CommentItem from '@/components/ui/comment-item';
 import { Comment } from '@/types/comment.type';
-import DeleteLiteDialog from '@/components/ui/delete-lite-dialog';
 export const metadata = {
   title: 'Detail post'
 };
@@ -31,7 +30,6 @@ export default function DetailPostPage() {
       <div className='mt-2 flex w-full max-w-[30rem] flex-col xl:ml-[calc((100%-30rem)/2)] xl:mr-20'>
         <div className='flex flex-col items-center'>
           <LiteItem lite={testLite} />
-          <CommentItem comment={testComment} />
           <CommentItem comment={testComment} />
         </div>
       </div>
