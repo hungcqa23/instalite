@@ -41,9 +41,9 @@ export default function Home() {
               </div>
             </CreateLiteDialog>
             <CreateLiteDialog>
-              <button className='h-7 w-14 rounded-full bg-gray-300 text-sm font-semibold text-white'>
+              <div className='flex h-7 w-14 items-center justify-center rounded-full bg-gray-300 text-sm font-semibold text-white'>
                 Post
-              </button>
+              </div>
             </CreateLiteDialog>
           </div>
 

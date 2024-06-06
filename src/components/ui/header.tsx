@@ -34,7 +34,6 @@ import { Button } from '@/components/ui/button';
 
 export default function Header() {
   const { theme, setTheme } = useTheme();
-  console.log(theme);
   const pathname = usePathname();
   const activeTab = pathname.split('/')[1] || '';
 
@@ -75,7 +74,7 @@ export default function Header() {
           </Button>
         </Link>
         <CreateLiteDialog>
-          <Button
+          <div
             className={`${clsx(
               'duration-400 flex h-16 w-24 items-center justify-center rounded-lg bg-white transition-colors hover:bg-gray-200 hover:text-black dark:bg-zinc-950 dark:hover:bg-gray-700/40 dark:hover:text-white',
               {
@@ -85,7 +84,7 @@ export default function Header() {
             )}`}
           >
             <SquarePen className='h-7 w-7 ' />
-          </Button>
+          </div>
         </CreateLiteDialog>
         <Link href='/notification'>
           <Button
