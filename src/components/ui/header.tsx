@@ -166,9 +166,11 @@ export default function Header() {
           </DropdownMenuSub>
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem className='flex h-6 w-56 gap-2 rounded-md py-4 pl-3 text-base font-medium'>
-            <Bookmark size={22} /> Saved
-          </DropdownMenuItem>
+          <Link href='/me/saved'>
+            <DropdownMenuItem className='flex h-6 w-56 gap-2 rounded-md py-4 pl-3 text-base font-medium'>
+              <Bookmark size={22} /> Saved
+            </DropdownMenuItem>
+          </Link>
 
           <DropdownMenuSeparator />
           <ButtonLogout />

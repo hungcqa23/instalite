@@ -68,15 +68,6 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
     }
   }, [text]);
 
-  const handleCancelLite = (open: boolean) => {
-    if (!open && (text || images.length > 0)) {
-      setOpenCancelDialog(true);
-    } else {
-      setIsOpen(open);
-      if (!open) resetDialog();
-    }
-  };
-
   const confirmClose = () => {
     setOpenCancelDialog(false);
     setIsOpen(false);
@@ -155,9 +146,10 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                 <textarea
                   ref={textareaRef}
                   placeholder='Write something...'
-                  className=' max-h-[60vh] w-[28rem] resize-none overflow-y-auto bg-transparent py-1 text-sm font-normal outline-none'
+                  className='max-h-[60vh] w-[28rem] resize-none overflow-y-auto bg-transparent py-1 text-sm font-normal outline-none'
                   rows={1}
                   value={text}
+                  autoFocus
                   onChange={handleChange}
                 />
 
