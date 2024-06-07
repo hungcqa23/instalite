@@ -16,7 +16,6 @@ import { LoginBody, LoginBodyType } from '@/app/schema-validations/auth.schema';
 import Link from 'next/link';
 import { useToast } from '@/components/ui/use-toast';
 import authApiRequest from '@/api-request/auth';
-import { cookies } from 'next/headers';
 import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
@@ -41,23 +40,22 @@ export default function LoginForm() {
 
     try {
       const res = await authApiRequest.login(values);
-
       setTimeout(() => {
         toast({
           title: 'Logged in',
           description: 'Welcome back'
         });
       }, 1000);
-      router.push('/');
-      // await fetch('/api/auth', {
-      //   method: 'POST',
-      //   body: JSON.stringify({
-      //     result
-      //   }),
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   }
-      // });
+
+      const responseFromServer = await fetch('/api/auth', {
+        method: 'POST',
+        body: JSON.stringify({
+          message: 'Logged in successfully'
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
     } catch (error: any) {
       // handleErrorApi({
       //   error,

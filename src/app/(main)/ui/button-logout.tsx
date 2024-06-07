@@ -4,13 +4,18 @@ import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { LogOut } from 'lucide-react';
 // import { cookies } from 'next/headers';
 import { useRouter } from 'next/navigation';
+import { deleteCookie, getCookie } from 'cookies-next';
 
 export default function ButtonLogout() {
   const router = useRouter();
 
   const handleLogout = async () => {
     try {
-      await authApiRequest.logoutFromNextClientToServer();
+      // await authApiRequest.logoutFromNextClientToServer();
+      console.log(getCookie('access_token'));
+      deleteCookie('access_token');
+      deleteCookie('refresh_token');
+      console.log('Hello World!');
     } catch (error) {
       console.log(error);
     }

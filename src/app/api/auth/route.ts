@@ -2,7 +2,8 @@ import { cookies } from 'next/headers';
 
 export async function POST(request: Request) {
   const res = await request.json();
-  console.log(res);
+  console.log('Hello World!');
+  const allCookies = cookies().getAll();
   // const resultLogin = await fetch('http://localhost:8000/auth/login', {
   //   method: 'POST',
   //   body: JSON.stringify({
@@ -32,6 +33,7 @@ export async function POST(request: Request) {
   // }).then(res => res.json());
   // console.log(result);
   return Response.json({
-    res
+    res,
+    cookies: allCookies
   });
 }
