@@ -234,7 +234,7 @@ export default function LiteItem({ lite }: { lite: Lite }) {
           </button>
         </div>
 
-        <span className='mt-2 block text-xs font-medium text-black'>
+        <span className='mt-2 block text-xs font-medium text-black dark:text-white'>
           {formatSocialNumber(lite.likesCount)} likes
         </span>
         <button>

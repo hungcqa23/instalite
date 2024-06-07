@@ -194,7 +194,7 @@ export default function MeProfile() {
           </DialogContent>
         </Dialog>
         <div className='mt-[31px]'>
-          <Tabs defaultValue='post' className='w-full'>
+          <Tabs defaultValue='saved' className='w-full'>
             <TabsList className='flex w-full justify-between rounded-none border-b bg-transparent p-0 dark:bg-transparent'>
               <Link href='/me'>
                 <TabsTrigger

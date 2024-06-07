@@ -13,7 +13,7 @@ import {
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import {
   DropdownMenu,
@@ -33,17 +33,22 @@ import ButtonLogout from '@/app/(main)/ui/button-logout';
 import { Button } from '@/components/ui/button';
 
 export default function Header() {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const pathname = usePathname();
   const activeTab = pathname.split('/')[1] || '';
+  const [svgSrc, setSvgSrc] = useState('/orbit.svg');
+
+  useEffect(() => {
+    setSvgSrc(resolvedTheme === 'dark' ? '/orbit-light.svg' : '/orbit.svg');
+  }, [resolvedTheme]);
 
   return (
-    <header className='h-17 sticky top-0 z-50 flex w-full items-center justify-center gap-2 overflow-y-auto bg-white py-1 dark:bg-zinc-950 lg:gap-52'>
+    <header className='h-17 sticky top-0 z-10 flex w-full items-center justify-center gap-2 overflow-y-auto bg-white py-1 dark:bg-zinc-950 lg:gap-52'>
       <Link
         href={'/'}
         className='hidden shrink-0 transition-transform duration-200 hover:scale-110 md:flex'
       >
-        <Image src={'/orbit.svg'} alt='logo' width={30} height={30} />
+        <Image src={svgSrc} alt='logo' width={30} height={30} />
       </Link>
 
       <div className='flex md:gap-2'>
@@ -166,9 +171,11 @@ export default function Header() {
           </DropdownMenuSub>
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem className='flex h-6 w-56 gap-2 rounded-md py-4 pl-3 text-base font-medium'>
-            <Bookmark size={22} /> Saved
-          </DropdownMenuItem>
+          <Link href='/me/saved'>
+            <DropdownMenuItem className='flex h-6 w-56 gap-2 rounded-md py-4 pl-3 text-base font-medium'>
+              <Bookmark size={22} /> Saved
+            </DropdownMenuItem>
+          </Link>
 
           <DropdownMenuSeparator />
           <ButtonLogout />
