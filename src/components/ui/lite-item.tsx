@@ -142,8 +142,6 @@ export default function LiteItem({ lite }: { lite: Lite }) {
           <div className='ms-0.5 flex flex-row gap-3'>
             <button
               onClick={() => {
-                console.log('Hello World!');
-                console.log(liked);
                 setLiked(prev => !liked);
               }}
             >

@@ -1,5 +1,4 @@
 'use client';
-
 import {
   Home,
   Search,
@@ -15,6 +14,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
+import { useAppContext } from '@/app/context/app-context';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,6 +34,7 @@ import { Button } from '@/components/ui/button';
 
 export default function Header() {
   const { resolvedTheme, setTheme } = useTheme();
+  const { user } = useAppContext();
   const pathname = usePathname();
   const activeTab = pathname.split('/')[1] || '';
   const [svgSrc, setSvgSrc] = useState('/orbit.svg');
@@ -43,7 +44,7 @@ export default function Header() {
   }, [resolvedTheme]);
 
   return (
-    <header className='h-17 sticky top-0 z-10 flex w-full items-center justify-center gap-2 overflow-y-auto bg-white py-1 dark:bg-zinc-950 lg:gap-52'>
+    <header className='h-17 sticky top-0 z-10 flex w-full items-center justify-center gap-2 overflow-y-auto overflow-x-hidden bg-white py-1 dark:bg-zinc-950 lg:gap-52'>
       <Link
         href={'/'}
         className='hidden shrink-0 transition-transform duration-200 hover:scale-110 md:flex'
@@ -104,7 +105,8 @@ export default function Header() {
             <Bell className='h-7 w-7 ' />
           </Button>
         </Link>
-        <Link href='/me'>
+
+        <Link href={`/username/${user?.username}`}>
           <Button
             className={`${clsx(
               'duration-400 flex h-16 w-24 items-center justify-center rounded-lg bg-white transition-colors hover:bg-gray-200 hover:text-black dark:bg-zinc-950 dark:hover:bg-gray-700/40 dark:hover:text-white',

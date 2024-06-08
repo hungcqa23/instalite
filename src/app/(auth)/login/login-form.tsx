@@ -12,16 +12,18 @@ import {
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { LoginBody, LoginBodyType } from '@/app/schema-validations/auth.schema';
+import { LoginBody, LoginBodyType } from '@/schema-validations/auth.schema';
 import Link from 'next/link';
 import { useToast } from '@/components/ui/use-toast';
 import authApiRequest from '@/api-request/auth';
+import { useAppContext } from '@/app/context/app-context';
 import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
   const router = useRouter();
+  const { toast } = useToast();
+  const { setUser } = useAppContext();
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
     defaultValues: {
@@ -40,6 +42,7 @@ export default function LoginForm() {
 
     try {
       const res = await authApiRequest.login(values);
+      setUser(res.data);
       setTimeout(() => {
         toast({
           title: 'Logged in',
@@ -56,12 +59,12 @@ export default function LoginForm() {
           'Content-Type': 'application/json'
         }
       });
+      router.push('/');
     } catch (error: any) {
       // handleErrorApi({
       //   error,
       //   setError: form.setError
       // });
-      console.log(error);
       const status = error.status as number;
       toast({
         variant: 'destructive',

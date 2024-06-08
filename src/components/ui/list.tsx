@@ -12,5 +12,6 @@ export default function List<T>({
   className,
   as: Element = 'div'
 }: ListProps<T>) {
+  if (!listItems) return null;
   return <Element className={className}>{listItems.map(mapFn)}</Element>;
 }

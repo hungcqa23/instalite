@@ -24,7 +24,7 @@ const testComment: Comment = {
   username: 'anhung_dep_try'
 };
 
-export default function DetailPostPage() {
+export default function DetailPostPage(param: { params: { postId: string } }) {
   return (
     <div className='mb-2 flex w-full justify-center xl:justify-normal'>
       <div className='mt-2 flex w-full max-w-[30rem] flex-col xl:ml-[calc((100%-30rem)/2)] xl:mr-20'>

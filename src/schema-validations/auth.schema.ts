@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import z from 'zod';
 
 export const RegisterBody = z.object({
   username: z.string().trim().min(2).max(256),
@@ -13,12 +13,10 @@ export const LoginBody = z
   })
   .strict();
 
-export type LoginBodyType = z.infer<typeof LoginBody>;
+export type LoginBodyType = z.TypeOf<typeof LoginBody>;
 
 export const RegisterRes = z.object({
   message: z.string()
 });
 
 export const LoginRes = RegisterRes;
-
-export type LoginResType = z.infer<typeof LoginRes>;

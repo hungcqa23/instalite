@@ -8,7 +8,7 @@ export async function POST(request: Request) {
       Cookie: `access_token=${cookieStorage.get('access_token')?.value}; refresh_token=${cookieStorage.get('refresh_token')?.value}`
     }
   });
-  console.log(await res.json());
+
   cookieStorage.delete('access_token');
   cookieStorage.delete('refresh_token');
   return Response.json(

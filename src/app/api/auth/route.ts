@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 
 export async function POST(request: Request) {
   const res = await request.json();
-  console.log('Hello World!');
+
   const allCookies = cookies().getAll();
   // const resultLogin = await fetch('http://localhost:8000/auth/login', {
   //   method: 'POST',

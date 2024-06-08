@@ -1,9 +1,15 @@
 'use client';
 
-import { AccountResType } from '@/app/schema-validations/account.schema';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { AccountResType } from '@/schema-validations/account.schema';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
 
-type User = AccountResType['data'];
+type User = AccountResType['result'];
 
 const AppContext = createContext<{
   user: User | null;
@@ -27,13 +33,21 @@ export default function AppContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUserState] = useState<User | null>(null);
   const isAuthenticated = Boolean(user);
+
+  const setUser = useCallback(
+    (user: User | null) => {
+      setUserState(user);
+      localStorage.setItem('user', JSON.stringify(user));
+    },
+    [setUserState]
+  );
 
   useEffect(() => {
     const user = localStorage.getItem('user');
-    if (user) setUser(JSON.parse(user) ?? null);
-  }, [setUser]);
+    setUserState(user ? JSON.parse(user) : null);
+  }, [setUserState]);
 
   return (
     <AppContext.Provider value={{ user, setUser, isAuthenticated }}>

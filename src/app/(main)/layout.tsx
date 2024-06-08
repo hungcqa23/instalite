@@ -1,4 +1,4 @@
-import Header from '@/components/ui/header';
+import Header from '@/app/(main)/ui/header';
 
 export const metadata = {
   // title: "The Wild Oasis",

@@ -5,37 +5,42 @@ import { Grid2X2, ImageIcon, Bookmark, Repeat2, Search } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
+import { cookies } from 'next/headers';
+import { http } from '@/lib/http';
+import BtnCta from '@/app/(main)/username/[username]/btn-cta';
 
 export const metadata = {
   title: 'AnHyng DepTry (@andrehelokity)'
 };
 
-export default function MeProfile() {
-  // const cookieStore = cookies();
-  // const accessToken = cookieStore.get('access_token');
-  // const refreshToken = cookieStore.get('refresh_token');
-  // console.log('Hello World!');
-  // console.log(accessToken, refreshToken);
+export default async function MeProfile({
+  params
+}: {
+  params: { username: string };
+}) {
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get('access_token');
+  const refreshToken = cookieStore.get('refresh_token');
+
+  const result = await http.get(`/users/${params.username}`, {
+    headers: {
+      Cookie: accessToken
+        ? `access_token=${accessToken?.value}; refresh_token=${refreshToken?.value}`
+        : ''
+    }
+  });
 
   return (
     <>
       <div className='mt-4 max-w-[34.9375rem] items-start justify-center'>
         <div className='flex flex-col'>
-          <div className='flex h-20 justify-between '>
+          <div className='flex h-20 justify-between'>
             <div className='mt-4 flex flex-col items-start justify-start space-y-2'>
               <p className='text-lg font-medium'>AnHyng DepTry</p>
               <p className='text-sm font-light'>andrehelokity</p>
@@ -114,7 +119,7 @@ export default function MeProfile() {
           </div>
         </div>
         {/* Visit other account profile */}
-        <div className='flex flex-row gap-2'>
+        {/* <div className='flex flex-row gap-2'>
           <Button
             className='mt-3.5 w-full text-sm dark:bg-zinc-50 dark:hover:bg-zinc-50'
             variant={'default'}
@@ -192,7 +197,9 @@ export default function MeProfile() {
               </Button>
             </DialogFooter>
           </DialogContent>
-        </Dialog>
+        </Dialog> */}
+        <BtnCta user={result.user} />
+
         <div className='mt-[31px]'>
           <Tabs defaultValue='post' className='w-full'>
             <TabsList className='flex w-full justify-between rounded-none border-b bg-transparent p-0 dark:bg-transparent'>

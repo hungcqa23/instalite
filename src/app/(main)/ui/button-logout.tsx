@@ -1,21 +1,18 @@
 import authApiRequest from '@/api-request/auth';
-import { Button } from '@/components/ui/button';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { LogOut } from 'lucide-react';
-// import { cookies } from 'next/headers';
-import { useRouter } from 'next/navigation';
 import { deleteCookie, getCookie } from 'cookies-next';
+import { useRouter } from 'next/navigation';
 
 export default function ButtonLogout() {
   const router = useRouter();
-
   const handleLogout = async () => {
     try {
-      // await authApiRequest.logoutFromNextClientToServer();
-      console.log(getCookie('access_token'));
+      localStorage.clear();
+      await authApiRequest.logoutFromNextClientToServer();
       deleteCookie('access_token');
       deleteCookie('refresh_token');
-      console.log('Hello World!');
+      router.push('/login');
     } catch (error) {
       console.log(error);
     }

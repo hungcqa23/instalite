@@ -14,7 +14,7 @@ export default async function NotificationPage() {
     (await notificationRequest.getList()) as NotificationResType;
 
   return (
-    <div className='h-fit w-[32rem] items-start justify-center '>
+    <div className='h-fit w-[32rem] items-start justify-center'>
       {List<Notification>({
         listItems: notifications,
         mapFn: notification => (
