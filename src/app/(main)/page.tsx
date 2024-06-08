@@ -48,10 +48,9 @@ export default function Home() {
           </div>
 
           <div className='flex flex-col items-center'>
-            <LiteItem lite={testLite1} />
-            {Array.from({ length: 20 }).map((_, index) => (
+            {/* {Array.from({ length: 20 }).map((_, index) => (
               <LiteItem lite={testLite} key={index} />
-            ))}
+            ))} */}
           </div>
         </div>
 

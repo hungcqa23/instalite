@@ -65,7 +65,7 @@ export default function LiteItem({ lite }: { lite: Post }) {
             </Avatar>
             <div className='ms-2.5 flex flex-col justify-end '>
               <span className='text-[13px] font-semibold'>
-                {lite?.user_id.username}
+                {lite?.user_id?.username}
               </span>
               <span className='text-xs font-normal text-gray-500'>
                 {calculateTimeAgo(lite?.created_at)}
@@ -165,7 +165,7 @@ export default function LiteItem({ lite }: { lite: Post }) {
               <DialogContent className=' dark:bg-zinc-950 sm:max-w-[34rem]'>
                 <DialogHeader>
                   <DialogTitle className='flex justify-center text-sm font-bold'>
-                    Reply to {lite?.user_id.username}
+                    Reply to {lite?.user_id?.username}
                   </DialogTitle>
                 </DialogHeader>
                 <div className='flex flex-col'>

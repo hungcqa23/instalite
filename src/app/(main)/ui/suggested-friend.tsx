@@ -1,7 +1,7 @@
 'use client';
 import IconProfile from '@/components/ui/icon-profile';
 import { User } from '@/types/user.type';
-import { Link } from 'lucide-react';
+import Link from 'next/link';
 import { useState } from 'react';
 
 interface Props {
@@ -16,7 +16,7 @@ export default function SuggestedFriend(props: Props) {
         <IconProfile />
       </div>
       <div className='flex flex-col'>
-        <Link to={``} className='text-sm font-semibold'>
+        <Link href='/' className='text-sm font-semibold'>
           {props.user.username}
         </Link>
         <p className='text-xs text-gray-400'>We recommend you this user</p>

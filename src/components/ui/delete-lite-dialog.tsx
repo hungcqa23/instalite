@@ -1,6 +1,6 @@
 'use client';
 import { http } from '@/lib/http';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 
 interface DeletePostDialogProps {
@@ -24,6 +24,7 @@ const DeleteLiteDialog: React.FC<DeletePostDialogProps> = ({
           baseUrl: ''
         }
       );
+      console.log('Da push sang trang home');
       router.push('/');
     } catch (error) {
       console.log(error);
@@ -62,6 +63,3 @@ const DeleteLiteDialog: React.FC<DeletePostDialogProps> = ({
 };
 
 export default DeleteLiteDialog;
-function userRouter() {
-  throw new Error('Function not implemented.');
-}
