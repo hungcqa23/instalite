@@ -1,4 +1,6 @@
 import { envConfig } from '@/config';
+import { Cookie } from 'next/font/google';
+import { cookies } from 'next/headers';
 
 type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string | undefined;
@@ -18,6 +20,11 @@ const request = async <Response>(
   url: string,
   options?: CustomOptions | undefined
 ) => {
+  const { cookies } = await import('next/headers');
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get('access_token');
+  const refreshToken = cookieStore.get('refresh_token');
+
   const body = options?.body ? JSON.stringify(options.body) : undefined;
   const baseHeaders = {
     'Content-Type': 'application/json'
@@ -33,20 +40,20 @@ const request = async <Response>(
     ...options,
     headers: {
       ...baseHeaders,
-      ...options?.headers
+      ...options?.headers,
+      Cookie: accessToken
+        ? `access_token=${accessToken?.value}; refresh_token=${refreshToken?.value}`
+        : ''
     },
     credentials: 'include',
     method,
     body
   });
+  const result = await response.json();
 
-  if (!response.ok)
-    throw new HttpError({
-      status: response.status,
-      message: response.statusText
-    });
+  if (!response.ok) console.log('Error', response);
 
-  return response;
+  return result;
 };
 
 export const http = {

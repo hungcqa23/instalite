@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Notification, NotificationType } from '@/types/notification.type';
+import { NotificationType } from '@/constants/enum';
+import { Notification } from '@/schema-validations/notification.schema';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -17,10 +18,11 @@ export default function NotificationItem({
       break;
     case NotificationType.Follow:
       src = '/follow.svg';
+      notification.content = `${notification.user_receiver_id.username} started following you`;
       break;
-    case NotificationType.Relite:
-      src = '/relite.svg';
-      break;
+    // case NotificationType.Relite:
+    //   src = '/relite.svg';
+    //   break;
     default:
       break;
   }
@@ -45,21 +47,23 @@ export default function NotificationItem({
         </div>
         <div className='flex w-[21.875rem] flex-col '>
           <div className='flex flex-row items-end gap-1.5'>
-            <span className='text-[0.8125rem] font-bold'>AnHung DepTry</span>
+            <span className='text-[0.8125rem] font-bold'>
+              {notification.user_receiver_id.username}
+            </span>
             <p className='text-xs font-normal text-gray-500'>1 minutes</p>
           </div>
           <p className='mt-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-sm text-gray-950 dark:text-gray-200'>
-            {notification.message}
+            {notification.content}
           </p>
-          {notification.liteContent ? (
+          {/* {notification.liteContent ? (
             <p className='mt-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-sm text-gray-600'>
               {notification.liteContent}
             </p>
           ) : (
             <div></div>
-          )}
+          )} */}
         </div>
-        {notification.type === NotificationType.Follow ? (
+        {/* {notification.type === NotificationType.Follow ? (
           <div className='flex flex-col justify-center'>
             <Button
               className='h-8 rounded-lg px-7 text-sm hover:bg-transparent dark:bg-zinc-950 dark:hover:bg-zinc-950'
@@ -70,7 +74,7 @@ export default function NotificationItem({
           </div>
         ) : (
           <div></div>
-        )}
+        )} */}
       </div>
     </Link>
   );
