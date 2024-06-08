@@ -1,5 +1,4 @@
 'use client';
-import { Lite } from '@/types/lite.type';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -23,7 +22,7 @@ import {
 import { useState, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
-import { formatSocialNumber } from '@/lib/utils';
+import { formatSocialNumber } from '@/lib/helper';
 import {
   Dialog,
   DialogContent,
@@ -32,8 +31,10 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import DeleteLiteDialog from '@/components/ui/delete-lite-dialog';
+import { Post } from '@/schema-validations/post.schema';
+import { calculateTimeAgo } from '@/lib/helper';
 
-export default function LiteItem({ lite }: { lite: Lite }) {
+export default function LiteItem({ lite }: { lite: Post }) {
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const [text, setText] = useState('');
@@ -53,29 +54,21 @@ export default function LiteItem({ lite }: { lite: Lite }) {
     setText(e.target.value);
   };
 
-  const handleDeleleLite = (choice: boolean) => {
-    if (choice) {
-      //handle delete here
-
-      setOpenDeleteDialog(false);
-    } else {
-      setOpenDeleteDialog(false);
-    }
-  };
-
   return (
     <>
       <div className='mb-2 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
         <div className='mb-2 flex flex-row items-center justify-between'>
           <div className='flex flex-row items-end'>
             <Avatar className='z-[-1] h-9 w-9'>
-              <AvatarImage src={lite.avatar} alt='@shadcn' />
+              <AvatarImage src='https://github.com/shadcn.png' alt='@shadcn' />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div className='ms-2.5 flex flex-col justify-end '>
-              <span className='text-[13px] font-semibold'>{lite.username}</span>
+              <span className='text-[13px] font-semibold'>
+                {lite?.user_id.username}
+              </span>
               <span className='text-xs font-normal text-gray-500'>
-                {lite.createdAt}
+                {calculateTimeAgo(lite?.created_at)}
               </span>
             </div>
           </div>
@@ -126,8 +119,8 @@ export default function LiteItem({ lite }: { lite: Lite }) {
           </DropdownMenu>
         </div>
 
-        <p className='mb-3 text-[0.8125rem]'>{lite.content}</p>
-        {lite.url && (
+        <p className='mb-3 text-[0.8125rem]'>{lite?.content}</p>
+        {/* {lite.url && (
           <div className='my-3'>
             <Image
               src={lite.url}
@@ -137,7 +130,16 @@ export default function LiteItem({ lite }: { lite: Lite }) {
               className=' rounded-md'
             />
           </div>
-        )}
+        )} */}
+        <div className='my-3'>
+          <Image
+            src='https://images.unsplash.com/photo-1717201410616-205a82d7e3f9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+            alt='image'
+            width={430}
+            height={430}
+            className=' rounded-md'
+          />
+        </div>
         <div className='mt-1 flex flex-row justify-between'>
           <div className='ms-0.5 flex flex-row gap-3'>
             <button
@@ -163,7 +165,7 @@ export default function LiteItem({ lite }: { lite: Lite }) {
               <DialogContent className=' dark:bg-zinc-950 sm:max-w-[34rem]'>
                 <DialogHeader>
                   <DialogTitle className='flex justify-center text-sm font-bold'>
-                    Reply to {lite.username}
+                    Reply to {lite?.user_id.username}
                   </DialogTitle>
                 </DialogHeader>
                 <div className='flex flex-col'>
@@ -233,15 +235,18 @@ export default function LiteItem({ lite }: { lite: Lite }) {
         </div>
 
         <span className='mt-2 block text-xs font-medium text-black dark:text-white'>
-          {formatSocialNumber(lite.likesCount)} likes
+          {formatSocialNumber(0)} likes
         </span>
         <button>
-          <span className='text-xs text-slate-500'>
-            See all {lite.replysCount} comments
-          </span>
+          <span className='text-xs text-slate-500'>See all 0 comments</span>
         </button>
       </div>
-      {openDeleteDialog && <DeleteLiteDialog onDelete={handleDeleleLite} />}
+      {openDeleteDialog && (
+        <DeleteLiteDialog
+          setOpenDeleteDialog={setOpenDeleteDialog}
+          liteId={lite?._id}
+        />
+      )}
     </>
   );
 }
