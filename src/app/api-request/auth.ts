@@ -11,7 +11,8 @@ const authApiRequest = {
     http.post(
       '/api/auth/logout',
       {
-        force
+        force,
+        postId: 'helloworld'
       },
       {
         baseUrl: '',

@@ -15,9 +15,10 @@ import { useForm } from 'react-hook-form';
 import { LoginBody, LoginBodyType } from '@/schema-validations/auth.schema';
 import Link from 'next/link';
 import { useToast } from '@/components/ui/use-toast';
-import authApiRequest from '@/api-request/auth';
+import authApiRequest from '@/app/api-request/auth';
 import { useAppContext } from '@/app/context/app-context';
 import { useRouter } from 'next/navigation';
+import { getCookie } from 'cookies-next';
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
@@ -59,6 +60,7 @@ export default function LoginForm() {
           'Content-Type': 'application/json'
         }
       });
+      console.log(getCookie('access_key'));
       router.push('/');
     } catch (error: any) {
       // handleErrorApi({

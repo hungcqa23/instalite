@@ -1,5 +1,4 @@
 'use client';
-import Header from '@/app/(main)/ui/header';
 import { OrbitIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 

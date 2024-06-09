@@ -1,6 +1,6 @@
 import List from '@/components/ui/list';
 import NotificationItem from '@/app/(main)/notification/notification-item';
-import { notificationRequest } from '@/api-request/notification';
+import { notificationRequest } from '@/app/api-request/notification';
 import {
   Notification,
   NotificationResType
@@ -9,6 +9,7 @@ import {
 export const metadata = {
   title: 'Notification'
 };
+
 export default async function NotificationPage() {
   const { result: notifications } =
     (await notificationRequest.getList()) as NotificationResType;

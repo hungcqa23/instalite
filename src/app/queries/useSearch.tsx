@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { accountApiRequest } from '@/api-request/account';
+import { accountApiRequest } from '@/app/api-request/account';
 
 export const useSearch = (username: string) => {
   return useQuery({

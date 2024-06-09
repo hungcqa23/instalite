@@ -8,7 +8,7 @@ const refreshToken = cookieStore.get('refresh_token');
 
 export const notificationRequest = {
   getList: () =>
-    http.get<NotificationResType>('/notifications/me', {
+    http.get('/notifications/me', {
       headers: {
         Cookie: accessToken
           ? `access_token=${accessToken?.value}; refresh_token=${refreshToken?.value}`
