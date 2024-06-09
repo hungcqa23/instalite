@@ -5,17 +5,19 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   try {
     const { liteId } = await request.json();
+    console.log(liteId);
     const cookieStore = cookies();
     const accessToken = cookieStore.get('access_token');
     const refreshToken = cookieStore.get('refresh_token');
 
-    await http.delete(`posts/${liteId}`, {
+    const res = await http.delete(`posts/${liteId}`, {
       headers: {
         Cookie: accessToken
           ? `access_token=${accessToken?.value}; refresh_token=${refreshToken?.value}`
           : ''
       }
     });
+    console.log(res.json);
 
     return NextResponse.json({ message: 'Delete post successfully' });
   } catch (error: any) {

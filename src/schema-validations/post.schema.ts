@@ -4,10 +4,13 @@ export const PostBody = z.object({
   _id: z.string(),
   user_id: z.object({
     _id: z.string(),
-    username: z.string()
+    username: z.string(),
+    avatar: z.string()
   }),
   content: z.string(),
   type_post: z.number(),
+  likes: z.number(),
+  comments: z.number(),
   created_at: z.string(),
   updated_at: z.string()
 });

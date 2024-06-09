@@ -44,6 +44,8 @@ import {
 import DeleteLiteDialog from '@/components/ui/delete-lite-dialog';
 import { Post } from '@/schema-validations/post.schema';
 import { calculateTimeAgo } from '@/lib/helper';
+import { useMutation } from '@tanstack/react-query';
+import { postApiRequest } from '@/app/api-request/post';
 
 export default function LiteItem({ lite }: { lite: Post }) {
   const [liked, setLiked] = useState(false);
@@ -51,6 +53,18 @@ export default function LiteItem({ lite }: { lite: Post }) {
   const [text, setText] = useState('');
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const likeMutation = useMutation({
+    mutationFn: (postId: string) => postApiRequest.like(postId)
+  });
+  const unLikeMutation = useMutation({
+    mutationFn: (postId: string) => postApiRequest.unLike(postId)
+  });
+  const bookmarkMutation = useMutation({
+    mutationFn: (postId: string) => postApiRequest.bookmark(postId)
+  });
+  const unBookmarkMutation = useMutation({
+    mutationFn: (postId: string) => postApiRequest.unBookmark(postId)
+  });
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -61,6 +75,27 @@ export default function LiteItem({ lite }: { lite: Post }) {
     }
   }, [text]);
 
+  const handleBookmark = () => {
+    if (!bookmarked) {
+      bookmarkMutation.mutate(lite._id);
+      setBookmarked(true);
+    } else {
+      console.log(lite._id);
+      unBookmarkMutation.mutate(lite._id);
+      setBookmarked(false);
+    }
+  };
+
+  const handleLike = () => {
+    if (!liked) {
+      likeMutation.mutate(lite._id);
+      setLiked(true);
+    } else {
+      console.log(lite._id);
+      unLikeMutation.mutate(lite._id);
+      setLiked(false);
+    }
+  };
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
@@ -71,7 +106,7 @@ export default function LiteItem({ lite }: { lite: Post }) {
         <div className='mb-2 flex flex-row items-center justify-between'>
           <div className='flex flex-row items-end'>
             <Avatar className='z-[-1] h-9 w-9'>
-              <AvatarImage src='https://github.com/shadcn.png' alt='@shadcn' />
+              <AvatarImage src={lite?.user_id.avatar} alt='@shadcn' />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div className='ms-2.5 flex flex-col justify-end '>
@@ -170,11 +205,7 @@ export default function LiteItem({ lite }: { lite: Post }) {
 
         <div className='mt-1 flex flex-row justify-between'>
           <div className='ms-0.5 flex flex-row gap-3'>
-            <button
-              onClick={() => {
-                setLiked(prev => !liked);
-              }}
-            >
+            <button onClick={handleLike}>
               <Heart
                 className={`${clsx(
                   'h-5 w-5 cursor-pointer transition-colors duration-300',
@@ -247,7 +278,7 @@ export default function LiteItem({ lite }: { lite: Post }) {
             <Send className='h-5 w-5 cursor-pointer' />
           </div>
 
-          <button onClick={() => setBookmarked(prev => !bookmarked)}>
+          <button onClick={handleBookmark}>
             <Bookmark
               className={`${clsx(
                 'h-5 w-5 cursor-pointer transition-colors duration-300',
@@ -262,9 +293,16 @@ export default function LiteItem({ lite }: { lite: Post }) {
           </button>
         </div>
 
-        <span className='mt-2 block text-xs font-medium text-black dark:text-white'>
-          {formatSocialNumber(0)} likes
-        </span>
+        {liked ? (
+          <span className='mt-2 block text-xs font-medium text-black dark:text-white'>
+            {formatSocialNumber(lite?.likes + 1)} likes
+          </span>
+        ) : (
+          <span className='mt-2 block text-xs font-medium text-black dark:text-white'>
+            {formatSocialNumber(lite?.likes)} likes
+          </span>
+        )}
+
         <button>
           <span className='text-xs text-slate-500'>See all 0 comments</span>
         </button>

@@ -228,7 +228,7 @@ export default async function MeProfile({
                   <span className='hidden md:inline'> Saved</span>
                 </TabsTrigger>
               </Link>
-              <Link href='/me/relite'>
+              {/* <Link href='/me/relite'>
                 <TabsTrigger
                   className='shadow-none data-[state=active]:shadow-none relative flex h-9 w-32 gap-1.5 rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 text-base font-semibold uppercase text-muted-foreground transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground'
                   value='repost'
@@ -236,7 +236,7 @@ export default async function MeProfile({
                   <Repeat2 className='h-8 w-8 md:h-6 md:w-6' />{' '}
                   <span className='hidden md:inline'>Relite</span>
                 </TabsTrigger>
-              </Link>
+              </Link> */}
             </TabsList>
 
             <TabsContent value='post' className='text-sm'>
