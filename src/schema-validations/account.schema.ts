@@ -9,7 +9,8 @@ export const AccountSchema = z.object({
   posts_count: z.number(),
   is_registered_via_oauth_google: z.boolean(),
   refresh_token: z.string(),
-  avatar: z.string().optional()
+  avatar: z.string().optional(),
+  full_name: z.string().optional()
 });
 
 export type Account = z.TypeOf<typeof AccountSchema>;
@@ -20,3 +21,4 @@ export const AccountRes = z.object({
 });
 
 export type AccountResType = z.TypeOf<typeof AccountRes>;
+export type User = AccountResType['result'];

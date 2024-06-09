@@ -1,4 +1,4 @@
-import SuggestedBar from '@/app/(main)/ui/suggested-bar';
+import SuggestedBar from '@/app/(main)/ui/SuggestedBar';
 import CreateLiteDialog from '@/components/ui/create-lite-dialog';
 import IconProfile from '@/components/ui/icon-profile';
 import LiteItem from '@/components/ui/lite-item';

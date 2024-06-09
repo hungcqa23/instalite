@@ -4,7 +4,7 @@ type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string | undefined;
 };
 
-class HttpError extends Error {
+export class HttpError extends Error {
   status: number;
 
   constructor({ status, message }: { status: number; message: string }) {
@@ -12,6 +12,7 @@ class HttpError extends Error {
     this.status = status;
   }
 }
+
 export const isClient = () => typeof window !== 'undefined';
 
 const request = async <Response>(
@@ -23,6 +24,10 @@ const request = async <Response>(
   const baseHeaders = {
     'Content-Type': 'application/json'
   };
+
+  if (isClient()) {
+    // const
+  }
 
   const baseUrl = options?.baseUrl ?? envConfig.NEXT_PUBLIC_API_ENDPOINT;
 

@@ -5,47 +5,8 @@ import { Input } from '@/components/ui/input';
 import List from '@/components/ui/list';
 import UserItem from '@/components/ui/user';
 import { Account } from '@/schema-validations/account.schema';
-import { User } from '@/types/user.type';
 import { Search } from 'lucide-react';
 import { useState } from 'react';
-
-// const userList: User[] = [
-//   {
-//     _id: '1',
-//     avatar: 'https://pbs.twimg.com/media/F_TSzsLaoAAErQe.jpg:large',
-//     followersCount: 500,
-//     fullName: 'Faker',
-//     username: 'faker'
-//   },
-//   {
-//     _id: '2',
-//     avatar: 'https://pbs.twimg.com/media/F_TSzsLaoAAErQe.jpg:large',
-//     followersCount: 500,
-//     fullName: 'Faker',
-//     username: 'faker'
-//   },
-//   {
-//     _id: '3',
-//     avatar: 'https://pbs.twimg.com/media/F_TSzsLaoAAErQe.jpg:large',
-//     followersCount: 500,
-//     fullName: 'Faker',
-//     username: 'faker'
-//   },
-//   {
-//     _id: '4',
-//     avatar: 'https://pbs.twimg.com/media/F_TSzsLaoAAErQe.jpg:large',
-//     followersCount: 500,
-//     fullName: 'Faker',
-//     username: 'faker'
-//   },
-//   {
-//     _id: '5',
-//     avatar: 'https://pbs.twimg.com/media/F_TSzsLaoAAErQe.jpg:large',
-//     followersCount: 500,
-//     fullName: 'Faker',
-//     username: 'faker'
-//   }
-// ];
 
 export default function SearchPage() {
   const [username, setUsername] = useState('');

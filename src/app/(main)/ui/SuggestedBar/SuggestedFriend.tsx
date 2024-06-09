@@ -1,6 +1,6 @@
 'use client';
 import IconProfile from '@/components/ui/icon-profile';
-import { User } from '@/types/user.type';
+import { User } from '@/schema-validations/account.schema';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -19,7 +19,7 @@ export default function SuggestedFriend(props: Props) {
         <Link href='/' className='text-sm font-semibold'>
           {props.user.username}
         </Link>
-        <p className='text-xs text-gray-400'>We recommend you this user</p>
+        <p className='text-xs text-gray-400'>Recommend to you</p>
       </div>
       <div className='ml-auto'>
         <button onClick={() => setIsFollowed(!isFollowed)}>
