@@ -1,4 +1,15 @@
 'use client';
+
+import '@vidstack/react/player/styles/default/theme.css';
+import '@vidstack/react/player/styles/default/layouts/audio.css';
+import '@vidstack/react/player/styles/default/layouts/video.css';
+
+import { MediaPlayer, MediaProvider, Poster, Track } from '@vidstack/react';
+import {
+  DefaultVideoLayout,
+  defaultLayoutIcons
+} from '@vidstack/react/player/layouts/default';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -131,7 +142,7 @@ export default function LiteItem({ lite }: { lite: Post }) {
             />
           </div>
         )} */}
-        <div className='my-3'>
+        {/* <div className='my-3'>
           <Image
             src='https://images.unsplash.com/photo-1717201410616-205a82d7e3f9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
             alt='image'
@@ -139,7 +150,24 @@ export default function LiteItem({ lite }: { lite: Post }) {
             height={430}
             className=' rounded-md'
           />
-        </div>
+        </div> */}
+        <MediaPlayer
+          src='http://localhost:8000/files/video-hls/666490b061c494ee3a44cb09/master.m3u8'
+          viewType='video'
+          streamType='on-demand'
+          logLevel='warn'
+          crossOrigin
+          playsInline
+          title='Sprite Fight'
+          poster='https://files.vidstack.io/sprite-fight/poster.webp'
+        >
+          <MediaProvider />
+          <DefaultVideoLayout
+            // thumbnails='https://files.vidstack.io/sprite-fight/thumbnails.vtt'
+            icons={defaultLayoutIcons}
+          />
+        </MediaPlayer>
+
         <div className='mt-1 flex flex-row justify-between'>
           <div className='ms-0.5 flex flex-row gap-3'>
             <button

@@ -21,12 +21,15 @@ const request = async <Response>(
   options?: CustomOptions | undefined
 ) => {
   const body = options?.body ? JSON.stringify(options.body) : undefined;
-  const baseHeaders = {
+  const baseHeaders: Record<string, string> = {
     'Content-Type': 'application/json'
   };
 
   if (isClient()) {
-    // const
+    const accessToken = localStorage.getItem('access_key');
+    if (accessToken) {
+      baseHeaders.Cookie = `access_token=${accessToken}`;
+    }
   }
 
   const baseUrl = options?.baseUrl ?? envConfig.NEXT_PUBLIC_API_ENDPOINT;
@@ -75,8 +78,9 @@ export const http = {
   },
   delete<Response>(
     url: string,
+    body: any,
     options?: Omit<CustomOptions, 'body'> | undefined
   ) {
-    return request<Response>('DELETE', url, { ...options });
+    return request<Response>('DELETE', url, { ...options, body });
   }
 };

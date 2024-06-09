@@ -7,5 +7,9 @@ export const accountApiRequest = {
   follow: (followedUserId: string) =>
     http.post('/users/follow', {
       followedUserId
+    }),
+  unFollow: (followedUserId: string) =>
+    http.delete(`/users/follow`, {
+      followedUserId
     })
 };
