@@ -1,5 +1,17 @@
 import z from 'zod';
 
+export enum PostType {
+  NewPost,
+  RePost,
+  Comment
+}
+
+export const CreatePostBody = z.object({
+  content: z.string(),
+  typePost: z.nativeEnum(PostType)
+});
+export type CreatePost = z.infer<typeof CreatePostBody>;
+
 export const PostBody = z.object({
   _id: z.string(),
   user_id: z.object({

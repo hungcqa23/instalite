@@ -13,6 +13,7 @@ const DeleteLiteDialog: React.FC<DeletePostDialogProps> = ({
   liteId
 }: DeletePostDialogProps) => {
   const router = useRouter();
+
   const handleDeleleLite = async (liteId: string) => {
     try {
       await http.post(
@@ -24,6 +25,7 @@ const DeleteLiteDialog: React.FC<DeletePostDialogProps> = ({
           baseUrl: ''
         }
       );
+      console.log(liteId);
       console.log('Da push sang trang home');
       router.push('/');
     } catch (error) {

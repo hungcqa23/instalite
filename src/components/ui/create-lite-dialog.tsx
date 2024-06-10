@@ -36,6 +36,9 @@ import {
 import CancelLiteDialog from '@/components/ui/cancel-lite-dialog';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { Separator } from '@/components/ui/separator';
+import { postApiRequest } from '@/app/api-request/post';
+import { CreatePost, PostType } from '@/schema-validations/post.schema';
+import { http } from '@/lib/http';
 
 interface CreateLiteDialogProps {
   children: ReactNode;
@@ -50,6 +53,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
   const [text, setText] = useState('');
   const [privacy, setPrivacy] = useState('Anyone can answer');
   const [images, setImages] = useState<string[]>([]);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -98,11 +102,15 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
       const fileArray = Array.from(e.target.files);
       const fileUrls = fileArray.map(file => URL.createObjectURL(file));
       setImages(prevImages => [...prevImages, ...fileUrls]);
+      setImageFile(fileArray[0]);
     }
   };
 
   const handleDeleteImage = (index: number) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleDialogChange = (open: boolean) => {
@@ -113,6 +121,24 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
       if (!open) resetDialog();
     }
   };
+
+  const handleCreatePost = async (content: string) => {
+    try {
+      await http.post(
+        '/api/post/create',
+        {
+          content: content
+        },
+        {
+          baseUrl: ''
+        }
+      );
+      console.log('da navigate sang /api/post/create');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleDialogChange}>
@@ -153,13 +179,15 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                   onChange={handleChange}
                 />
 
-                <Button
-                  className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
-                  variant='outline'
-                  onClick={handleImageClick}
-                >
-                  <ImageIcon /> Add Image
-                </Button>
+                {images.length == 0 && (
+                  <Button
+                    className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
+                    variant='outline'
+                    onClick={handleImageClick}
+                  >
+                    <ImageIcon /> Add Image
+                  </Button>
+                )}
                 <Input
                   type='file'
                   ref={fileInputRef}
@@ -192,8 +220,8 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                 )}
               </div>
             </div>
-            <div className='mt-2 flex flex-row items-center justify-between '>
-              <DropdownMenu>
+            <div className='mt-2 flex flex-row items-end justify-end '>
+              {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <div className='cursor-pointer text-sm font-medium'>
                     {privacy}
@@ -224,8 +252,14 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                     Only users mentioned
                   </DropdownMenuItem>
                 </DropdownMenuContent>
-              </DropdownMenu>
-              <Button className='rounded-3xl'>Post</Button>
+              </DropdownMenu> */}
+              <Button
+                className='rounded-3xl'
+                disabled={text || imageFile ? false : true}
+                onClick={() => handleCreatePost(text)}
+              >
+                Post
+              </Button>
             </div>
           </div>
         </DialogContent>

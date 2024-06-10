@@ -255,7 +255,7 @@ export default function LiteItem({ lite }: { lite: Post }) {
               </DialogContent>
             </Dialog>
 
-            <DropdownMenu modal={false}>
+            {/* <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
                 <Repeat2 className='h-5 w-5 cursor-pointer' />
               </DropdownMenuTrigger>
@@ -274,7 +274,7 @@ export default function LiteItem({ lite }: { lite: Post }) {
                   <div className='mt-0.5'>Quote</div>
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
             <Send className='h-5 w-5 cursor-pointer' />
           </div>
 
