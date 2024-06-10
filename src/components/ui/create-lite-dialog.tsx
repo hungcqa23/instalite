@@ -208,12 +208,12 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
   const handleCreatePost = async (content: string) => {
     const res = await createPostMutation.mutateAsync(content);
     const postId = res.post._id;
-
+    if (!postId) return;
     const formData = new FormData();
 
     if (videoFile) {
       formData.append('media', videoFile);
-
+      console.log(formData.get('media'));
       await updateVideoMutation.mutateAsync({
         postId,
         formData

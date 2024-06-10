@@ -19,7 +19,10 @@ export const PostBody = z.object({
     username: z.string(),
     avatar: z.string()
   }),
-
+  media: z.object({
+    url: z.string(),
+    type: z.number()
+  }),
   content: z.string(),
   type_post: z.number(),
   likes: z.number(),

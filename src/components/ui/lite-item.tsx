@@ -177,31 +177,37 @@ export default function LiteItem({ lite }: { lite: Post }) {
             />
           </div>
         )} */}
-        {/* <div className='my-3'>
-          <Image
-            src='https://images.unsplash.com/photo-1717201410616-205a82d7e3f9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-            alt='image'
-            width={430}
-            height={430}
-            className=' rounded-md'
-          />
-        </div> */}
-        <MediaPlayer
-          src='http://localhost:8000/files/video-hls/666490b061c494ee3a44cb09/master.m3u8'
-          viewType='video'
-          streamType='on-demand'
-          logLevel='warn'
-          crossOrigin
-          playsInline
-          title='Sprite Fight'
-          poster='https://files.vidstack.io/sprite-fight/poster.webp'
-        >
-          <MediaProvider />
-          <DefaultVideoLayout
-            // thumbnails='https://files.vidstack.io/sprite-fight/thumbnails.vtt'
-            icons={defaultLayoutIcons}
-          />
-        </MediaPlayer>
+        {lite?.media?.type == 0 && (
+          <div className='my-3'>
+            <Image
+              src={lite.media.url}
+              alt='image'
+              width={430}
+              height={430}
+              className=' rounded-md'
+            />
+          </div>
+        )}
+
+        {lite?.media?.type == 1 && (
+          <MediaPlayer
+            // src='http://localhost:8000/files/video-hls/666677464a2807e672751eaf/master.m3u8'
+            src={`http://localhost:8000/files/video-hls/${lite._id}/master.m3u8`}
+            viewType='video'
+            streamType='on-demand'
+            logLevel='warn'
+            crossOrigin
+            playsInline
+            title='Sprite Fight'
+            poster='https://files.vidstack.io/sprite-fight/poster.webp'
+          >
+            <MediaProvider />
+            <DefaultVideoLayout
+              // thumbnails='https://files.vidstack.io/sprite-fight/thumbnails.vtt'
+              icons={defaultLayoutIcons}
+            />
+          </MediaPlayer>
+        )}
 
         <div className='mt-1 flex flex-row justify-between'>
           <div className='ms-0.5 flex flex-row gap-3'>

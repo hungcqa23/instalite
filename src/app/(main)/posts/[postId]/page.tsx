@@ -14,7 +14,7 @@ export default async function DetailPostPage(param: {
   const accessToken = cookieStore.get('access_token');
   const refreshToken = cookieStore.get('refresh_token');
 
-  const res = await http.get<PostResType>(`posts/${param.params.postId}`, {
+  const res = await http.get<PostResType>(`posts/${param?.params.postId}`, {
     headers: {
       Cookie: accessToken
         ? `access_token=${accessToken?.value}; refresh_token=${refreshToken?.value}`

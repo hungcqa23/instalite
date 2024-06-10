@@ -1,10 +1,9 @@
+import ListPost from '@/app/(main)/ui/list-post';
 import SuggestedBar from '@/app/(main)/ui/SuggestedBar';
 import CreateLiteDialog from '@/components/ui/create-lite-dialog';
 import IconProfile from '@/components/ui/icon-profile';
 
 export default function Home() {
-  // const
-
   return (
     <>
       {/* Main concept list xl:mr-[calc((100%-30rem)/2-16rem)] */}
@@ -30,6 +29,7 @@ export default function Home() {
             {/* {Array.from({ length: 20 }).map((_, index) => (
               <LiteItem lite={testLite} key={index} />
             ))} */}
+            <ListPost />
           </div>
         </div>
 
