@@ -26,9 +26,6 @@ export default function Home() {
           </div>
 
           <div className='flex flex-col items-center'>
-            {/* {Array.from({ length: 20 }).map((_, index) => (
-              <LiteItem lite={testLite} key={index} />
-            ))} */}
             <ListPost />
           </div>
         </div>

@@ -82,12 +82,13 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
       });
       return await res.json();
     },
+
     onSuccess: () => {
       setIsOpen(false);
       queryClient.invalidateQueries({
         queryKey: ['posts']
       });
-      // window.location.reload();
+      window.location.reload();
     }
   });
 
@@ -213,11 +214,11 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
 
     if (videoFile) {
       formData.append('media', videoFile);
-      console.log(formData.get('media'));
       await updateVideoMutation.mutateAsync({
         postId,
         formData
       });
+      setText('');
       return;
     }
 
@@ -228,7 +229,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
         postId,
         formData
       });
-
+      setText('');
       return;
     }
   };
