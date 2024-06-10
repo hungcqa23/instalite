@@ -13,6 +13,7 @@ export default async function DetailPostPage(param: {
   const cookieStore = cookies();
   const accessToken = cookieStore.get('access_token');
   const refreshToken = cookieStore.get('refresh_token');
+
   const res = await http.get<PostResType>(`posts/${param.params.postId}`, {
     headers: {
       Cookie: accessToken
