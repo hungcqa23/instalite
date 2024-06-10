@@ -30,7 +30,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { formatSocialNumber } from '@/lib/helper';
@@ -44,11 +44,15 @@ import {
 import DeleteLiteDialog from '@/components/ui/delete-lite-dialog';
 import { Post } from '@/schema-validations/post.schema';
 import { calculateTimeAgo } from '@/lib/helper';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { postApiRequest } from '@/app/api-request/post';
 import { accountApiRequest } from '@/app/api-request/account';
 import { User } from '@/schema-validations/account.schema';
 import Link from 'next/link';
+import { http } from '@/lib/http';
+import { getCookie } from 'cookies-next';
+import ListComment from '@/components/ui/list-comment';
+import { useAppContext } from '@/app/context/app-context';
 
 export default function LiteItem({
   lite,
@@ -57,10 +61,15 @@ export default function LiteItem({
   lite: Post;
   isLink?: boolean;
 }) {
+  const { user } = useAppContext();
+  const queryClient = useQueryClient();
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const [text, setText] = useState('');
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [isOpenCommentDialog, setIsOpenCommentDialog] = useState(false);
+  const [openCancelDialog, setOpenCancelDialog] = useState(false);
+  const accessToken = getCookie('access_key');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const likeMutation = useMutation({
     mutationFn: (postId: string) => postApiRequest.like(postId)
@@ -74,6 +83,35 @@ export default function LiteItem({
   const unBookmarkMutation = useMutation({
     mutationFn: (postId: string) => postApiRequest.unBookmark(postId)
   });
+
+  const createCommentMutation = useMutation({
+    mutationFn: async (text: string) => {
+      return await http.post('/posts', {
+        content: text,
+        typePost: 2,
+        parentPostId: lite?._id
+      });
+    }
+  });
+
+  const handleCommentPost = async (content: string) => {
+    const res = await createCommentMutation.mutateAsync(content);
+    const commentPostId = res.post._id;
+    setIsOpenCommentDialog(false);
+    resetDialog();
+    queryClient.invalidateQueries({
+      queryKey: ['comments', lite?._id, accessToken]
+    });
+  };
+
+  const handleDialogChange = (open: boolean) => {
+    if (!open) {
+      setIsOpenCommentDialog(false);
+      resetDialog();
+    } else {
+      setIsOpenCommentDialog(true);
+    }
+  };
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -93,6 +131,10 @@ export default function LiteItem({
       setBookmarked(false);
     }
   };
+
+  const resetDialog = useCallback(() => {
+    setText('');
+  }, []);
 
   const handleLike = () => {
     if (!liked) {
@@ -433,7 +475,10 @@ export default function LiteItem({
                 )}`}
               />
             </button>
-            <Dialog>
+            <Dialog
+              open={isOpenCommentDialog}
+              onOpenChange={handleDialogChange}
+            >
               <DialogTrigger>
                 <MessageCircle className='h-5 w-5 cursor-pointer' />
               </DialogTrigger>
@@ -446,14 +491,13 @@ export default function LiteItem({
                 <div className='flex flex-col'>
                   <div className='flex flex-row'>
                     <Avatar className='h-8 w-8 cursor-pointer  '>
-                      <AvatarImage
-                        src='https://github.com/shadcn.png'
-                        alt='@shadcn'
-                      />
+                      <AvatarImage src={user?.avatar} alt='@shadcn' />
                       <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                     <div className='ms-2.5 flex flex-col'>
-                      <div className='text-sm font-semibold'>AnHung DepTry</div>
+                      <div className='text-sm font-semibold'>
+                        {user?.username}
+                      </div>
                       <textarea
                         ref={textareaRef}
                         placeholder='Write something...'
@@ -465,7 +509,12 @@ export default function LiteItem({
                     </div>
                   </div>
                   <div className='mt-2 flex flex-row items-end justify-end'>
-                    <Button className='rounded-3xl'>Post</Button>
+                    <Button
+                      className='rounded-3xl'
+                      onClick={() => handleCommentPost(text)}
+                    >
+                      Post
+                    </Button>
                   </div>
                 </div>
               </DialogContent>
@@ -499,10 +548,11 @@ export default function LiteItem({
           </span>
         )}
 
-        <button>
+        {/* <button>
           <span className='text-xs text-slate-500'>See all 0 comments</span>
-        </button>
+        </button> */}
       </div>
+      <ListComment postId={lite?._id} />
       {openDeleteDialog && (
         <DeleteLiteDialog
           setOpenDeleteDialog={setOpenDeleteDialog}
