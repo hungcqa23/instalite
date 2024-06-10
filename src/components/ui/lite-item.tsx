@@ -48,6 +48,7 @@ import { useMutation } from '@tanstack/react-query';
 import { postApiRequest } from '@/app/api-request/post';
 import { accountApiRequest } from '@/app/api-request/account';
 import { User } from '@/schema-validations/account.schema';
+
 export default function LiteItem({ lite }: { lite: Post }) {
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
@@ -81,7 +82,6 @@ export default function LiteItem({ lite }: { lite: Post }) {
       bookmarkMutation.mutate(lite._id);
       setBookmarked(true);
     } else {
-      console.log(lite._id);
       unBookmarkMutation.mutate(lite._id);
       setBookmarked(false);
     }
@@ -92,7 +92,6 @@ export default function LiteItem({ lite }: { lite: Post }) {
       likeMutation.mutate(lite._id);
       setLiked(true);
     } else {
-      console.log(lite._id);
       unLikeMutation.mutate(lite._id);
       setLiked(false);
     }

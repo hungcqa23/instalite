@@ -87,7 +87,37 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
       queryClient.invalidateQueries({
         queryKey: ['posts']
       });
-      window.location.reload();
+      // window.location.reload();
+    }
+  });
+
+  const updateVideoMutation = useMutation({
+    mutationFn: async ({
+      postId,
+      formData
+    }: {
+      postId: string;
+      formData: FormData;
+    }) => {
+      const res = await fetch(
+        `http://localhost:8000/posts/${postId}/upload-hls`,
+        {
+          method: 'PUT',
+          body: formData,
+          headers: {
+            Cookie: `access_token=${accessToken}`
+          },
+          credentials: 'include'
+        }
+      );
+      return await res.json();
+    },
+    onSuccess: () => {
+      setIsOpen(false);
+      queryClient.invalidateQueries({
+        queryKey: ['posts']
+      });
+      // window.location.reload();
     }
   });
 
@@ -180,14 +210,27 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
     const postId = res.post._id;
 
     const formData = new FormData();
-    if (imageFile) {
-      formData.append('media', imageFile);
+
+    if (videoFile) {
+      formData.append('media', videoFile);
+
+      await updateVideoMutation.mutateAsync({
+        postId,
+        formData
+      });
+      return;
     }
 
-    const updateImage = await updatePostMutation.mutateAsync({
-      postId,
-      formData
-    });
+    if (imageFile) {
+      formData.append('media', imageFile);
+
+      const updateImage = await updatePostMutation.mutateAsync({
+        postId,
+        formData
+      });
+
+      return;
+    }
   };
 
   return (
@@ -299,7 +342,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                       Your browser does not support the video tag.
                     </video>
                     <Button
-                      className='gutop-2 absolute right-2 rounded-full bg-opacity-75'
+                      className='absolute right-2 top-2 rounded-full bg-opacity-75'
                       variant='ghost'
                       onClick={handleDeleteVideo}
                     >
@@ -315,6 +358,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                 disabled={
                   text.length != 0 || imageFile || videoFile ? false : true
                 }
+                onClick={() => handleCreatePost(text)}
               >
                 Post
               </Button>
