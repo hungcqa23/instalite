@@ -1,16 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Grid2X2, ImageIcon, Bookmark, Repeat2, Search } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { http } from '@/lib/http';
 import BtnCta from '@/app/(main)/username/[username]/btn-cta';
