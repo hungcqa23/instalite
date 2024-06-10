@@ -335,10 +335,10 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                   </Carousel>
                 )}
                 {videoUrl && (
-                  <div className='relative my-3 max-h-[20rem] w-fit bg-red-200'>
+                  <div className='relative my-3 max-h-[20rem] w-fit '>
                     <video
                       controls
-                      className='h-auto max-h-[20rem] w-auto rounded object-cover'
+                      className='h-auto max-h-[20rem] w-auto rounded'
                       autoPlay
                     >
                       <source src={videoUrl} type='video/mp4' />
