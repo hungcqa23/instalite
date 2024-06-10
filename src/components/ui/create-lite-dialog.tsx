@@ -27,7 +27,8 @@ import {
 import { DialogClose } from '@radix-ui/react-dialog';
 import { getCookie } from 'cookies-next';
 import { http } from '@/lib/http';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAppContext } from '@/app/context/app-context';
 
 interface CreateLiteDialogProps {
   children: ReactNode;
@@ -38,6 +39,8 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
 }: {
   children: ReactNode;
 }) => {
+  const queryClient = useQueryClient();
+  const { user } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState('');
   const [privacy, setPrivacy] = useState('Anyone can answer');
@@ -78,6 +81,13 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
         credentials: 'include'
       });
       return await res.json();
+    },
+    onSuccess: () => {
+      setIsOpen(false);
+      queryClient.invalidateQueries({
+        queryKey: ['posts']
+      });
+      window.location.reload();
     }
   });
 
@@ -171,18 +181,13 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
 
     const formData = new FormData();
     if (imageFile) {
-      console.log(postId);
       formData.append('media', imageFile);
-      console.log(formData.get('media'));
     }
 
     const updateImage = await updatePostMutation.mutateAsync({
       postId,
       formData
     });
-    console.log(updateImage);
-    // const postId
-    // window.location.reload();
   };
 
   return (
@@ -208,13 +213,16 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
             <div className='flex flex-row'>
               <Avatar className='h-8 w-8 cursor-pointer  '>
                 <AvatarImage
-                  src='https://github.com/shadcn.png'
+                  src={
+                    user?.avatar ||
+                    'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+                  }
                   alt='@shadcn'
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className='ms-2.5 flex max-w-full flex-col '>
-                <div className='text-sm font-semibold'>AnHung DepTry</div>
+                <div className='text-sm font-semibold'>{user?.username}</div>
                 <textarea
                   ref={textareaRef}
                   placeholder='Write something...'
