@@ -10,7 +10,10 @@ export const AccountSchema = z.object({
   is_registered_via_oauth_google: z.boolean(),
   refresh_token: z.string(),
   avatar: z.string().optional(),
-  full_name: z.string().optional()
+  full_name: z.string().optional(),
+  bio: z.string().optional(),
+  created_at: z.string(),
+  updated_at: z.string()
 });
 
 export type Account = z.TypeOf<typeof AccountSchema>;

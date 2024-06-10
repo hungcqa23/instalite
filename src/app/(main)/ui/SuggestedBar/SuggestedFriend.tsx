@@ -19,6 +19,7 @@ export default function SuggestedFriend(props: Props) {
     mutationFn: (followedUserId: string) =>
       accountApiRequest.unFollow(followedUserId)
   });
+
   const handleClick = () => {
     if (!isFollowed) {
       followMutation.mutate(props.user._id);

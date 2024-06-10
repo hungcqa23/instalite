@@ -135,13 +135,13 @@ export default function Header() {
           className='py-3shadow-default z-20 flex w-60 flex-col gap-1 rounded-lg border  px-2'
           align='end'
         >
-          <DropdownMenuItem className='flex h-6 w-56 gap-2 rounded-md py-4 pl-3 text-base font-medium'>
-            <Settings size={22} /> Setting
-            {/* <Button className='flex h-6 w-56 items-center justify-start gap-2 rounded-md pl-2 text-base font-medium hover:bg-none'>
+          {/* <DropdownMenuItem className='flex h-6 w-56 gap-2 rounded-md py-4 pl-3 text-base font-medium'>
+            <Settings size={22} /> Setting */}
+          {/* <Button className='flex h-6 w-56 items-center justify-start gap-2 rounded-md pl-2 text-base font-medium hover:bg-none'>
               <Settings size={22} /> Setting
             </Button> */}
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
+          {/* </DropdownMenuItem>
+          <DropdownMenuSeparator /> */}
 
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className='flex h-6 w-56 gap-2 rounded-md py-4 pl-3 text-base font-medium'>
