@@ -46,8 +46,6 @@ import { Post } from '@/schema-validations/post.schema';
 import { calculateTimeAgo } from '@/lib/helper';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { postApiRequest } from '@/app/api-request/post';
-import { accountApiRequest } from '@/app/api-request/account';
-import { User } from '@/schema-validations/account.schema';
 import Link from 'next/link';
 import { http } from '@/lib/http';
 import { getCookie } from 'cookies-next';
@@ -151,7 +149,7 @@ export default function LiteItem({
 
   if (isLink)
     return (
-      <Link href={`/posts/${lite._id}`}>
+      <Link href={`/posts/${lite._id}`} className='w-full'>
         <div className='mb-2 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
           <div className='mb-2 flex flex-row items-center justify-between'>
             <div className='flex flex-row items-end'>
@@ -547,12 +545,10 @@ export default function LiteItem({
             {formatSocialNumber(lite?.likes)} likes
           </span>
         )}
-
-        {/* <button>
-          <span className='text-xs text-slate-500'>See all 0 comments</span>
-        </button> */}
       </div>
+
       <ListComment postId={lite?._id} />
+
       {openDeleteDialog && (
         <DeleteLiteDialog
           setOpenDeleteDialog={setOpenDeleteDialog}
