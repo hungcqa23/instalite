@@ -421,7 +421,7 @@ export default function LiteItem({
                 <Trash className='mb-0 h-4 w-4' />
                 <span className=''>Delete lite</span>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              {/* <DropdownMenuSeparator />
               <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
                 <Pencil className='mb-0 h-4 w-4' />
                 <span className=''>Edit lite</span>
@@ -430,7 +430,7 @@ export default function LiteItem({
               <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
                 <Sparkle className='mb-0 h-4 w-4' />
                 <span className=''>Summarize with Relite AI</span>
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
