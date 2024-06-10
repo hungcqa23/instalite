@@ -25,7 +25,7 @@ export default function Profile({ data }: { data: any }) {
 
         <Avatar className='static h-20 w-20'>
           <AvatarImage
-            src={user.avatar ?? 'https://github.com/shadcn.png'}
+            src={user?.avatar ?? 'https://github.com/shadcn.png'}
             alt='@shadcn'
           />
           <AvatarFallback>CN</AvatarFallback>

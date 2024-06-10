@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { ImageIcon, X } from 'lucide-react';
+import { Clapperboard, ImageIcon, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import ImagePreview from '@/components/ui/preview-image';
@@ -54,15 +54,21 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
   const [privacy, setPrivacy] = useState('Anyone can answer');
   const [images, setImages] = useState<string[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [videoFile, setVideoFile] = useState<File | null>(null);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoFileInputRef = useRef<HTMLInputElement>(null);
 
   const resetDialog = useCallback(() => {
     setText('');
     setPrivacy('Anyone can answer');
     setImages([]);
+    setImageFile(null);
+    setVideoFile(null);
+    setVideoUrl(null);
   }, []);
 
   useEffect(() => {
@@ -83,10 +89,6 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
     setIsOpen(true);
   };
 
-  const handleSelectPrivacy = (option: string) => {
-    setPrivacy(option);
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
@@ -97,12 +99,34 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
     }
   };
 
+  const handleVideoClick = () => {
+    if (videoFileInputRef.current) {
+      videoFileInputRef.current.click();
+    }
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const fileArray = Array.from(e.target.files);
       const fileUrls = fileArray.map(file => URL.createObjectURL(file));
       setImages(prevImages => [...prevImages, ...fileUrls]);
       setImageFile(fileArray[0]);
+    }
+  };
+
+  const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setVideoFile(file);
+      setVideoUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const handleDeleteVideo = () => {
+    setVideoFile(null);
+    setVideoUrl(null);
+    if (videoFileInputRef.current) {
+      videoFileInputRef.current.value = '';
     }
   };
 
@@ -119,23 +143,6 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
     } else {
       setIsOpen(open);
       if (!open) resetDialog();
-    }
-  };
-
-  const handleCreatePost = async (content: string) => {
-    try {
-      await http.post(
-        '/api/post/create',
-        {
-          content: content
-        },
-        {
-          baseUrl: ''
-        }
-      );
-      console.log('da navigate sang /api/post/create');
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -179,14 +186,23 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                   onChange={handleChange}
                 />
 
-                {images.length == 0 && (
-                  <Button
-                    className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
-                    variant='outline'
-                    onClick={handleImageClick}
-                  >
-                    <ImageIcon /> Add Image
-                  </Button>
+                {images.length == 0 && videoFile == null && (
+                  <div className='flex flex-row gap-2'>
+                    <Button
+                      className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
+                      variant='outline'
+                      onClick={handleImageClick}
+                    >
+                      <ImageIcon /> Add Image
+                    </Button>
+                    <Button
+                      className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
+                      variant='outline'
+                      onClick={handleVideoClick}
+                    >
+                      <Clapperboard /> Add Video
+                    </Button>
+                  </div>
                 )}
                 <Input
                   type='file'
@@ -195,6 +211,13 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                   accept='image/*'
                   className='hidden'
                   onChange={handleFileChange}
+                />
+                <Input
+                  type='file'
+                  ref={videoFileInputRef}
+                  accept='video/*'
+                  className='hidden'
+                  onChange={handleVideoChange}
                 />
                 {images.length > 0 && (
                   <Carousel
@@ -217,6 +240,21 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                       ))}
                     </CarouselContent>
                   </Carousel>
+                )}
+                {videoUrl && (
+                  <div className='relative my-3 w-full max-w-full'>
+                    <video controls className='w-full rounded' autoPlay>
+                      <source src={videoUrl} type='video/mp4' />
+                      Your browser does not support the video tag.
+                    </video>
+                    <Button
+                      className='absolute right-2 top-2 bg-opacity-75'
+                      variant='ghost'
+                      onClick={handleDeleteVideo}
+                    >
+                      <X size={16} />
+                    </Button>
+                  </div>
                 )}
               </div>
             </div>
@@ -256,7 +294,6 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
               <Button
                 className='rounded-3xl'
                 disabled={text || imageFile ? false : true}
-                onClick={() => handleCreatePost(text)}
               >
                 Post
               </Button>
