@@ -46,7 +46,8 @@ import { Post } from '@/schema-validations/post.schema';
 import { calculateTimeAgo } from '@/lib/helper';
 import { useMutation } from '@tanstack/react-query';
 import { postApiRequest } from '@/app/api-request/post';
-
+import { accountApiRequest } from '@/app/api-request/account';
+import { User } from '@/schema-validations/account.schema';
 export default function LiteItem({ lite }: { lite: Post }) {
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
@@ -106,7 +107,7 @@ export default function LiteItem({ lite }: { lite: Post }) {
         <div className='mb-2 flex flex-row items-center justify-between'>
           <div className='flex flex-row items-end'>
             <Avatar className='z-[-1] h-9 w-9'>
-              <AvatarImage src={lite?.user_id.avatar} alt='@shadcn' />
+              <AvatarImage src={lite?.user_id?.avatar} alt='@shadcn' />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div className='ms-2.5 flex flex-col justify-end '>
