@@ -1,5 +1,5 @@
 'use client';
-import { useAppContext } from '@/app/context/app-context';
+import { useAppContext, User } from '@/app/context/app-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,14 +18,43 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Account } from '@/schema-validations/account.schema';
-import React from 'react';
+import { http } from '@/lib/http';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import React, { useMemo, useState } from 'react';
 
-interface Props {
-  user: Account;
-}
-export default function BtnCta({ user }: Props) {
-  const { user: currentUser } = useAppContext();
+export default function BtnCta({ user: userData }: any) {
+  const { user } = userData;
+  const router = useRouter();
+  const { user: currentUser, setUser } = useAppContext();
+  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
+  const [bio, setBio] = useState('');
+  const [file, setFile] = useState<File>();
+  const previewImage = useMemo(() => {
+    return file ? URL.createObjectURL(file) : '';
+  }, [file]);
+
+  const handleChangeFile = (file?: File) => {
+    setFile(file);
+  };
+
+  const updateUser = useMutation({
+    mutationFn: async () => {
+      const data = await http.put(`users/me`, {
+        username,
+        fullName: name,
+        bio
+      });
+      return data;
+    }
+  });
+
+  const handleSaveButton = async () => {
+    const { result } = await updateUser.mutateAsync();
+    setUser(result);
+    router.push('/');
+  };
 
   return (
     <>
@@ -37,14 +66,15 @@ export default function BtnCta({ user }: Props) {
           >
             Follow
           </Button>
-          <Button
+          {/* <Button
             className='mt-3.5 w-full text-sm dark:bg-zinc-950 dark:hover:bg-transparent'
             variant={'outline'}
           >
             Mention
-          </Button>
+          </Button> */}
         </div>
       )}
+
       {user?.username === currentUser?.username && (
         <Dialog>
           <DialogTrigger asChild>
@@ -68,6 +98,7 @@ export default function BtnCta({ user }: Props) {
                   <Input
                     className='mt-1 w-[378px] '
                     placeholder='Enter your username'
+                    onChange={e => setUsername(e.target.value)}
                   />
                 </div>
 
@@ -97,15 +128,27 @@ export default function BtnCta({ user }: Props) {
               </div>
               <div className='mt-2 flex flex-col'>
                 <Label className='text-sm font-semibold'>Name</Label>
-                <Input className='mt-1 w-full ' placeholder='Enter your name' />
+                <Input
+                  className='mt-1 w-full '
+                  placeholder='Enter your name'
+                  onChange={e => setName(e.target.value)}
+                />
               </div>
               <div className='mt-2 flex flex-col'>
                 <Label className='text-sm font-semibold'>Bio</Label>
-                <Input className='mt-1 w-full ' placeholder='Enter your bio' />
+                <Input
+                  className='mt-1 w-full '
+                  placeholder='Enter your bio'
+                  onChange={e => setBio(e.target.value)}
+                />
               </div>
             </div>
             <DialogFooter>
-              <Button className='mt-1 w-full' type='submit'>
+              <Button
+                className='mt-1 w-full'
+                type='submit'
+                onClick={handleSaveButton}
+              >
                 Save
               </Button>
             </DialogFooter>

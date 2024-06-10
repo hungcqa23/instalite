@@ -9,7 +9,7 @@ import {
   useState
 } from 'react';
 
-type User = AccountResType['result'];
+export type User = AccountResType['result'];
 
 const AppContext = createContext<{
   user: User | null;

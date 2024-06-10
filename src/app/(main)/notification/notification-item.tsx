@@ -1,5 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { NotificationType } from '@/constants/enum';
 import { Notification } from '@/schema-validations/notification.schema';
 import Image from 'next/image';
@@ -11,6 +10,7 @@ export default function NotificationItem({
   notification: Notification;
 }) {
   let src = '';
+  console.log(notification);
 
   switch (notification.type) {
     case NotificationType.Like:
@@ -18,11 +18,8 @@ export default function NotificationItem({
       break;
     case NotificationType.Follow:
       src = '/follow.svg';
-      notification.content = `${notification.user_receiver_id.username} started following you`;
+      notification.content = `${notification.user_id.username} started following you`;
       break;
-    // case NotificationType.Relite:
-    //   src = '/relite.svg';
-    //   break;
     default:
       break;
   }
@@ -34,8 +31,13 @@ export default function NotificationItem({
       <div className='flex w-full max-w-full flex-row gap-3'>
         <div className='relative z-[-1] ms-1 block'>
           <Avatar className='h-8 w-8'>
-            <AvatarImage src='https://github.com/shadcn.png' alt='@shadcn' />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage
+              src={
+                notification?.user_id?.avatar ??
+                'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+              }
+              alt='@shadcn'
+            />
           </Avatar>
           <Image
             src={src}
@@ -48,7 +50,7 @@ export default function NotificationItem({
         <div className='flex w-[21.875rem] flex-col '>
           <div className='flex flex-row items-end gap-1.5'>
             <span className='text-[0.8125rem] font-bold'>
-              {notification.user_receiver_id.username}
+              {notification.user_id.username}
             </span>
             <p className='text-xs font-normal text-gray-500'>1 minutes</p>
           </div>
