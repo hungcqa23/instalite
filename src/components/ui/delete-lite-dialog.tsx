@@ -1,5 +1,6 @@
 'use client';
 import { http } from '@/lib/http';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -13,7 +14,13 @@ const DeleteLiteDialog: React.FC<DeletePostDialogProps> = ({
   liteId
 }: DeletePostDialogProps) => {
   const router = useRouter();
-
+  const deleteLiteMutation = useMutation({
+    mutationFn: async (liteId: string) => {
+      return await http.delete('/api/post/delete', {
+        liteId: liteId
+      });
+    }
+  });
   const handleDeleleLite = async (liteId: string) => {
     try {
       await http.post(

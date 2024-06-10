@@ -26,7 +26,6 @@ export default function ListPost() {
   });
 
   if (!data) return null;
-  console.log(data.result);
 
   return (
     <div className='flex h-full w-full flex-col items-center justify-center'>
