@@ -18,7 +18,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { ImageIcon, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import Image from 'next/image';
 import ImagePreview from '@/components/ui/preview-image';
 import {
   Carousel,
@@ -58,7 +57,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
     }
   });
   const accessToken = getCookie('access_key');
-  console.log(accessToken);
+
   const updatePostMutation = useMutation({
     mutationFn: async ({
       postId,
@@ -67,14 +66,15 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
       postId: string;
       formData: FormData;
     }) => {
-      return await fetch(`http://localhost:8000/posts/${postId}`, {
+      const res = await fetch(`http://localhost:8000/posts/${postId}`, {
         method: 'PUT',
         body: formData,
         headers: {
-          'Content-Type': 'multipart/form-data',
           Cookie: `access_token=${accessToken}`
-        }
+        },
+        credentials: 'include'
       });
+      return await res.json();
     }
   });
 
