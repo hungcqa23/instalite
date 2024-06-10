@@ -147,6 +147,25 @@ export default function LiteItem({
     setText(e.target.value);
   };
 
+  const { data } = useQuery({
+    queryKey: ['like', lite?._id, accessToken],
+    queryFn: async () => {
+      const res = await fetch(`http://localhost:8000/likes/${lite?._id}`, {
+        method: 'GET',
+        headers: {
+          Cookie: `access_token=${accessToken}`
+        },
+        credentials: 'include'
+      });
+
+      const data = await res.json();
+      return data;
+    }
+  });
+
+  useEffect(() => {
+    if (data) setLiked(data.result);
+  }, [data]);
   if (isLink)
     return (
       <Link href={`/posts/${lite._id}`} className='w-full'>
@@ -409,7 +428,7 @@ export default function LiteItem({
                 <Trash className='mb-0 h-4 w-4' />
                 <span className=''>Delete lite</span>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              {/* <DropdownMenuSeparator />
               <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
                 <Pencil className='mb-0 h-4 w-4' />
                 <span className=''>Edit lite</span>
@@ -418,7 +437,7 @@ export default function LiteItem({
               <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
                 <Sparkle className='mb-0 h-4 w-4' />
                 <span className=''>Summarize with Relite AI</span>
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -542,16 +561,6 @@ export default function LiteItem({
             />
           </button>
         </div>
-
-        {liked ? (
-          <span className='mt-2 block text-xs font-medium text-black dark:text-white'>
-            {formatSocialNumber(lite?.likes + 1)} likes
-          </span>
-        ) : (
-          <span className='mt-2 block text-xs font-medium text-black dark:text-white'>
-            {formatSocialNumber(lite?.likes)} likes
-          </span>
-        )}
       </div>
 
       <ListComment postId={lite?._id} />

@@ -1,5 +1,4 @@
 import { http } from '@/lib/http';
-import { CreatePost } from '@/schema-validations/post.schema';
 
 export const postApiRequest = {
   like: (postId: string) =>

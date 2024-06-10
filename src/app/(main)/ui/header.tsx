@@ -44,7 +44,7 @@ export default function Header() {
   }, [resolvedTheme]);
 
   return (
-    <header className='h-17 sticky top-0 z-20 flex w-full items-center justify-center gap-2 overflow-y-auto overflow-x-hidden bg-white py-1 dark:bg-zinc-950 lg:gap-52'>
+    <header className='h-17 sticky top-0 z-10 flex w-full items-center justify-center gap-2 overflow-y-auto overflow-x-hidden bg-white py-1 dark:bg-zinc-950 lg:gap-52'>
       <Link
         href={'/'}
         className='hidden shrink-0 transition-transform duration-200 hover:scale-110 md:flex'
