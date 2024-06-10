@@ -20,7 +20,7 @@ export default function Profile({ data }: { data: any }) {
       <div className='flex h-20 justify-between'>
         <div className='mt-4 flex flex-col items-start justify-start space-y-2'>
           <p className='text-lg font-medium'>{user?.full_name}</p>
-          <p className='text-sm font-light'>{user?.username}</p>
+          <p className='text-lg font-semibold'>{user?.username}</p>
         </div>
 
         <Avatar className='static h-20 w-20'>
@@ -96,8 +96,7 @@ export default function Profile({ data }: { data: any }) {
           </DialogContent>
         </Dialog>
       </div>
-
-      <div className='mt-3.5 max-w-full text-sm'>{user?.bio}</div>
+      <div className='my-3.5 max-w-full text-sm'>good things take time ✨</div>
     </div>
   );
 }
