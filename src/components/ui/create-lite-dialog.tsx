@@ -232,6 +232,8 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
       setText('');
       return;
     }
+
+    window.location.reload();
   };
 
   return (
