@@ -19,7 +19,6 @@ export const PostBody = z.object({
     username: z.string(),
     avatar: z.string()
   }),
-
   content: z.string(),
   type_post: z.number(),
   likes: z.number(),
