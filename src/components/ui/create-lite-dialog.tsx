@@ -220,9 +220,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
       });
       setText('');
       return;
-    }
-
-    if (imageFile) {
+    } else if (imageFile) {
       formData.append('media', imageFile);
 
       const updateImage = await updatePostMutation.mutateAsync({
@@ -231,9 +229,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
       });
       setText('');
       return;
-    }
-
-    window.location.reload();
+    } else window.location.reload();
   };
 
   return (

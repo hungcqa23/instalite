@@ -154,7 +154,14 @@ export default function LiteItem({
           <div className='mb-2 flex flex-row items-center justify-between'>
             <div className='flex flex-row items-end'>
               <Avatar className='z-[-1] h-9 w-9'>
-                <AvatarImage src={lite?.user_id?.avatar} alt='@shadcn' />
+                <AvatarImage
+                  src={
+                    lite?.user_id?.username === 'anhung1'
+                      ? 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+                      : undefined
+                  }
+                  alt='@shadcn'
+                />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className='ms-2.5 flex flex-col justify-end '>
