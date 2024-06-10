@@ -165,10 +165,9 @@ export default function LiteItem({
     }
   });
 
-  if (!data) return null;
-  const hasLike = data;
-  console.log(hasLike);
-
+  useEffect(() => {
+    if (data) setLiked(data.result);
+  }, [data]);
   if (isLink)
     return (
       <Link href={`/posts/${lite._id}`}>
@@ -557,16 +556,6 @@ export default function LiteItem({
             />
           </button>
         </div>
-
-        {liked ? (
-          <span className='mt-2 block text-xs font-medium text-black dark:text-white'>
-            {formatSocialNumber(lite?.likes + 1)} likes
-          </span>
-        ) : (
-          <span className='mt-2 block text-xs font-medium text-black dark:text-white'>
-            {formatSocialNumber(lite?.likes)} likes
-          </span>
-        )}
 
         {/* <button>
           <span className='text-xs text-slate-500'>See all 0 comments</span>

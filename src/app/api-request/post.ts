@@ -17,9 +17,5 @@ export const postApiRequest = {
   unBookmark: (postId: string) =>
     http.delete(`/bookmarks`, {
       postId
-    }),
-  hasLike: (postId: string) =>
-    http.get(`/likes`, {
-      postId
     })
 };
