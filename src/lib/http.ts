@@ -20,10 +20,26 @@ const request = async <Response>(
   url: string,
   options?: CustomOptions | undefined
 ) => {
-  const body = options?.body ? JSON.stringify(options.body) : undefined;
-  const baseHeaders: Record<string, string> = {
-    'Content-Type': 'application/json'
-  };
+  let body: FormData | string | undefined = undefined;
+  if (options?.body instanceof FormData) {
+    body = options.body;
+  } else if (options?.body) {
+    body = JSON.stringify(options?.body);
+  }
+
+  const baseHeaders: any =
+    body instanceof FormData
+      ? {
+          'Content-Type': 'multipart/form-data'
+        }
+      : {
+          'Content-Type': 'application/json'
+        };
+
+  console.log('Debug');
+  console.log(baseHeaders);
+  console.log(options?.body);
+  console.log('Hello');
 
   if (isClient()) {
     const accessToken = localStorage.getItem('access_key');

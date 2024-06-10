@@ -10,35 +10,24 @@ import React, {
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator
-} from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Clapperboard, ImageIcon, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import Image from 'next/image';
 import ImagePreview from '@/components/ui/preview-image';
 import {
   Carousel,
   CarouselContent,
   CarouselItem
 } from '@/components/ui/carousel';
-import CancelLiteDialog from '@/components/ui/cancel-lite-dialog';
 import { DialogClose } from '@radix-ui/react-dialog';
-import { Separator } from '@/components/ui/separator';
-import { postApiRequest } from '@/app/api-request/post';
-import { CreatePost, PostType } from '@/schema-validations/post.schema';
+import { getCookie } from 'cookies-next';
 import { http } from '@/lib/http';
+import { useMutation } from '@tanstack/react-query';
 
 interface CreateLiteDialogProps {
   children: ReactNode;
@@ -61,6 +50,36 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoFileInputRef = useRef<HTMLInputElement>(null);
+
+  const createPostMutation = useMutation({
+    mutationFn: async (text: string) => {
+      return await http.post('/posts', {
+        content: text,
+        typePost: 0
+      });
+    }
+  });
+  const accessToken = getCookie('access_key');
+
+  const updatePostMutation = useMutation({
+    mutationFn: async ({
+      postId,
+      formData
+    }: {
+      postId: string;
+      formData: FormData;
+    }) => {
+      const res = await fetch(`http://localhost:8000/posts/${postId}`, {
+        method: 'PUT',
+        body: formData,
+        headers: {
+          Cookie: `access_token=${accessToken}`
+        },
+        credentials: 'include'
+      });
+      return await res.json();
+    }
+  });
 
   const resetDialog = useCallback(() => {
     setText('');
@@ -110,7 +129,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
       const fileArray = Array.from(e.target.files);
       const fileUrls = fileArray.map(file => URL.createObjectURL(file));
       setImages(prevImages => [...prevImages, ...fileUrls]);
-      setImageFile(fileArray[0]);
+      setImageFile(e.target.files[0]);
     }
   };
 
@@ -144,6 +163,26 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
       setIsOpen(open);
       if (!open) resetDialog();
     }
+  };
+
+  const handleCreatePost = async (content: string) => {
+    const res = await createPostMutation.mutateAsync(content);
+    const postId = res.post._id;
+
+    const formData = new FormData();
+    if (imageFile) {
+      console.log(postId);
+      formData.append('media', imageFile);
+      console.log(formData.get('media'));
+    }
+
+    const updateImage = await updatePostMutation.mutateAsync({
+      postId,
+      formData
+    });
+    console.log(updateImage);
+    // const postId
+    // window.location.reload();
   };
 
   return (
@@ -259,38 +298,6 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
               </div>
             </div>
             <div className='mt-2 flex flex-row items-end justify-end '>
-              {/* <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <div className='cursor-pointer text-sm font-medium'>
-                    {privacy}
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align='start'
-                  className='-ms-3 w-56 rounded-xl dark:bg-zinc-950'
-                >
-                  <DropdownMenuItem
-                    className='ms-1 cursor-pointer rounded-md font-medium'
-                    onClick={() => handleSelectPrivacy('Anyone can answer')}
-                  >
-                    Anyone can answer
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    className='ms-1  cursor-pointer rounded-md font-medium'
-                    onClick={() => handleSelectPrivacy('Following users')}
-                  >
-                    Following users
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    className='ms-1  cursor-pointer rounded-md font-medium'
-                    onClick={() => handleSelectPrivacy('Only users mentioned')}
-                  >
-                    Only users mentioned
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu> */}
               <Button
                 className='rounded-3xl'
                 disabled={text || imageFile ? false : true}
