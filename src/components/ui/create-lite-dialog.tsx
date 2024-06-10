@@ -291,7 +291,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                       Your browser does not support the video tag.
                     </video>
                     <Button
-                      className='gutop-2 absolute right-2 rounded-full bg-opacity-75'
+                      className='absolute right-2 top-2 rounded-full bg-opacity-75'
                       variant='ghost'
                       onClick={handleDeleteVideo}
                     >
