@@ -1,5 +1,4 @@
 import { http } from '@/lib/http';
-import { CreatePost } from '@/schema-validations/post.schema';
 
 export const postApiRequest = {
   like: (postId: string) =>
@@ -17,6 +16,10 @@ export const postApiRequest = {
     }),
   unBookmark: (postId: string) =>
     http.delete(`/bookmarks`, {
+      postId
+    }),
+  hasLike: (postId: string) =>
+    http.get(`/likes`, {
       postId
     })
 };

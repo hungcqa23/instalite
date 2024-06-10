@@ -126,13 +126,32 @@ export default function LiteItem({ lite }: { lite: Post }) {
 
   const handleCommentPost = async (content: string) => {
     const res = await createCommentMutation.mutateAsync(content);
-    const commentPostId = res.post._id;
     setIsOpenCommentDialog(false);
     resetDialog();
     queryClient.invalidateQueries({
       queryKey: ['comments', lite?._id, accessToken]
     });
   };
+
+  const { data } = useQuery({
+    queryKey: ['like', lite?._id, accessToken],
+    queryFn: async () => {
+      const res = await fetch(`http://localhost:8000/likes/${lite?._id}`, {
+        method: 'GET',
+        headers: {
+          Cookie: `access_token=${accessToken}`
+        },
+        credentials: 'include'
+      });
+
+      const data = await res.json();
+      return data;
+    }
+  });
+
+  if (!data) return null;
+  const hasLike = data;
+  console.log(hasLike);
 
   const handleDialogChange = (open: boolean) => {
     if (!open) {
