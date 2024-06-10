@@ -9,7 +9,7 @@ interface ImagePreviewProps {
 
 const ImagePreview: React.FC<ImagePreviewProps> = ({ src, onDelete }) => {
   return (
-    <div className='relative h-auto w-[14rem]'>
+    <div className='relative h-auto w-[14rem] '>
       <Image
         src={src}
         width={240}

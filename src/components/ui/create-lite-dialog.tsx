@@ -157,7 +157,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
   };
 
   const handleDialogChange = (open: boolean) => {
-    if (!open && (text || images.length > 0)) {
+    if (!open && (text || images.length > 0 || videoUrl)) {
       setOpenCancelDialog(true);
     } else {
       setIsOpen(open);
@@ -225,7 +225,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                   onChange={handleChange}
                 />
 
-                {images.length == 0 && videoFile == null && (
+                {images.length == 0 && videoUrl == null && (
                   <div className='flex flex-row gap-2'>
                     <Button
                       className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
@@ -281,8 +281,12 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                   </Carousel>
                 )}
                 {videoUrl && (
-                  <div className='relative my-3 w-full max-w-full'>
-                    <video controls className='w-full rounded' autoPlay>
+                  <div className='relative my-3 max-h-[20rem] w-[14rem] bg-red-200'>
+                    <video
+                      controls
+                      className='h-auto max-h-[20rem] w-auto rounded object-cover'
+                      autoPlay
+                    >
                       <source src={videoUrl} type='video/mp4' />
                       Your browser does not support the video tag.
                     </video>
@@ -300,7 +304,9 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
             <div className='mt-2 flex flex-row items-end justify-end '>
               <Button
                 className='rounded-3xl'
-                disabled={text || imageFile ? false : true}
+                disabled={
+                  text.length != 0 || imageFile || videoFile ? false : true
+                }
               >
                 Post
               </Button>
