@@ -1,9 +1,9 @@
-import { cookies } from 'next/headers';
-import { http } from '@/lib/http';
 import BtnCta from '@/app/(main)/username/[username]/btn-cta';
-import { User } from '@/schema-validations/account.schema';
-import Tab from '@/app/(main)/username/[username]/tab';
 import Profile from '@/app/(main)/username/[username]/profile';
+import Tab from '@/app/(main)/username/[username]/tab';
+import { http } from '@/lib/http';
+import { User } from '@/schema-validations/account.schema';
+import { cookies } from 'next/headers';
 
 export const metadata = {
   title: 'AnHyng DepTry (@andrehelokity)'

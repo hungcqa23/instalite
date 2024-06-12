@@ -8,12 +8,12 @@ export default function Home() {
     <>
       {/* Main concept list xl:mr-[calc((100%-30rem)/2-16rem)] */}
       <div className='mb-2 flex w-full justify-center xl:justify-normal'>
-        <div className='mt-2 flex w-full max-w-[30rem] flex-col xl:ml-[calc((100%-30rem)/2)] xl:mr-20'>
-          <div className='mb-4 hidden h-12 w-full items-center justify-between border-b border-gray-200 py-2 sm:flex'>
+        <div className='mt-2 flex w-full max-w-[35rem] flex-col justify-start xl:ml-[calc((100%-30rem)/2)] xl:mr-20'>
+          <div className='mb-4 hidden h-12 w-[30rem] items-start justify-between border-b border-gray-200 py-2 sm:flex xl:flex xl:flex-row'>
             <CreateLiteDialog>
-              <div className='flex w-96 cursor-text items-center gap-2 '>
+              <div className='flex w-[25rem] cursor-text items-center gap-2'>
                 <IconProfile />
-                <p className='ms-2  cursor-text text-sm font-light text-gray-400'>
+                <p className='ms-2 cursor-text text-sm font-light text-gray-400'>
                   What&apos;s on your mind?
                 </p>
               </div>
@@ -25,7 +25,7 @@ export default function Home() {
             </CreateLiteDialog>
           </div>
 
-          <div className='flex flex-col items-center'>
+          <div className='flex '>
             <ListPost />
           </div>
         </div>

@@ -1,7 +1,16 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { calculateTimeAgo } from '@/lib/helper';
 import { Post } from '@/schema-validations/post.schema';
-import { Comment } from '@/types/comment.type';
+
+import { MediaPlayer, MediaProvider, Poster, Track } from '@vidstack/react';
+import {
+  DefaultVideoLayout,
+  defaultLayoutIcons
+} from '@vidstack/react/player/layouts/default';
+import '@vidstack/react/player/styles/default/layouts/audio.css';
+import '@vidstack/react/player/styles/default/layouts/video.css';
+import '@vidstack/react/player/styles/default/theme.css';
+import Image from 'next/image';
 import React from 'react';
 
 export default function CommentItem({ comment }: { comment: Post }) {
@@ -22,6 +31,37 @@ export default function CommentItem({ comment }: { comment: Post }) {
             </span>
           </div>
           <p className='mt-1 text-[0.8125rem]'>{comment?.content}</p>
+          {comment?.media?.type == 0 && (
+            <div className='my-3'>
+              <Image
+                src={comment.media.url}
+                alt='image'
+                width={200}
+                height={200}
+                className=' rounded-md border-2'
+              />
+            </div>
+          )}
+
+          {comment?.media?.type == 1 && (
+            <MediaPlayer
+              src={`http://localhost:8000/files/video-hls/${comment._id}/master.m3u8`}
+              viewType='video'
+              streamType='on-demand'
+              logLevel='warn'
+              crossOrigin
+              playsInline
+              className='my-3'
+              title='Sprite Fight'
+              poster='https://files.vidstack.io/sprite-fight/poster.webp'
+            >
+              <MediaProvider />
+              <DefaultVideoLayout
+                // thumbnails='https://files.vidstack.io/sprite-fight/thumbnails.vtt'
+                icons={defaultLayoutIcons}
+              />
+            </MediaPlayer>
+          )}
         </div>
       </div>
     </div>

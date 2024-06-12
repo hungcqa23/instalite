@@ -28,17 +28,15 @@ export default function ListPost() {
   if (!data) return null;
 
   return (
-    <div className='flex h-full w-full flex-col items-center justify-center'>
-      <div className='flex h-full w-full flex-col items-center justify-center'>
-        {data.result &&
-          List<Post>({
-            listItems: data.result,
-            mapFn: (post: Post) => (
-              <DetailedPostPage post={post} key={post._id} />
-            ),
-            className: 'w-full'
-          })}
-      </div>
+    <div className=' -ms-10 h-full w-full'>
+      {data.result &&
+        List<Post>({
+          listItems: data.result,
+          mapFn: (post: Post) => (
+            <DetailedPostPage post={post} key={post._id} />
+          ),
+          className: 'w-full'
+        })}
     </div>
   );
 }
