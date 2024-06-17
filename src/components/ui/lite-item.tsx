@@ -96,9 +96,12 @@ export default function LiteItem({
       .then(() => {
         setCopied(true);
         toast({
-          description: 'Lite URL copied to clipboard!'
+          description: 'Lite URL copied to clipboard!',
+          duration: 2000
         });
-        setTimeout(() => setCopied(false), 2000);
+        setTimeout(() => {
+          setCopied(false);
+        }, 2000);
       })
       .catch(err => {
         console.error('Failed to copy: ', err);
