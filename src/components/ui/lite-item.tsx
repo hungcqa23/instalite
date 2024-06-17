@@ -38,6 +38,7 @@ import {
 import { Input } from '@/components/ui/input';
 import ListComment from '@/components/ui/list-comment';
 import ImagePreview from '@/components/ui/preview-image';
+import { useToast } from '@/components/ui/use-toast';
 import { calculateTimeAgo, formatSocialNumber } from '@/lib/helper';
 import { http } from '@/lib/http';
 import { Post } from '@/schema-validations/post.schema';
@@ -77,6 +78,7 @@ export default function LiteItem({
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [isOpenCommentDialog, setIsOpenCommentDialog] = useState(false);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
+
   const accessToken = getCookie('access_key');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   //file media
@@ -84,8 +86,24 @@ export default function LiteItem({
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoFileInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
+  const handleCopyUrl = (url: string) => {
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        setCopied(true);
+        toast({
+          description: 'Lite URL copied to clipboard!'
+        });
+        setTimeout(() => setCopied(false), 2000);
+      })
+      .catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+  };
 
   const handleImageClick = () => {
     if (fileInputRef.current) {
@@ -491,7 +509,14 @@ export default function LiteItem({
               <Link href={`/posts/${lite._id}`}>
                 <MessageCircle className='h-5 w-5 cursor-pointer' />
               </Link>
-              <Send className='h-5 w-5 cursor-pointer' />
+              <button
+                onClick={() => {
+                  const url = window.location.href + `/posts/${lite._id}`;
+                  handleCopyUrl(url);
+                }}
+              >
+                <Send className='h-5 w-5 cursor-pointer' />
+              </button>
             </div>
 
             <button onClick={handleBookmark}>
@@ -823,8 +848,14 @@ export default function LiteItem({
                 </div>
               </DialogContent>
             </Dialog>
-
-            <Send className='h-5 w-5 cursor-pointer' />
+            <button
+              onClick={() => {
+                const url = window.location.href;
+                handleCopyUrl(url);
+              }}
+            >
+              <Send className='h-5 w-5 cursor-pointer' />
+            </button>
           </div>
 
           <button onClick={handleBookmark}>
