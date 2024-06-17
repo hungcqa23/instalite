@@ -76,6 +76,7 @@ export default function LiteItem({
   const [text, setText] = useState('');
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [isOpenCommentDialog, setIsOpenCommentDialog] = useState(false);
+  const [openCancelDialog, setOpenCancelDialog] = useState(false);
   const accessToken = getCookie('access_key');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   //file media
@@ -245,12 +246,23 @@ export default function LiteItem({
   };
 
   const handleDialogChange = (open: boolean) => {
-    if (!open) {
-      setIsOpenCommentDialog(false);
-      resetDialog();
+    if (!open && (text || images.length > 0 || videoUrl)) {
+      setOpenCancelDialog(true);
     } else {
-      setIsOpenCommentDialog(true);
+      setIsOpenCommentDialog(open);
+      if (!open) resetDialog();
     }
+  };
+
+  const confirmClose = () => {
+    setOpenCancelDialog(false);
+    setIsOpenCommentDialog(false);
+    resetDialog();
+  };
+
+  const cancelClose = () => {
+    setOpenCancelDialog(false);
+    setIsOpenCommentDialog(true);
   };
 
   useEffect(() => {
@@ -475,63 +487,10 @@ export default function LiteItem({
                   )}`}
                 />
               </button>
-              <Dialog>
-                <DialogTrigger>
-                  <MessageCircle className='h-5 w-5 cursor-pointer' />
-                </DialogTrigger>
-                <DialogContent className=' dark:bg-zinc-950 sm:max-w-[34rem]'>
-                  <DialogHeader>
-                    <DialogTitle className='flex justify-center text-sm font-bold'>
-                      Reply to {lite?.user_id?.username}
-                    </DialogTitle>
-                  </DialogHeader>
-                  <div className='flex flex-col'>
-                    <div className='flex flex-row'>
-                      <Avatar className='h-8 w-8 cursor-pointer  '>
-                        <AvatarImage
-                          src='https://github.com/shadcn.png'
-                          alt='@shadcn'
-                        />
-                        <AvatarFallback>CN</AvatarFallback>
-                      </Avatar>
-                      <div className='ms-2.5 flex flex-col'>
-                        <div className='text-sm font-semibold'>
-                          AnHung DepTry
-                        </div>
-                        <textarea
-                          ref={textareaRef}
-                          placeholder='Write something...'
-                          className=' max-h-[60vh] w-[28rem] resize-none overflow-y-auto bg-transparent py-1 text-sm outline-none'
-                          rows={1}
-                          value={text}
-                          onChange={handleChange}
-                        />
-                        <div className='flex flex-row gap-2'>
-                          <Button
-                            className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
-                            variant='outline'
-                            // onClick={handleImageClick}
-                          >
-                            <ImageIcon /> Add Image
-                          </Button>
-                          <Button
-                            className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
-                            variant='outline'
-                            // onClick={handleVideoClick}
-                          >
-                            <Clapperboard /> Add Video
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
 
-                    <div className='mt-2 flex flex-row items-end justify-end'>
-                      <Button className='rounded-3xl'>Post</Button>
-                    </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
-
+              <Link href={`/posts/${lite._id}`}>
+                <MessageCircle className='h-5 w-5 cursor-pointer' />
+              </Link>
               <Send className='h-5 w-5 cursor-pointer' />
             </div>
 
@@ -891,6 +850,37 @@ export default function LiteItem({
           setOpenDeleteDialog={setOpenDeleteDialog}
           liteId={lite?._id}
         />
+      )}
+
+      {openCancelDialog && (
+        <Dialog open={openCancelDialog} onOpenChange={setOpenCancelDialog}>
+          <DialogContent className='select-none px-0 pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[20rem]'>
+            <DialogHeader>
+              <DialogTitle className='mb-0 flex justify-center text-sm font-bold'>
+                Close comment?
+              </DialogTitle>
+              <DialogClose asChild>
+                <div className='absolute right-0 top-0 z-10 h-8 w-16 bg-white dark:bg-zinc-950'></div>
+              </DialogClose>
+            </DialogHeader>
+
+            <div className='flex flex-row border-t-2 dark:border-gray-600'>
+              <div
+                className='w-full cursor-pointer rounded-bl-3xl border-r-2 py-4 text-center dark:border-gray-600'
+                onClick={cancelClose}
+              >
+                Cancel
+              </div>
+
+              <div
+                className=' w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
+                onClick={confirmClose}
+              >
+                Close
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       )}
     </>
   );
