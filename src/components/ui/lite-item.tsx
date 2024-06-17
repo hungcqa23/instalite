@@ -332,50 +332,84 @@ export default function LiteItem({
               </div>
             </div>
 
-            <DropdownMenu modal={false}>
-              <DropdownMenuTrigger asChild>
-                <Button variant={'link'} className='me-1 h-5 w-5 px-0'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    className='lucide lucide-ellipsis'
-                  >
-                    <circle cx='12' cy='12' r='1' />
-                    <circle cx='19' cy='12' r='1' />
-                    <circle cx='5' cy='12' r='1' />
-                  </svg>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align='end'
-                className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
-              >
-                <DropdownMenuItem
-                  className='cursor-pointer gap-2 rounded-md font-medium'
-                  onClick={() => setOpenDeleteDialog(true)}
+            {user?._id === lite?.user_id._id ? (
+              <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <Button variant={'link'} className='me-1 h-5 w-5 px-0'>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      width='24'
+                      height='24'
+                      viewBox='0 0 24 24'
+                      fill='none'
+                      stroke='currentColor'
+                      strokeWidth='2'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      className='lucide lucide-ellipsis'
+                    >
+                      <circle cx='12' cy='12' r='1' />
+                      <circle cx='19' cy='12' r='1' />
+                      <circle cx='5' cy='12' r='1' />
+                    </svg>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align='end'
+                  className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
                 >
-                  <Trash className='mb-0 h-4 w-4' />
-                  <span className=''>Delete lite</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
-                  <Pencil className='mb-0 h-4 w-4' />
-                  <span className=''>Edit lite</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
-                  <Sparkle className='mb-0 h-4 w-4' />
-                  <span className=''>Summarize with Relite AI</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  <DropdownMenuItem
+                    className='cursor-pointer gap-2 rounded-md font-medium'
+                    onClick={() => setOpenDeleteDialog(true)}
+                  >
+                    <Trash className='mb-0 h-4 w-4' />
+                    <span className=''>Delete lite</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
+                    <Pencil className='mb-0 h-4 w-4' />
+                    <span className=''>Edit lite</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
+                    <Sparkle className='mb-0 h-4 w-4' />
+                    <span className=''>Summarize with Relite AI</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <Button variant={'link'} className='me-1 h-5 w-5 px-0'>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      width='24'
+                      height='24'
+                      viewBox='0 0 24 24'
+                      fill='none'
+                      stroke='currentColor'
+                      strokeWidth='2'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      className='lucide lucide-ellipsis'
+                    >
+                      <circle cx='12' cy='12' r='1' />
+                      <circle cx='19' cy='12' r='1' />
+                      <circle cx='5' cy='12' r='1' />
+                    </svg>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align='end'
+                  className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
+                >
+                  <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
+                    <Sparkle className='mb-0 h-4 w-4' />
+                    <span className=''>Summarize with Relite AI</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
           <Link href={`/posts/${lite._id}`} className='w-full'>
             <p className='mb-3 text-[0.8125rem]'>{lite?.content}</p>
@@ -541,7 +575,7 @@ export default function LiteItem({
 
   return (
     <>
-      <div className='mb-2 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
+      <div className='mb-0 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
         <div className='mb-2 flex flex-row items-center justify-between'>
           <div className='flex flex-row items-end'>
             <Avatar className='z-[-1] h-9 w-9'>
@@ -558,50 +592,84 @@ export default function LiteItem({
             </div>
           </div>
 
-          <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
-              <Button variant={'link'} className='me-1 h-5 w-5 px-0'>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  className='lucide lucide-ellipsis'
-                >
-                  <circle cx='12' cy='12' r='1' />
-                  <circle cx='19' cy='12' r='1' />
-                  <circle cx='5' cy='12' r='1' />
-                </svg>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align='end'
-              className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
-            >
-              <DropdownMenuItem
-                className='cursor-pointer gap-2 rounded-md font-medium'
-                onClick={() => setOpenDeleteDialog(true)}
+          {user?._id === lite?.user_id._id ? (
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger asChild>
+                <Button variant={'link'} className='me-1 h-5 w-5 px-0'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    width='24'
+                    height='24'
+                    viewBox='0 0 24 24'
+                    fill='none'
+                    stroke='currentColor'
+                    strokeWidth='2'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    className='lucide lucide-ellipsis'
+                  >
+                    <circle cx='12' cy='12' r='1' />
+                    <circle cx='19' cy='12' r='1' />
+                    <circle cx='5' cy='12' r='1' />
+                  </svg>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align='end'
+                className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
               >
-                <Trash className='mb-0 h-4 w-4' />
-                <span className=''>Delete lite</span>
-              </DropdownMenuItem>
-              {/* <DropdownMenuSeparator />
-              <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
-                <Pencil className='mb-0 h-4 w-4' />
-                <span className=''>Edit lite</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
-                <Sparkle className='mb-0 h-4 w-4' />
-                <span className=''>Summarize with Relite AI</span>
-              </DropdownMenuItem> */}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <DropdownMenuItem
+                  className='cursor-pointer gap-2 rounded-md font-medium'
+                  onClick={() => setOpenDeleteDialog(true)}
+                >
+                  <Trash className='mb-0 h-4 w-4' />
+                  <span className=''>Delete lite</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
+                  <Pencil className='mb-0 h-4 w-4' />
+                  <span className=''>Edit lite</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
+                  <Sparkle className='mb-0 h-4 w-4' />
+                  <span className=''>Summarize with Relite AI</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger asChild>
+                <Button variant={'link'} className='me-1 h-5 w-5 px-0'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    width='24'
+                    height='24'
+                    viewBox='0 0 24 24'
+                    fill='none'
+                    stroke='currentColor'
+                    strokeWidth='2'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    className='lucide lucide-ellipsis'
+                  >
+                    <circle cx='12' cy='12' r='1' />
+                    <circle cx='19' cy='12' r='1' />
+                    <circle cx='5' cy='12' r='1' />
+                  </svg>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align='end'
+                className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
+              >
+                <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
+                  <Sparkle className='mb-0 h-4 w-4' />
+                  <span className=''>Summarize with Relite AI</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
 
         <p className='mb-3 text-[0.8125rem]'>{lite?.content}</p>

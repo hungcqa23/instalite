@@ -1,7 +1,9 @@
 import ListPost from '@/app/(main)/ui/list-post';
 import SuggestedBar from '@/app/(main)/ui/SuggestedBar';
+
 import CreateLiteDialog from '@/components/ui/create-lite-dialog';
 import IconProfile from '@/components/ui/icon-profile';
+import UserAvatar from '@/components/ui/user-avatar';
 
 export default function Home() {
   return (
@@ -12,7 +14,7 @@ export default function Home() {
           <div className='mb-4 hidden h-12 w-[30rem] items-start justify-between border-b border-gray-200 py-2 sm:flex xl:flex xl:flex-row'>
             <CreateLiteDialog>
               <div className='flex w-[25rem] cursor-text items-center gap-2'>
-                <IconProfile />
+                <UserAvatar />
                 <p className='ms-2 cursor-text text-sm font-light text-gray-400'>
                   What&apos;s on your mind?
                 </p>
