@@ -169,7 +169,7 @@ export default function LiteItem({
   if (isLink)
     return (
       <Link href={`/posts/${lite._id}`} className='w-full'>
-        <div className='mb-2 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
+        <div className='mb-2 w-full border-gray-200 p-0 sm:pb-5'>
           <div className='mb-2 flex flex-row items-center justify-between'>
             <div className='flex flex-row items-end'>
               <Avatar className='z-[-1] h-9 w-9'>
@@ -379,7 +379,7 @@ export default function LiteItem({
 
   return (
     <>
-      <div className='mb-2 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
+      <div className='mb-2 w-full border-gray-200 p-0 sm:pb-5'>
         <div className='mb-2 flex flex-row items-center justify-between'>
           <div className='flex flex-row items-end'>
             <Avatar className='z-[-1] h-9 w-9'>

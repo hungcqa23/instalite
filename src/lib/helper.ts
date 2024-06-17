@@ -17,7 +17,7 @@ export const calculateTimeAgo = (inputDateString: string): string => {
 
   if (timeAgoInMinutes < 1) {
     // Less than a minute
-    return 'just now';
+    return 'Just now';
   } else if (timeAgoInMinutes < 60) {
     // Less than an hour
     return timeAgoInMinutes + 'm';

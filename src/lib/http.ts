@@ -36,11 +36,6 @@ const request = async <Response>(
           'Content-Type': 'application/json'
         };
 
-  console.log('Debug');
-  console.log(baseHeaders);
-  console.log(options?.body);
-  console.log('Hello');
-
   if (isClient()) {
     const accessToken = localStorage.getItem('access_key');
     if (accessToken) {
