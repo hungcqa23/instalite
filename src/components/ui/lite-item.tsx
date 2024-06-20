@@ -340,6 +340,7 @@ export default function LiteItem({
       });
 
       const data = await res.json();
+      console.log('Like data:' + data.result);
       return data;
     }
   });
@@ -499,7 +500,7 @@ export default function LiteItem({
             )}
           </Link>
 
-          <div className='mt-1 flex flex-row justify-between '>
+          <div className='mt-3 flex flex-row justify-between '>
             <div className='ms-0.5 flex flex-row gap-3'>
               <button onClick={handleLike}>
                 <Heart
@@ -711,7 +712,7 @@ export default function LiteItem({
           </MediaPlayer>
         )}
 
-        <div className='mt-1 flex flex-row justify-between'>
+        <div className='mt-3 flex flex-row justify-between'>
           <div className='ms-0.5 flex flex-row gap-3'>
             <button onClick={handleLike}>
               <Heart

@@ -3,6 +3,7 @@ import { http } from '@/lib/http';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
+import { Router } from 'next/router';
 import { Dispatch, SetStateAction } from 'react';
 
 interface DeletePostDialogProps {
@@ -32,8 +33,9 @@ const DeleteLiteDialog: React.FC<DeletePostDialogProps> = ({
 
   const handleDeleteLite = async () => {
     await deleteLiteMutation.mutateAsync(liteId);
+
     queryClient.invalidateQueries({
-      queryKey: ['posts']
+      queryKey: ['posts', accessToken]
     });
 
     router.push('/');
