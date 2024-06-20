@@ -39,7 +39,9 @@ const DeleteLiteDialog: React.FC<DeletePostDialogProps> = ({
     });
 
     router.push('/');
-    // window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   };
 
   return (
