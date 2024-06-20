@@ -35,6 +35,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import EditLiteDialog from '@/components/ui/edit-lite-dialog';
 import { Input } from '@/components/ui/input';
 import ListComment from '@/components/ui/list-comment';
 import ImagePreview from '@/components/ui/preview-image';
@@ -76,6 +77,7 @@ export default function LiteItem({
   const [bookmarked, setBookmarked] = useState(false);
   const [text, setText] = useState('');
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
   const [isOpenCommentDialog, setIsOpenCommentDialog] = useState(false);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
 
@@ -399,10 +401,12 @@ export default function LiteItem({
                     <span className=''>Delete lite</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
-                    <Pencil className='mb-0 h-4 w-4' />
-                    <span className=''>Edit lite</span>
-                  </DropdownMenuItem>
+                  <Link href={`/posts/${lite._id}`}>
+                    <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
+                      <Pencil className='mb-0 h-4 w-4' />
+                      <span className=''>Edit lite</span>
+                    </DropdownMenuItem>
+                  </Link>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
                     <Sparkle className='mb-0 h-4 w-4' />
@@ -445,7 +449,7 @@ export default function LiteItem({
             )}
           </div>
           <Link href={`/posts/${lite._id}`} className='w-full'>
-            <p className='mb-3 text-[0.8125rem]'>{lite?.content}</p>
+            <p className=' text-[0.8125rem]'>{lite?.content}</p>
           </Link>
 
           {/* {lite.url && (
@@ -462,7 +466,7 @@ export default function LiteItem({
 
           <Link href={`/posts/${lite._id}`} className='w-full'>
             {lite?.media?.type == 0 && (
-              <div className='my-3 '>
+              <div className='my-2 '>
                 <Image
                   src={lite.media.url}
                   alt='image'
@@ -481,6 +485,7 @@ export default function LiteItem({
                 streamType='on-demand'
                 logLevel='warn'
                 crossOrigin
+                className='z-0 my-2'
                 playsInline
                 title='Sprite Fight'
                 poster='https://files.vidstack.io/sprite-fight/poster.webp'
@@ -613,7 +618,10 @@ export default function LiteItem({
                   <span className=''>Delete lite</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
+                <DropdownMenuItem
+                  className='cursor-pointer gap-2 rounded-md font-medium'
+                  onClick={() => setOpenEditDialog(true)}
+                >
                   <Pencil className='mb-0 h-4 w-4' />
                   <span className=''>Edit lite</span>
                 </DropdownMenuItem>
@@ -659,7 +667,7 @@ export default function LiteItem({
           )}
         </div>
 
-        <p className='mb-3 text-[0.8125rem]'>{lite?.content}</p>
+        <p className='text-[0.8125rem]'>{lite?.content}</p>
         {/* {lite.url && (
           <div className='my-3'>
             <Image
@@ -672,7 +680,7 @@ export default function LiteItem({
           </div>
         )} */}
         {lite?.media?.type == 0 && (
-          <div className='my-3'>
+          <div className='my-2'>
             <Image
               src={lite.media.url}
               alt='image'
@@ -690,6 +698,7 @@ export default function LiteItem({
             streamType='on-demand'
             logLevel='warn'
             crossOrigin
+            className='z-0 my-2'
             playsInline
             title='Sprite Fight'
             poster='https://files.vidstack.io/sprite-fight/poster.webp'
@@ -882,6 +891,14 @@ export default function LiteItem({
       {openDeleteDialog && (
         <DeleteLiteDialog
           setOpenDeleteDialog={setOpenDeleteDialog}
+          liteId={lite?._id}
+        />
+      )}
+
+      {openEditDialog && (
+        <EditLiteDialog
+          openEditDialog={openEditDialog}
+          setOpenEditDialog={setOpenEditDialog}
           liteId={lite?._id}
         />
       )}
