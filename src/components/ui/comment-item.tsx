@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import EditCommentDialog from '@/components/ui/edit-comment-dialog';
 import { calculateTimeAgo } from '@/lib/helper';
 import { Post } from '@/schema-validations/post.schema';
 import { MediaPlayer, MediaProvider, Poster, Track } from '@vidstack/react';
@@ -29,6 +30,7 @@ import React, { useState } from 'react';
 export default function CommentItem({ comment }: { comment: Post }) {
   const { user } = useAppContext();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
 
   return (
     <>
@@ -83,7 +85,10 @@ export default function CommentItem({ comment }: { comment: Post }) {
                       <span className=''>Delete</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
+                    <DropdownMenuItem
+                      className='cursor-pointer gap-2 rounded-md font-medium'
+                      onClick={() => setOpenEditDialog(true)}
+                    >
                       <Pencil className='mb-0 h-4 w-4' />
                       <span className=''>Edit</span>
                     </DropdownMenuItem>
@@ -129,6 +134,13 @@ export default function CommentItem({ comment }: { comment: Post }) {
       {openDeleteDialog && (
         <DeleteCommentDialog
           setOpenDeleteDialog={setOpenDeleteDialog}
+          commentId={comment?._id}
+        />
+      )}
+      {openEditDialog && (
+        <EditCommentDialog
+          openEditDialog={openEditDialog}
+          setOpenEditDialog={setOpenEditDialog}
           commentId={comment?._id}
         />
       )}

@@ -19,7 +19,7 @@ export default function CurrentProfileSuggest() {
         <Link href={`/`} className='text-sm font-semibold'>
           {user?.username}
         </Link>
-        <p className='text-sm font-normal leading-4 text-gray-500'>
+        <p className='mt-1 text-sm font-normal leading-4 text-gray-500'>
           {user?.full_name}
         </p>
       </div>

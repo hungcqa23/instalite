@@ -465,40 +465,36 @@ export default function LiteItem({
           </div>
         )} */}
 
-          <Link href={`/posts/${lite._id}`} className='w-full'>
-            {lite?.media?.type == 0 && (
-              <div className='my-2 '>
-                <Image
-                  src={lite.media.url}
-                  alt='image'
-                  width={430}
-                  height={430}
-                  className=' rounded-md border-2'
-                />
-              </div>
-            )}
-          </Link>
-          <Link href={`/posts/${lite._id}`} className='w-full'>
-            {lite?.media?.type == 1 && (
-              <MediaPlayer
-                src={`http://localhost:8000/files/video-hls/${lite._id}/master.m3u8`}
-                viewType='video'
-                streamType='on-demand'
-                logLevel='warn'
-                crossOrigin
-                className='z-0 my-2'
-                playsInline
-                title='Sprite Fight'
-                poster='https://files.vidstack.io/sprite-fight/poster.webp'
-              >
-                <MediaProvider />
-                <DefaultVideoLayout
-                  // thumbnails='https://files.vidstack.io/sprite-fight/thumbnails.vtt'
-                  icons={defaultLayoutIcons}
-                />
-              </MediaPlayer>
-            )}
-          </Link>
+          {lite?.media?.type == 0 && (
+            <div className='my-2 '>
+              <Image
+                src={lite.media.url}
+                alt='image'
+                width={430}
+                height={430}
+                className=' rounded-md border-2'
+              />
+            </div>
+          )}
+          {lite?.media?.type == 1 && (
+            <MediaPlayer
+              src={`http://localhost:8000/files/video-hls/${lite._id}/master.m3u8`}
+              viewType='video'
+              streamType='on-demand'
+              logLevel='warn'
+              crossOrigin
+              className='z-0 my-2'
+              playsInline
+              title='Sprite Fight'
+              poster='https://files.vidstack.io/sprite-fight/poster.webp'
+            >
+              <MediaProvider />
+              <DefaultVideoLayout
+                // thumbnails='https://files.vidstack.io/sprite-fight/thumbnails.vtt'
+                icons={defaultLayoutIcons}
+              />
+            </MediaPlayer>
+          )}
 
           <div className='mt-3 flex flex-row justify-between '>
             <div className='ms-0.5 flex flex-row gap-3'>

@@ -35,11 +35,11 @@ const DeleteLiteDialog: React.FC<DeletePostDialogProps> = ({
     await deleteLiteMutation.mutateAsync(liteId);
 
     queryClient.invalidateQueries({
-      queryKey: ['posts', accessToken]
+      queryKey: ['posts']
     });
 
     router.push('/');
-    window.location.reload();
+    // window.location.reload();
   };
 
   return (
