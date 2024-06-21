@@ -351,7 +351,7 @@ export default function LiteItem({
   }, [data]);
 
   const summerizeMutation = useMutation({
-    mutationFn: async ({ formData }: { formData: FormData }) => {
+    mutationFn: async (formData: FormData) => {
       return await http.post('/files/summary', formData);
     }
   });
@@ -368,7 +368,7 @@ export default function LiteItem({
       // console.log(formData);
 
       const res = await summerizeMutation.mutateAsync(formData);
-      console.log(res);
+      console.log(res.json());
     } else console.log('Ko dung datatype');
   };
 
