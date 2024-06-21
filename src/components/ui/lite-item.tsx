@@ -64,6 +64,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 
 export default function LiteItem({
   lite,
@@ -351,12 +352,13 @@ export default function LiteItem({
   }, [data]);
 
   const summerizeMutation = useMutation({
-    mutationFn: async ({ formData }: { formData: FormData }) => {
+    mutationFn: async (formData: FormData) => {
       return await http.post('/files/summary', formData);
     }
   });
 
   const handleSummerization = async () => {
+    console.log('On click');
     if (lite?.media.type === 0) {
       // // let blob = await fetch(lite?.media.url).then(r => r.blob());
       const response = await axios.get(lite?.media.url, {
@@ -367,8 +369,8 @@ export default function LiteItem({
       formData.append('content', lite?.content);
       // console.log(formData);
 
-      // const res = await summerizeMutation.mutateAsync(formData);
-      // console.log(res);
+      const res = await summerizeMutation.mutateAsync(formData);
+      console.log(res.json());
     } else console.log('Ko dung datatype');
   };
 
@@ -421,6 +423,7 @@ export default function LiteItem({
                     </svg>
                   </Button>
                 </DropdownMenuTrigger>
+
                 <DropdownMenuContent
                   align='end'
                   className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
@@ -443,6 +446,7 @@ export default function LiteItem({
                   <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
                     <Sparkle className='mb-0 h-4 w-4' />
                     <span className=''>Summarize with Relite AI</span>
+                    <span>Hello World!</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -468,13 +472,18 @@ export default function LiteItem({
                     </svg>
                   </Button>
                 </DropdownMenuTrigger>
+
                 <DropdownMenuContent
                   align='end'
                   className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
                 >
-                  <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
+                  <DropdownMenuItem
+                    className='cursor-pointer gap-2 rounded-md font-medium'
+                    onClick={() => handleSummerization()}
+                  >
                     <Sparkle className='mb-0 h-4 w-4' />
                     <span className=''>Summarize with Relite AI</span>
+                    <span>Hello World!</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
