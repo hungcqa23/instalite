@@ -1,12 +1,13 @@
 'use client';
 
-import React, {
-  ReactNode,
-  useState,
-  useEffect,
-  useRef,
-  useCallback
-} from 'react';
+import { useAppContext } from '@/app/context/app-context';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem
+} from '@/components/ui/carousel';
 import {
   Dialog,
   DialogContent,
@@ -14,21 +15,20 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Clapperboard, ImageIcon, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import ImagePreview from '@/components/ui/preview-image';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem
-} from '@/components/ui/carousel';
-import { DialogClose } from '@radix-ui/react-dialog';
-import { getCookie } from 'cookies-next';
 import { http } from '@/lib/http';
+import { DialogClose } from '@radix-ui/react-dialog';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAppContext } from '@/app/context/app-context';
+import { getCookie } from 'cookies-next';
+import { Clapperboard, ImageIcon, X } from 'lucide-react';
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 
 interface CreateLiteDialogProps {
   children: ReactNode;
@@ -207,6 +207,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
   };
 
   const handleCreatePost = async (content: string) => {
+    if (content === null || content === '') content = ' ';
     const res = await createPostMutation.mutateAsync(content);
     const postId = res.post._id;
     if (!postId) return;

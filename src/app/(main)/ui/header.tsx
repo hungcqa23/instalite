@@ -1,20 +1,8 @@
 'use client';
-import {
-  Home,
-  Search,
-  SquarePen,
-  Bell,
-  UserRound,
-  AlignRightIcon,
-  Settings,
-  Bookmark
-} from 'lucide-react';
-import clsx from 'clsx';
-import Image from 'next/image';
-import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-import { useTheme } from 'next-themes';
+import ButtonLogout from '@/app/(main)/ui/button-logout';
 import { useAppContext } from '@/app/context/app-context';
+import { Button } from '@/components/ui/button';
+import CreateLiteDialog from '@/components/ui/create-lite-dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,11 +14,23 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import CreateLiteDialog from '@/components/ui/create-lite-dialog';
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
+import clsx from 'clsx';
+import {
+  AlignRightIcon,
+  Bell,
+  Bookmark,
+  Home,
+  Search,
+  Settings,
+  SquarePen,
+  UserRound
+} from 'lucide-react';
+import { useTheme } from 'next-themes';
+import Image from 'next/image';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import ButtonLogout from '@/app/(main)/ui/button-logout';
-import { Button } from '@/components/ui/button';
+import React, { useEffect, useState } from 'react';
 
 export default function Header() {
   const { resolvedTheme, setTheme } = useTheme();

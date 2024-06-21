@@ -32,7 +32,7 @@ export default function ListComment({ postId }: { postId: string }) {
   console.log(comments.result);
 
   return (
-    <div className=' w-full border-b-[1px] border-gray-200 p-0 sm:pb-5 '>
+    <div className=' w-full border-gray-200 p-0 sm:pb-5 '>
       {comments.result &&
         List<Post>({
           listItems: comments.result,

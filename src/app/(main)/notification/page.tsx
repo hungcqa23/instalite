@@ -1,6 +1,6 @@
-import List from '@/components/ui/list';
 import NotificationItem from '@/app/(main)/notification/notification-item';
 import { notificationRequest } from '@/app/api-request/notification';
+import List from '@/components/ui/list';
 import {
   Notification,
   NotificationResType

@@ -1,8 +1,8 @@
 'use client';
 
-import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/audio.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
+import '@vidstack/react/player/styles/default/theme.css';
 
 import { MediaPlayer, MediaProvider, Poster, Track } from '@vidstack/react';
 import {
@@ -10,47 +10,57 @@ import {
   defaultLayoutIcons
 } from '@vidstack/react/player/layouts/default';
 
+import { postApiRequest } from '@/app/api-request/post';
+import { useAppContext } from '@/app/context/app-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
-  Heart,
-  MessageCircle,
-  Repeat2,
-  Send,
-  Bookmark,
-  Trash,
-  Pencil,
-  Sparkle,
-  MessageSquareQuote
-} from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator
-} from '@/components/ui/dropdown-menu';
-import { useState, useEffect, useRef, useCallback } from 'react';
-import clsx from 'clsx';
-import Image from 'next/image';
-import { formatSocialNumber } from '@/lib/helper';
+  Carousel,
+  CarouselContent,
+  CarouselItem
+} from '@/components/ui/carousel';
+import DeleteLiteDialog from '@/components/ui/delete-lite-dialog';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
-import DeleteLiteDialog from '@/components/ui/delete-lite-dialog';
-import { Post } from '@/schema-validations/post.schema';
-import { calculateTimeAgo } from '@/lib/helper';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { postApiRequest } from '@/app/api-request/post';
-import Link from 'next/link';
-import { http } from '@/lib/http';
-import { getCookie } from 'cookies-next';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import ListComment from '@/components/ui/list-comment';
-import { useAppContext } from '@/app/context/app-context';
+import ImagePreview from '@/components/ui/preview-image';
+import { calculateTimeAgo, formatSocialNumber } from '@/lib/helper';
+import { http } from '@/lib/http';
+import { Post } from '@/schema-validations/post.schema';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import clsx from 'clsx';
+import { getCookie } from 'cookies-next';
+import {
+  Bookmark,
+  Clapperboard,
+  Heart,
+  ImageIcon,
+  MessageCircle,
+  MessageSquareQuote,
+  Pencil,
+  Repeat2,
+  Send,
+  Sparkle,
+  Trash,
+  X
+} from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export default function LiteItem({
   lite,
@@ -66,9 +76,60 @@ export default function LiteItem({
   const [text, setText] = useState('');
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [isOpenCommentDialog, setIsOpenCommentDialog] = useState(false);
-  const [openCancelDialog, setOpenCancelDialog] = useState(false);
   const accessToken = getCookie('access_key');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  //file media
+  const [images, setImages] = useState<string[]>([]);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoFileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleVideoClick = () => {
+    if (videoFileInputRef.current) {
+      videoFileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files);
+      const fileUrls = fileArray.map(file => URL.createObjectURL(file));
+      setImages(prevImages => [...prevImages, ...fileUrls]);
+      setImageFile(e.target.files[0]);
+    }
+  };
+
+  const handleDeleteVideo = () => {
+    setVideoFile(null);
+    setVideoUrl(null);
+    if (videoFileInputRef.current) {
+      videoFileInputRef.current.value = '';
+    }
+  };
+
+  const handleDeleteImage = (index: number) => {
+    setImages(prevImages => prevImages.filter((_, i) => i !== index));
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setVideoFile(file);
+      setVideoUrl(URL.createObjectURL(file));
+    }
+  };
+
   const likeMutation = useMutation({
     mutationFn: (postId: string) => postApiRequest.like(postId)
   });
@@ -80,6 +141,64 @@ export default function LiteItem({
   });
   const unBookmarkMutation = useMutation({
     mutationFn: (postId: string) => postApiRequest.unBookmark(postId)
+  });
+
+  const updateVideoMutation = useMutation({
+    mutationFn: async ({
+      commentPostId,
+      formData
+    }: {
+      commentPostId: string;
+      formData: FormData;
+    }) => {
+      const res = await fetch(
+        `http://localhost:8000/posts/${commentPostId}/upload-hls`,
+        {
+          method: 'PUT',
+          body: formData,
+          headers: {
+            Cookie: `access_token=${accessToken}`
+          },
+          credentials: 'include'
+        }
+      );
+      return await res.json();
+    },
+    onSuccess: () => {
+      setIsOpenCommentDialog(false);
+      queryClient.invalidateQueries({
+        queryKey: ['comments']
+      });
+      // window.location.reload();
+    }
+  });
+
+  const updatePostMutation = useMutation({
+    mutationFn: async ({
+      commentPostId,
+      formData
+    }: {
+      commentPostId: string;
+      formData: FormData;
+    }) => {
+      const res = await fetch(`http://localhost:8000/posts/${commentPostId}`, {
+        method: 'PUT',
+        body: formData,
+        headers: {
+          Cookie: `access_token=${accessToken}`
+        },
+        credentials: 'include'
+      });
+      return await res.json();
+    },
+
+    onSuccess: () => {
+      setIsOpenCommentDialog(false);
+      queryClient.invalidateQueries({
+        queryKey: ['comments']
+      });
+      // window.location.reload();
+    }
   });
 
   const createCommentMutation = useMutation({
@@ -95,6 +214,29 @@ export default function LiteItem({
   const handleCommentPost = async (content: string) => {
     const res = await createCommentMutation.mutateAsync(content);
     const commentPostId = res.post._id;
+    if (!commentPostId) return;
+    const formData = new FormData();
+
+    if (videoFile) {
+      formData.append('media', videoFile);
+      await updateVideoMutation.mutateAsync({
+        commentPostId,
+        formData
+      });
+      setText('');
+      return;
+    }
+
+    if (imageFile) {
+      formData.append('media', imageFile);
+
+      const updateImage = await updatePostMutation.mutateAsync({
+        commentPostId,
+        formData
+      });
+      setText('');
+      return;
+    }
     setIsOpenCommentDialog(false);
     resetDialog();
     queryClient.invalidateQueries({
@@ -132,6 +274,10 @@ export default function LiteItem({
 
   const resetDialog = useCallback(() => {
     setText('');
+    setImages([]);
+    setImageFile(null);
+    setVideoFile(null);
+    setVideoUrl(null);
   }, []);
 
   const handleLike = () => {
@@ -168,10 +314,10 @@ export default function LiteItem({
   }, [data]);
   if (isLink)
     return (
-      <Link href={`/posts/${lite._id}`} className='w-full'>
-        <div className='mb-2 w-full border-gray-200 p-0 sm:pb-5'>
-          <div className='mb-2 flex flex-row items-center justify-between'>
-            <div className='flex flex-row items-end'>
+      <>
+        <div className='mb-2 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
+          <div className='mb-2 flex flex-row items-center justify-between '>
+            <div className='flex flex-row items-end '>
               <Avatar className='z-[-1] h-9 w-9'>
                 <AvatarImage
                   src={
@@ -238,8 +384,10 @@ export default function LiteItem({
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+          <Link href={`/posts/${lite._id}`} className='w-full'>
+            <p className='mb-3 text-[0.8125rem]'>{lite?.content}</p>
+          </Link>
 
-          <p className='mb-3 text-[0.8125rem]'>{lite?.content}</p>
           {/* {lite.url && (
           <div className='my-3'>
             <Image
@@ -251,38 +399,42 @@ export default function LiteItem({
             />
           </div>
         )} */}
-          {lite?.media?.type == 0 && (
-            <div className='my-3'>
-              <Image
-                src={lite.media.url}
-                alt='image'
-                width={430}
-                height={430}
-                className=' rounded-md'
-              />
-            </div>
-          )}
 
-          {lite?.media?.type == 1 && (
-            <MediaPlayer
-              src={`http://localhost:8000/files/video-hls/${lite._id}/master.m3u8`}
-              viewType='video'
-              streamType='on-demand'
-              logLevel='warn'
-              crossOrigin
-              playsInline
-              title='Sprite Fight'
-              poster='https://files.vidstack.io/sprite-fight/poster.webp'
-            >
-              <MediaProvider />
-              <DefaultVideoLayout
-                // thumbnails='https://files.vidstack.io/sprite-fight/thumbnails.vtt'
-                icons={defaultLayoutIcons}
-              />
-            </MediaPlayer>
-          )}
+          <Link href={`/posts/${lite._id}`} className='w-full'>
+            {lite?.media?.type == 0 && (
+              <div className='my-3 '>
+                <Image
+                  src={lite.media.url}
+                  alt='image'
+                  width={430}
+                  height={430}
+                  className=' rounded-md border-2'
+                />
+              </div>
+            )}
+          </Link>
+          <Link href={`/posts/${lite._id}`} className='w-full'>
+            {lite?.media?.type == 1 && (
+              <MediaPlayer
+                src={`http://localhost:8000/files/video-hls/${lite._id}/master.m3u8`}
+                viewType='video'
+                streamType='on-demand'
+                logLevel='warn'
+                crossOrigin
+                playsInline
+                title='Sprite Fight'
+                poster='https://files.vidstack.io/sprite-fight/poster.webp'
+              >
+                <MediaProvider />
+                <DefaultVideoLayout
+                  // thumbnails='https://files.vidstack.io/sprite-fight/thumbnails.vtt'
+                  icons={defaultLayoutIcons}
+                />
+              </MediaPlayer>
+            )}
+          </Link>
 
-          <div className='mt-1 flex flex-row justify-between'>
+          <div className='mt-1 flex flex-row justify-between '>
             <div className='ms-0.5 flex flex-row gap-3'>
               <button onClick={handleLike}>
                 <Heart
@@ -327,8 +479,25 @@ export default function LiteItem({
                           value={text}
                           onChange={handleChange}
                         />
+                        <div className='flex flex-row gap-2'>
+                          <Button
+                            className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
+                            variant='outline'
+                            // onClick={handleImageClick}
+                          >
+                            <ImageIcon /> Add Image
+                          </Button>
+                          <Button
+                            className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
+                            variant='outline'
+                            // onClick={handleVideoClick}
+                          >
+                            <Clapperboard /> Add Video
+                          </Button>
+                        </div>
                       </div>
                     </div>
+
                     <div className='mt-2 flex flex-row items-end justify-end'>
                       <Button className='rounded-3xl'>Post</Button>
                     </div>
@@ -374,7 +543,7 @@ export default function LiteItem({
             liteId={lite?._id}
           />
         )}
-      </Link>
+      </>
     );
 
   return (
@@ -461,7 +630,7 @@ export default function LiteItem({
               alt='image'
               width={430}
               height={430}
-              className=' rounded-md'
+              className=' rounded-md border-2'
             />
           </div>
         )}
@@ -506,19 +675,34 @@ export default function LiteItem({
               <DialogTrigger>
                 <MessageCircle className='h-5 w-5 cursor-pointer' />
               </DialogTrigger>
-              <DialogContent className=' dark:bg-zinc-950 sm:max-w-[34rem]'>
+              <DialogContent className='select-none  dark:bg-zinc-950 sm:max-w-[34rem]'>
                 <DialogHeader>
                   <DialogTitle className='flex justify-center text-sm font-bold'>
                     Reply to {lite?.user_id?.username}
                   </DialogTitle>
+                  <DialogClose asChild>
+                    <Button
+                      className='absolute right-0 top-0 z-10 hover:bg-transparent dark:hover:bg-transparent'
+                      variant='ghost'
+                      onClick={() => handleDialogChange(false)}
+                    >
+                      <X size={16} />
+                    </Button>
+                  </DialogClose>
                 </DialogHeader>
-                <div className='flex flex-col'>
+                <div className='flex flex-col overflow-hidden'>
                   <div className='flex flex-row'>
                     <Avatar className='h-8 w-8 cursor-pointer  '>
-                      <AvatarImage src={user?.avatar} alt='@shadcn' />
+                      <AvatarImage
+                        src={
+                          user?.avatar ||
+                          'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+                        }
+                        alt='@shadcn'
+                      />
                       <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
-                    <div className='ms-2.5 flex flex-col'>
+                    <div className='ms-2.5 flex max-w-full flex-col'>
                       <div className='text-sm font-semibold'>
                         {user?.username}
                       </div>
@@ -527,11 +711,87 @@ export default function LiteItem({
                         placeholder='Write something...'
                         className=' max-h-[60vh] w-[28rem] resize-none overflow-y-auto bg-transparent py-1 text-sm outline-none'
                         rows={1}
+                        autoFocus
                         value={text}
                         onChange={handleChange}
                       />
+                      {images.length == 0 && videoUrl == null && (
+                        <div className='flex flex-row gap-2'>
+                          <Button
+                            className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
+                            variant='outline'
+                            onClick={handleImageClick}
+                          >
+                            <ImageIcon /> Add Image
+                          </Button>
+                          <Button
+                            className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
+                            variant='outline'
+                            onClick={handleVideoClick}
+                          >
+                            <Clapperboard /> Add Video
+                          </Button>
+                        </div>
+                      )}
+                      <Input
+                        type='file'
+                        ref={fileInputRef}
+                        multiple={true}
+                        accept='image/*'
+                        className='hidden'
+                        onChange={handleFileChange}
+                      />
+                      <Input
+                        type='file'
+                        ref={videoFileInputRef}
+                        accept='video/*'
+                        className='hidden'
+                        onChange={handleVideoChange}
+                      />
+                      {images.length > 0 && (
+                        <Carousel
+                          opts={{
+                            align: 'start'
+                          }}
+                          className='my-3 w-full max-w-full overflow-hidden'
+                        >
+                          <CarouselContent className='-ml-1 flex'>
+                            {images.map((image, index) => (
+                              <CarouselItem
+                                key={index}
+                                className='basis-1/2 pl-1 pr-1'
+                              >
+                                <ImagePreview
+                                  src={image}
+                                  onDelete={() => handleDeleteImage(index)}
+                                />
+                              </CarouselItem>
+                            ))}
+                          </CarouselContent>
+                        </Carousel>
+                      )}
+                      {videoUrl && (
+                        <div className='relative my-3 max-h-[20rem] w-fit '>
+                          <video
+                            controls
+                            className='h-auto max-h-[20rem] w-auto rounded'
+                            autoPlay
+                          >
+                            <source src={videoUrl} type='video/mp4' />
+                            Your browser does not support the video tag.
+                          </video>
+                          <Button
+                            className='absolute right-2 top-2 rounded-full bg-opacity-75'
+                            variant='ghost'
+                            onClick={handleDeleteVideo}
+                          >
+                            <X size={16} />
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   </div>
+
                   <div className='mt-2 flex flex-row items-end justify-end'>
                     <Button
                       className='rounded-3xl'
