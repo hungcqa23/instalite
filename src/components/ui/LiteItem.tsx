@@ -602,6 +602,39 @@ export default function LiteItem({
             liteId={lite?._id}
           />
         )}
+
+        {loading && (
+          <Dialog open={loading}>
+            <DialogContent className='select-none pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[30rem]'>
+              <DialogHeader>
+                <DialogTitle className='flex justify-center text-sm font-bold'>
+                  The post content is being summarized, please wait...
+                </DialogTitle>
+              </DialogHeader>
+
+              <div className='flex flex-row border-t-2 dark:border-gray-600'></div>
+            </DialogContent>
+          </Dialog>
+        )}
+
+        {openSummarizeDialog && (
+          <Dialog
+            open={openSummarizeDialog}
+            onOpenChange={setOpenSummarizeDialog}
+          >
+            <DialogContent className='select-none pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[40rem]'>
+              <DialogHeader>
+                <DialogTitle className='flex justify-center text-sm font-bold'>
+                  Summarized Content
+                </DialogTitle>
+              </DialogHeader>
+              <p className='mb-0 flex justify-center pr-3 text-sm font-normal'>
+                {summarizedText}
+              </p>
+              <div className='flex flex-row border-t-2 dark:border-gray-600'></div>
+            </DialogContent>
+          </Dialog>
+        )}
       </>
     );
 
