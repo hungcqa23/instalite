@@ -281,15 +281,6 @@ export default function LiteItem({
     setIsOpenCommentDialog(true);
   };
 
-  useEffect(() => {
-    if (textareaRef.current) {
-      // Reset height to auto to measure the scroll height accurately
-      textareaRef.current.style.height = 'auto';
-      // Set height based on scroll height
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
-  }, [text]);
-
   const handleBookmark = () => {
     if (!bookmarked) {
       bookmarkMutation.mutate(lite._id);
@@ -299,6 +290,15 @@ export default function LiteItem({
       setBookmarked(false);
     }
   };
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      // Reset height to auto to measure the scroll height accurately
+      textareaRef.current.style.height = 'auto';
+      // Set height based on scroll height
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [text]);
 
   const resetDialog = useCallback(() => {
     setText('');
@@ -343,8 +343,15 @@ export default function LiteItem({
   }, [data]);
 
   const summerizeMutation = useMutation({
-    mutationFn: async ({ formData }: { formData: FormData }) => {
-      return await http.post('/files/summary', formData);
+    mutationFn: async (formData: FormData) => {
+      return await fetch('http://localhost:8000/files/summary', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Cookie: `access_token=${accessToken}`
+        },
+        credentials: 'include'
+      });
     }
   });
 
@@ -357,8 +364,11 @@ export default function LiteItem({
       const formData = new FormData();
       formData.append('media', response.data);
       formData.append('content', lite?.content);
-      // console.log(formData);
-    } else console.log('Ko dung datatype');
+
+      const res = await summerizeMutation.mutateAsync(formData);
+      console.log(await res.json());
+    } else {
+    }
   };
 
   if (isLink)
@@ -412,19 +422,22 @@ export default function LiteItem({
                     onClick={() => setOpenDeleteDialog(true)}
                   >
                     <Trash className='mb-0 h-4 w-4' />
-                    <span className=''>Delete lite</span>
+                    <span>Delete lite</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <Link href={`/posts/${lite._id}`}>
                     <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
                       <Pencil className='mb-0 h-4 w-4' />
-                      <span className=''>Edit lite</span>
+                      <span>Edit lite</span>
                     </DropdownMenuItem>
                   </Link>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
+                  <DropdownMenuItem
+                    className='cursor-pointer gap-2 rounded-md font-medium'
+                    onClick={() => handleSummerization()}
+                  >
                     <Sparkle className='mb-0 h-4 w-4' />
-                    <span className=''>Summarize with Relite AI</span>
+                    <span>Summarize with Relite AI</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -454,9 +467,12 @@ export default function LiteItem({
                   align='end'
                   className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
                 >
-                  <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
+                  <DropdownMenuItem
+                    className='cursor-pointer gap-2 rounded-md font-medium'
+                    onClick={() => handleSummerization()}
+                  >
                     <Sparkle className='mb-0 h-4 w-4' />
-                    <span className=''>Summarize with Relite AI</span>
+                    <span>Summarize with Relite AI</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -625,7 +641,7 @@ export default function LiteItem({
                   onClick={() => setOpenDeleteDialog(true)}
                 >
                   <Trash className='mb-0 h-4 w-4' />
-                  <span className=''>Delete lite</span>
+                  <span>Delete lite</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -633,7 +649,7 @@ export default function LiteItem({
                   onClick={() => setOpenEditDialog(true)}
                 >
                   <Pencil className='mb-0 h-4 w-4' />
-                  <span className=''>Edit lite</span>
+                  <span>Edit lite</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -641,7 +657,7 @@ export default function LiteItem({
                   onClick={() => handleSummerization()}
                 >
                   <Sparkle className='mb-0 h-4 w-4' />
-                  <span className=''>Summarize with Relite AI</span>
+                  <span>Summarize with Relite AI</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -676,7 +692,7 @@ export default function LiteItem({
                   onClick={() => handleSummerization()}
                 >
                   <Sparkle className='mb-0 h-4 w-4' />
-                  <span className=''>Summarize with Relite AI</span>
+                  <span>Summarize with Relite AI</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
