@@ -1,15 +1,4 @@
 'use client';
-
-import '@vidstack/react/player/styles/default/layouts/audio.css';
-import '@vidstack/react/player/styles/default/layouts/video.css';
-import '@vidstack/react/player/styles/default/theme.css';
-
-import { MediaPlayer, MediaProvider, Poster, Track } from '@vidstack/react';
-import {
-  DefaultVideoLayout,
-  defaultLayoutIcons
-} from '@vidstack/react/player/layouts/default';
-
 import { postApiRequest } from '@/app/api-request/post';
 import { useAppContext } from '@/app/context/app-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -40,11 +29,16 @@ import { Input } from '@/components/ui/input';
 import ListComment from '@/components/ui/list-comment';
 import ImagePreview from '@/components/ui/preview-image';
 import { useToast } from '@/components/ui/use-toast';
-import { calculateTimeAgo, formatSocialNumber } from '@/lib/helper';
+import { calculateTimeAgo } from '@/lib/helper';
 import { http } from '@/lib/http';
 import { Post } from '@/schema-validations/post.schema';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-// import axios from 'axios';
+import { MediaPlayer, MediaProvider } from '@vidstack/react';
+import {
+  DefaultVideoLayout,
+  defaultLayoutIcons
+} from '@vidstack/react/player/layouts/default';
+import axios from 'axios';
 import clsx from 'clsx';
 import { getCookie } from 'cookies-next';
 import {
@@ -53,9 +47,7 @@ import {
   Heart,
   ImageIcon,
   MessageCircle,
-  MessageSquareQuote,
   Pencil,
-  Repeat2,
   Send,
   Sparkle,
   Trash,
@@ -366,9 +358,6 @@ export default function LiteItem({
       formData.append('media', response.data);
       formData.append('content', lite?.content);
       // console.log(formData);
-
-      // const res = await summerizeMutation.mutateAsync(formData);
-      // console.log(res);
     } else console.log('Ko dung datatype');
   };
 
@@ -379,14 +368,7 @@ export default function LiteItem({
           <div className='mb-2 flex flex-row items-center justify-between '>
             <div className='flex flex-row items-end '>
               <Avatar className='z-[-1] h-9 w-9'>
-                <AvatarImage
-                  src={
-                    lite?.user_id?.username === 'anhung1'
-                      ? 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                      : undefined
-                  }
-                  alt='@shadcn'
-                />
+                <AvatarImage src={lite?.user_id?.avatar} alt='@shadcn' />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className='ms-2.5 flex flex-col justify-end '>
@@ -485,16 +467,16 @@ export default function LiteItem({
           </Link>
 
           {/* {lite.url && (
-          <div className='my-3'>
-            <Image
-              src={lite.url}
-              alt='image'
-              width={430}
-              height={430}
-              className=' rounded-md'
-            />
-          </div>
-        )} */}
+                <div className='my-3'>
+                  <Image
+                    src={lite.url}
+                    alt='image'
+                    width={430}
+                    height={430}
+                    className=' rounded-md'
+                  />
+                </div>
+              )} */}
 
           {lite?.media?.type == 0 && (
             <div className='my-2 '>
@@ -571,18 +553,18 @@ export default function LiteItem({
           </div>
 
           {/* {liked ? (
-          <span className='mt-2 block text-xs font-medium text-black dark:text-white'>
-            {formatSocialNumber(lite?.likes + 1)} likes
-          </span>
-        ) : (
-          <span className='mt-2 block text-xs font-medium text-black dark:text-white'>
-            {formatSocialNumber(lite?.likes)} likes
-          </span>
-        )}
-
-        <button>
-          <span className='text-xs text-slate-500'>See all 0 comments</span>
-        </button> */}
+                <span className='mt-2 block text-xs font-medium text-black dark:text-white'>
+                  {formatSocialNumber(lite?.likes + 1)} likes
+                </span>
+              ) : (
+                <span className='mt-2 block text-xs font-medium text-black dark:text-white'>
+                  {formatSocialNumber(lite?.likes)} likes
+                </span>
+              )}
+      
+              <button>
+                <span className='text-xs text-slate-500'>See all 0 comments</span>
+              </button> */}
         </div>
         {openDeleteDialog && (
           <DeleteLiteDialog
@@ -703,16 +685,16 @@ export default function LiteItem({
 
         <p className='text-[0.8125rem]'>{lite?.content}</p>
         {/* {lite.url && (
-          <div className='my-3'>
-            <Image
-              src={lite.url}
-              alt='image'
-              width={430}
-              height={430}
-              className=' rounded-md'
-            />
-          </div>
-        )} */}
+              <div className='my-3'>
+                <Image
+                  src={lite.url}
+                  alt='image'
+                  width={430}
+                  height={430}
+                  className=' rounded-md'
+                />
+              </div>
+            )} */}
         {lite?.media?.type == 0 && (
           <div className='my-2'>
             <Image
