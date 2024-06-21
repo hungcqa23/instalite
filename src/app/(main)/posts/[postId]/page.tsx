@@ -1,4 +1,4 @@
-import LiteItem from '@/components/ui/lite-item';
+import LiteItem from '@/components/ui/LiteItem';
 import { http } from '@/lib/http';
 import { Post, PostResType } from '@/schema-validations/post.schema';
 import { cookies } from 'next/headers';

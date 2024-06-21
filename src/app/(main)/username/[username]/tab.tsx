@@ -1,7 +1,7 @@
 'use client';
 
 import { useAppContext } from '@/app/context/app-context';
-import LiteItem from '@/components/ui/lite-item';
+import LiteItem from '@/components/ui/LiteItem';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { User } from '@/schema-validations/account.schema';
 import { Bookmark, Grid2X2, ImageIcon, Repeat2 } from 'lucide-react';

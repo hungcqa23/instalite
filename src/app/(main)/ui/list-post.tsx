@@ -2,7 +2,7 @@
 
 import DetailedPostPage from '@/app/(main)/ui/detailed-post';
 import List from '@/components/ui/list';
-import LiteItem from '@/components/ui/lite-item';
+import LiteItem from '@/components/ui/LiteItem';
 import { Post } from '@/schema-validations/post.schema';
 import { useQuery } from '@tanstack/react-query';
 import { getCookie } from 'cookies-next';
