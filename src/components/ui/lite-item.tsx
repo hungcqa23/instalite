@@ -45,6 +45,7 @@ import { http } from '@/lib/http';
 import { Post } from '@/schema-validations/post.schema';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 // import axios from 'axios';
+import axios from 'axios';
 import clsx from 'clsx';
 import { getCookie } from 'cookies-next';
 import {
@@ -64,7 +65,6 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 
 export default function LiteItem({
   lite,
@@ -359,19 +359,17 @@ export default function LiteItem({
 
   const handleSummerization = async () => {
     console.log('On click');
-    if (lite?.media.type === 0) {
-      // // let blob = await fetch(lite?.media.url).then(r => r.blob());
-      const response = await axios.get(lite?.media.url, {
+    const formData = new FormData();
+    if (lite?.media?.type === 0) {
+      const response = await axios.get(lite?.media?.url, {
         responseType: 'blob'
       });
-      const formData = new FormData();
-      formData.append('media', response.data);
-      formData.append('content', lite?.content);
-      // console.log(formData);
 
-      const res = await summerizeMutation.mutateAsync(formData);
-      console.log(res.json());
-    } else console.log('Ko dung datatype');
+      formData.append('media', response.data);
+    }
+    formData.append('content', lite?.content);
+    const res = await summerizeMutation.mutateAsync(formData);
+    console.log(await res.json());
   };
 
   if (isLink)
