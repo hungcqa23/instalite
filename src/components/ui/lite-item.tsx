@@ -1,5 +1,4 @@
 'use client';
-
 import '@vidstack/react/player/styles/default/layouts/audio.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
 import '@vidstack/react/player/styles/default/theme.css';
@@ -65,6 +64,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { usePostSaved, useSaved } from '@/app/queries/useSaved';
 
 export default function LiteItem({
   lite,
@@ -82,7 +82,6 @@ export default function LiteItem({
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [isOpenCommentDialog, setIsOpenCommentDialog] = useState(false);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
-
   const accessToken = getCookie('access_key');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   //file media
@@ -94,6 +93,9 @@ export default function LiteItem({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoFileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const { data: dataSaved } = usePostSaved(lite._id);
+  console.log(dataSaved);
   const handleCopyUrl = (url: string) => {
     navigator.clipboard
       .writeText(url)
@@ -168,7 +170,6 @@ export default function LiteItem({
   const unBookmarkMutation = useMutation({
     mutationFn: (postId: string) => postApiRequest.unBookmark(postId)
   });
-
   const updateVideoMutation = useMutation({
     mutationFn: async ({
       commentPostId,
@@ -198,7 +199,6 @@ export default function LiteItem({
       // window.location.reload();
     }
   });
-
   const updatePostMutation = useMutation({
     mutationFn: async ({
       commentPostId,
@@ -226,7 +226,6 @@ export default function LiteItem({
       // window.location.reload();
     }
   });
-
   const createCommentMutation = useMutation({
     mutationFn: async (text: string) => {
       return await http.post('/posts', {
@@ -358,7 +357,6 @@ export default function LiteItem({
   });
 
   const handleSummerization = async () => {
-    console.log('On click');
     const formData = new FormData();
     if (lite?.media?.type === 0) {
       const response = await axios.get(lite?.media?.url, {
@@ -369,7 +367,6 @@ export default function LiteItem({
     }
     formData.append('content', lite?.content);
     const res = await summerizeMutation.mutateAsync(formData);
-    console.log(await res.json());
   };
 
   if (isLink)

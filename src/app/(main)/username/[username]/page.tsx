@@ -38,7 +38,7 @@ export default async function MeProfile({
 
   return (
     <>
-      <div className='mt-4 max-w-[34.9375rem] items-start justify-center'>
+      <div className='mt-4 w-full max-w-[34.9375rem] items-start justify-center'>
         {/* <div className='flex flex-col'>
           <div className='flex h-20 justify-between'>
             <div className='mt-4 flex flex-col items-start justify-start space-y-2'>

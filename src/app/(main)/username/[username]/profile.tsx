@@ -9,12 +9,10 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import FollowUserItem from '@/components/ui/follow-user-item';
-import { Input } from '@/components/ui/input';
 import List from '@/components/ui/list';
 import { http } from '@/lib/http';
 import { FollowUser } from '@/schema-validations/account.schema';
 import { useMutation } from '@tanstack/react-query';
-import { Search } from 'lucide-react';
 import React, { useState } from 'react';
 
 export default function Profile({ data }: { data: any }) {
@@ -47,7 +45,6 @@ export default function Profile({ data }: { data: any }) {
     );
 
     setFollowers(followerList);
-    console.log(followers);
   };
 
   const getAllFollowingsMutation = useMutation({
@@ -74,7 +71,6 @@ export default function Profile({ data }: { data: any }) {
     );
 
     setFollowedUsers(followedUsersList);
-    console.log(followedUsers);
   };
 
   return (
