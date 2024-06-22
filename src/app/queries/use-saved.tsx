@@ -21,7 +21,6 @@ export const useSaved = () => {
 };
 
 export const usePostSaved = (postId: string) => {
-  console.log('Post ID:', postId);
   return useQuery({
     queryKey: ['bookmarks', postId],
     queryFn: async () => {
