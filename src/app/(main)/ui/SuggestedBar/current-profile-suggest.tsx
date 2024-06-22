@@ -1,6 +1,7 @@
 'use client';
 import { useAppContext } from '@/app/context/app-context';
 import IconProfile from '@/components/ui/icon-profile';
+import UserAvatar from '@/components/ui/user-avatar';
 import Link from 'next/link';
 import React from 'react';
 
@@ -9,12 +10,6 @@ export default function CurrentProfileSuggest() {
 
   return (
     <div className='flex items-center gap-2 px-4'>
-      <IconProfile
-        className='h-10 w-10'
-        to={`/username/${user?.username}`}
-        src={user?.avatar}
-      />
-
       <div className='flex flex-col'>
         <Link href={`/`} className='text-sm font-semibold'>
           {user?.username}

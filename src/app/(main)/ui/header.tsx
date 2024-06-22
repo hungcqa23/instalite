@@ -146,6 +146,11 @@ export default function Header() {
                 'text-zinc-400 dark:text-zinc-700': activeTab !== 'me'
               }
             )}`}
+            onClick={() => {
+              setTimeout(() => {
+                window.location.reload();
+              }, 500);
+            }}
           >
             <UserRound className='h-7 w-7' />
           </Button>

@@ -19,24 +19,62 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { http } from '@/lib/http';
-import { useMutation } from '@tanstack/react-query';
+import { Account } from '@/schema-validations/account.schema';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
 export default function BtnCta({ user: userData }: any) {
   const { user } = userData;
   const router = useRouter();
   const { user: currentUser, setUser } = useAppContext();
   const [username, setUsername] = useState('');
-  const [name, setName] = useState('');
-  const [bio, setBio] = useState('');
-  const [file, setFile] = useState<File>();
-  const previewImage = useMemo(() => {
-    return file ? URL.createObjectURL(file) : '';
-  }, [file]);
+  const [name, setName] = useState<string | undefined>('');
+  const [bio, setBio] = useState<string | undefined>('');
+  const [avatar, setAvatar] = useState<string | undefined>('');
+  const [file, setFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
-  const handleChangeFile = (file?: File) => {
-    setFile(file);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // const previewImage = useMemo(() => {
+  //   return file ? URL.createObjectURL(file) : '';
+  // }, [file]);
+
+  // const handleChangeFile = (file?: File) => {
+  //   setFile(file);
+  // };
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setAvatarPreview(URL.createObjectURL(selectedFile));
+    }
+  };
+
+  const uploadAvatarMutation = useMutation({
+    mutationFn: async ({ formData }: { formData: FormData }) => {
+      const res = await fetch(`http://localhost:8000/users/avatar`, {
+        method: 'PATCH',
+        body: formData,
+        headers: {
+          Cookie: `access_token=${accessToken}`
+        },
+        credentials: 'include'
+      });
+      return await res.json();
+    }
+  });
+
+  const handleUploadAvatar = async () => {
+    if (file) {
+      const formData = new FormData();
+      formData.append('avatar', file);
+      await uploadAvatarMutation.mutateAsync({ formData });
+      setAvatarPreview(null);
+      setFile(null);
+    }
   };
 
   const updateUser = useMutation({
@@ -51,6 +89,7 @@ export default function BtnCta({ user: userData }: any) {
   });
 
   const handleSaveButton = async () => {
+    handleUploadAvatar();
     const { result } = await updateUser.mutateAsync();
     setUser(result);
     router.push('/');
@@ -58,6 +97,31 @@ export default function BtnCta({ user: userData }: any) {
       window.location.reload();
     }, 500);
   };
+  const accessToken = getCookie('access_key');
+
+  const { data } = useQuery({
+    queryKey: ['users', accessToken],
+    queryFn: async () => {
+      const res = await fetch('http://localhost:8000/users/me', {
+        method: 'GET',
+        headers: {
+          Cookie: `access_token=${accessToken}`
+        },
+        credentials: 'include'
+      });
+
+      const data = await res.json();
+      const { user }: { user: Account } = data;
+      console.log(user.username);
+      setUsername(user.username);
+      setBio(user.bio);
+      setName(user.full_name);
+      setAvatar(user.avatar);
+      return data;
+    }
+  });
+
+  if (!data) return null;
 
   return (
     <>
@@ -101,6 +165,7 @@ export default function BtnCta({ user: userData }: any) {
                   <Input
                     className='mt-1 w-[378px] '
                     placeholder='Enter your username'
+                    value={username}
                     onChange={e => setUsername(e.target.value)}
                   />
                 </div>
@@ -109,7 +174,8 @@ export default function BtnCta({ user: userData }: any) {
                   <DropdownMenuTrigger asChild>
                     <Avatar className='mt-2.5 h-[50px] w-[50px] cursor-pointer  '>
                       <AvatarImage
-                        src='https://github.com/shadcn.png'
+                        src={avatarPreview || user?.avatar}
+                        className='object-cover'
                         alt='@shadcn'
                       />
                       <AvatarFallback>CN</AvatarFallback>
@@ -119,21 +185,32 @@ export default function BtnCta({ user: userData }: any) {
                     align='end'
                     className='w-30 rounded-xl dark:bg-zinc-950 '
                   >
-                    <DropdownMenuItem className=' rounded-md font-medium dark:hover:bg-zinc-950'>
+                    <DropdownMenuItem
+                      className=' rounded-md font-medium dark:hover:bg-zinc-950'
+                      onClick={() => {
+                        if (fileInputRef.current) {
+                          fileInputRef.current?.click();
+                        }
+                      }}
+                    >
                       Upload
-                    </DropdownMenuItem>
-
-                    <DropdownMenuItem className=' rounded-md font-medium text-red-600 dark:hover:bg-zinc-950'>
-                      Remove
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
+                <input
+                  type='file'
+                  ref={fileInputRef}
+                  className='hidden'
+                  accept='image/*'
+                  onChange={handleFileChange}
+                />
               </div>
               <div className='mt-2 flex flex-col'>
                 <Label className='text-sm font-semibold'>Name</Label>
                 <Input
                   className='mt-1 w-full '
                   placeholder='Enter your name'
+                  value={name}
                   onChange={e => setName(e.target.value)}
                 />
               </div>
@@ -142,6 +219,7 @@ export default function BtnCta({ user: userData }: any) {
                 <Input
                   className='mt-1 w-full '
                   placeholder='Enter your bio'
+                  value={bio}
                   onChange={e => setBio(e.target.value)}
                 />
               </div>
