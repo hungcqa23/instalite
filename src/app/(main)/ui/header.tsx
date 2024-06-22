@@ -48,6 +48,7 @@ export default function Header() {
     setSvgSrc(resolvedTheme === 'dark' ? '/orbit-light.svg' : '/orbit.svg');
   }, [resolvedTheme]);
   const { data } = useQuery({
+    queryKey: ['notification', accessToken],
     queryFn: () =>
       fetch('http://localhost:8000/notifications/me', {
         method: 'GET',
@@ -55,8 +56,7 @@ export default function Header() {
           Cookie: `access_token=${accessToken}`
         },
         credentials: 'include'
-      }).then(res => res.json()),
-    queryKey: ['notification']
+      }).then(res => res.json())
   });
   const newNotification =
     data?.result?.some(
@@ -90,7 +90,7 @@ export default function Header() {
             onClick={() => {
               setTimeout(() => {
                 window.location.reload();
-              }, 500);
+              }, 700);
             }}
           >
             <Home className='h-7 w-7 ' />
@@ -154,7 +154,7 @@ export default function Header() {
             onClick={() => {
               setTimeout(() => {
                 window.location.reload();
-              }, 500);
+              }, 700);
             }}
           >
             <UserRound className='h-7 w-7' />
