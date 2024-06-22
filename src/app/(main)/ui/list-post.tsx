@@ -27,7 +27,6 @@ export default function ListPost() {
   });
 
   if (!data) return null;
-
   return (
     <div className=' -ms-10 h-full w-full'>
       {data.result &&
@@ -42,7 +41,7 @@ export default function ListPost() {
               </div>
             </div>
           ),
-          className: 'w-full'
+          className: 'w-full xl:block flex flex-col items-center'
         })}
     </div>
   );

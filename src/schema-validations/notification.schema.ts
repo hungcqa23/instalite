@@ -15,6 +15,7 @@ export const NotificationBody = z.object({
     avatar: z.string()
   }),
   created_at: z.string(),
+  checked: z.boolean(),
   __v: z.number()
 });
 

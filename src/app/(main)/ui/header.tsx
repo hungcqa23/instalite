@@ -1,5 +1,6 @@
 'use client';
 import ButtonLogout from '@/app/(main)/ui/button-logout';
+import { notificationRequest } from '@/app/api-request/notification';
 import { useAppContext } from '@/app/context/app-context';
 import { Button } from '@/components/ui/button';
 import CreateLiteDialog from '@/components/ui/create-lite-dialog';
@@ -14,8 +15,11 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { Notification } from '@/schema-validations/notification.schema';
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
+import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
+import { getCookie } from 'cookies-next';
 import {
   AlignRightIcon,
   Bell,
@@ -38,11 +42,32 @@ export default function Header() {
   const pathname = usePathname();
   const activeTab = pathname.split('/')[1] || '';
   const [svgSrc, setSvgSrc] = useState('/orbit.svg');
-
+  const [newNoti, setNewNoti] = useState(false);
+  const accessToken = getCookie('access_key');
   useEffect(() => {
     setSvgSrc(resolvedTheme === 'dark' ? '/orbit-light.svg' : '/orbit.svg');
   }, [resolvedTheme]);
+  const { data } = useQuery({
+    queryFn: () =>
+      fetch('http://localhost:8000/notifications/me', {
+        method: 'GET',
+        headers: {
+          Cookie: `access_token=${accessToken}`
+        },
+        credentials: 'include'
+      }).then(res => res.json()),
+    queryKey: ['notification']
+  });
+  const newNotification =
+    data?.result?.some(
+      (notification: Notification) => notification.checked === false
+    ) || false;
 
+  useEffect(() => {
+    if (newNotification) {
+      setNewNoti(true);
+    }
+  }, [newNotification]);
   return (
     <header className='h-17 sticky top-0 z-10 flex w-full items-center justify-center gap-2 overflow-y-auto overflow-x-hidden bg-white py-1 dark:bg-zinc-950 lg:gap-52'>
       <Link
@@ -101,8 +126,14 @@ export default function Header() {
                 'text-zinc-400 dark:text-zinc-700': activeTab !== 'notification'
               }
             )}`}
+            onClick={() => setNewNoti(false)}
           >
-            <Bell className='h-7 w-7 ' />
+            <div className='relative'>
+              <Bell className='relative h-7 w-7' />
+              {newNoti && (
+                <span className='absolute right-0 top-0 inline-flex h-2 w-2 animate-ping rounded-full bg-red-500 opacity-100' />
+              )}
+            </div>
           </Button>
         </Link>
 

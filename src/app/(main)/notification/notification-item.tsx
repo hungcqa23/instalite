@@ -10,22 +10,27 @@ export default function NotificationItem({
   notification: Notification;
 }) {
   let src = '';
+  let href: string = '';
   console.log(notification);
 
   switch (notification.type) {
     case NotificationType.Like:
       src = '/like.svg';
+
       break;
     case NotificationType.Follow:
       src = '/follow.svg';
       notification.content = `${notification.user_id.username} started following you`;
+      href = `${notification.user_id.username}`;
       break;
     default:
+      href = '/';
       break;
   }
+
   return (
     <Link
-      href='/'
+      href={`username/${href}`}
       className='flex h-fit w-full max-w-full flex-col items-start justify-center border-b-[1px] border-gray-300 py-2 dark:border-gray-800'
     >
       <div className='flex w-full max-w-full flex-row gap-3'>
