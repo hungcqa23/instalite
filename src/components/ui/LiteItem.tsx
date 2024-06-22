@@ -1,6 +1,7 @@
 'use client';
 import { postApiRequest } from '@/app/api-request/post';
 import { useAppContext } from '@/app/context/app-context';
+import { usePostSaved } from '@/app/queries/use-saved';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -381,6 +382,11 @@ export default function LiteItem({
     setLoading(false);
     setOpenSummarizeDialog(true);
   };
+
+  const { data: dataSaved } = usePostSaved(lite._id);
+  useEffect(() => {
+    if (dataSaved?.result) setBookmarked(true);
+  }, [dataSaved?.result]);
 
   if (isLink)
     return (

@@ -21,16 +21,20 @@ export const useSaved = () => {
 };
 
 export const usePostSaved = (postId: string) => {
+  console.log('Post ID:', postId);
   return useQuery({
     queryKey: ['bookmarks', postId],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:8000/bookmarks/${postId}`, {
-        method: 'GET',
-        headers: {
-          Cookie: `access_token=${accessToken}`
-        },
-        credentials: 'include'
-      });
+      const res = await fetch(
+        `http://localhost:8000/bookmarks/${postId}/check`,
+        {
+          method: 'GET',
+          headers: {
+            Cookie: `access_token=${accessToken}`
+          },
+          credentials: 'include'
+        }
+      );
 
       const data = await res.json();
       return data;

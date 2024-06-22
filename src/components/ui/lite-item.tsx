@@ -64,7 +64,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { usePostSaved, useSaved } from '@/app/queries/useSaved';
+import { usePostSaved, useSaved } from '@/app/queries/use-saved';
 
 export default function LiteItem({
   lite,
@@ -94,8 +94,6 @@ export default function LiteItem({
   const videoFileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
-  const { data: dataSaved } = usePostSaved(lite._id);
-  console.log(dataSaved);
   const handleCopyUrl = (url: string) => {
     navigator.clipboard
       .writeText(url)
