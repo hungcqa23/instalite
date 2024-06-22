@@ -62,6 +62,11 @@ export default function Header() {
                 'text-zinc-400 dark:text-zinc-700': activeTab !== ''
               }
             )}`}
+            onClick={() => {
+              setTimeout(() => {
+                window.location.reload();
+              }, 500);
+            }}
           >
             <Home className='h-7 w-7 ' />
           </Button>
