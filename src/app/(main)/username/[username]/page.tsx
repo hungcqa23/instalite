@@ -5,9 +5,13 @@ import { http } from '@/lib/http';
 import { User } from '@/schema-validations/account.schema';
 import { cookies } from 'next/headers';
 
-export const metadata = {
-  title: 'AnHyng DepTry (@andrehelokity)'
-};
+export async function generateMetadata({
+  params
+}: {
+  params: { username: string };
+}) {
+  return { title: `@${params.username}` };
+}
 
 export default async function MeProfile({
   params

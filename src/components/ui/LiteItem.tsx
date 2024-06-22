@@ -28,6 +28,7 @@ import EditLiteDialog from '@/components/ui/edit-lite-dialog';
 import { Input } from '@/components/ui/input';
 import ListComment from '@/components/ui/list-comment';
 import ImagePreview from '@/components/ui/preview-image';
+import SummarizeDialog from '@/components/ui/summarzie-dialog';
 import { useToast } from '@/components/ui/use-toast';
 import { calculateTimeAgo } from '@/lib/helper';
 import { http } from '@/lib/http';
@@ -71,11 +72,13 @@ export default function LiteItem({
   const [text, setText] = useState('');
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [openSummarizeDialog, setOpenSummarizeDialog] = useState(false);
+  const [summarizedText, setSummarizedText] = useState('');
   const [isOpenCommentDialog, setIsOpenCommentDialog] = useState(false);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
-
   const accessToken = getCookie('access_key');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [loading, setLoading] = useState(false);
   //file media
   const [images, setImages] = useState<string[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -91,7 +94,8 @@ export default function LiteItem({
       .then(() => {
         setCopied(true);
         toast({
-          description: 'Lite URL copied to clipboard!',
+          title: 'Share lite',
+          description: 'Lite URL copied to clipboard! Send it to your friend!',
           duration: 2000
         });
         setTimeout(() => {
@@ -342,7 +346,7 @@ export default function LiteItem({
     if (data) setLiked(data.result);
   }, [data]);
 
-  const summerizeMutation = useMutation({
+  const summarizeMutation = useMutation({
     mutationFn: async (formData: FormData) => {
       return await fetch('http://localhost:8000/files/summary', {
         method: 'POST',
@@ -355,20 +359,27 @@ export default function LiteItem({
     }
   });
 
-  const handleSummerization = async () => {
-    if (lite?.media.type === 0) {
-      // // let blob = await fetch(lite?.media.url).then(r => r.blob());
-      const response = await axios.get(lite?.media.url, {
+  const handleSummarization = async () => {
+    setLoading(true);
+
+    const formData = new FormData();
+    if (lite?.media?.type === 0) {
+      const response = await axios.get(lite?.media?.url, {
         responseType: 'blob'
       });
-      const formData = new FormData();
-      formData.append('media', response.data);
-      formData.append('content', lite?.content);
 
-      const res = await summerizeMutation.mutateAsync(formData);
-      console.log(await res.json());
-    } else {
+      formData.append('media', response.data);
     }
+    formData.append('content', lite?.content);
+    const res = await summarizeMutation.mutateAsync(formData);
+
+    const result = await res.json();
+    const content = result.content;
+
+    console.log(content);
+    setSummarizedText(content);
+    setLoading(false);
+    setOpenSummarizeDialog(true);
   };
 
   if (isLink)
@@ -377,14 +388,18 @@ export default function LiteItem({
         <div className='mb-2 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
           <div className='mb-2 flex flex-row items-center justify-between '>
             <div className='flex flex-row items-end '>
-              <Avatar className='z-[-1] h-9 w-9'>
-                <AvatarImage src={lite?.user_id?.avatar} alt='@shadcn' />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
+              <Link href={`/username/${lite?.user_id.username}`}>
+                <Avatar className='z-[-1] h-9 w-9'>
+                  <AvatarImage src={lite?.user_id?.avatar} alt='@shadcn' />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </Link>
               <div className='ms-2.5 flex flex-col justify-end '>
-                <span className='text-[13px] font-semibold'>
-                  {lite?.user_id?.username}
-                </span>
+                <Link href={`/username/${lite?.user_id.username}`}>
+                  <span className='text-[13px] font-semibold'>
+                    {lite?.user_id?.username}
+                  </span>
+                </Link>
                 <span className='text-xs font-normal text-gray-500'>
                   {calculateTimeAgo(lite?.created_at)}
                 </span>
@@ -434,7 +449,9 @@ export default function LiteItem({
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     className='cursor-pointer gap-2 rounded-md font-medium'
-                    onClick={() => handleSummerization()}
+                    onClick={() => {
+                      handleSummarization();
+                    }}
                   >
                     <Sparkle className='mb-0 h-4 w-4' />
                     <span>Summarize with Relite AI</span>
@@ -469,7 +486,9 @@ export default function LiteItem({
                 >
                   <DropdownMenuItem
                     className='cursor-pointer gap-2 rounded-md font-medium'
-                    onClick={() => handleSummerization()}
+                    onClick={() => {
+                      handleSummarization();
+                    }}
                   >
                     <Sparkle className='mb-0 h-4 w-4' />
                     <span>Summarize with Relite AI</span>
@@ -588,6 +607,39 @@ export default function LiteItem({
             liteId={lite?._id}
           />
         )}
+
+        {loading && (
+          <Dialog open={loading}>
+            <DialogContent className='select-none pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[30rem]'>
+              <DialogHeader>
+                <DialogTitle className='flex justify-center text-sm font-bold'>
+                  Lite is being summarized, please wait...
+                </DialogTitle>
+              </DialogHeader>
+
+              <div className='flex flex-row border-t-2 dark:border-gray-600'></div>
+            </DialogContent>
+          </Dialog>
+        )}
+
+        {openSummarizeDialog && (
+          <Dialog
+            open={openSummarizeDialog}
+            onOpenChange={setOpenSummarizeDialog}
+          >
+            <DialogContent className='select-none pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[40rem]'>
+              <DialogHeader>
+                <DialogTitle className='flex justify-center text-sm font-bold'>
+                  Summarized Content
+                </DialogTitle>
+              </DialogHeader>
+              <p className='mb-0 flex justify-center pr-3 text-sm font-normal'>
+                {summarizedText}
+              </p>
+              <div className='flex flex-row border-t-2 dark:border-gray-600'></div>
+            </DialogContent>
+          </Dialog>
+        )}
       </>
     );
 
@@ -596,14 +648,18 @@ export default function LiteItem({
       <div className='mb-0 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
         <div className='mb-2 flex flex-row items-center justify-between'>
           <div className='flex flex-row items-end'>
-            <Avatar className='z-[-1] h-9 w-9'>
-              <AvatarImage src={lite?.user_id?.avatar} alt='@shadcn' />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+            <Link href={`/username/${lite?.user_id.username}`}>
+              <Avatar className='z-[-1] h-9 w-9'>
+                <AvatarImage src={lite?.user_id?.avatar} alt='@shadcn' />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            </Link>
             <div className='ms-2.5 flex flex-col justify-end '>
-              <span className='text-[13px] font-semibold'>
-                {lite?.user_id?.username}
-              </span>
+              <Link href={`/username/${lite?.user_id.username}`}>
+                <span className='text-[13px] font-semibold'>
+                  {lite?.user_id?.username}
+                </span>
+              </Link>
               <span className='text-xs font-normal text-gray-500'>
                 {calculateTimeAgo(lite?.created_at)}
               </span>
@@ -654,7 +710,9 @@ export default function LiteItem({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className='cursor-pointer gap-2 rounded-md font-medium'
-                  onClick={() => handleSummerization()}
+                  onClick={() => {
+                    handleSummarization();
+                  }}
                 >
                   <Sparkle className='mb-0 h-4 w-4' />
                   <span>Summarize with Relite AI</span>
@@ -689,7 +747,9 @@ export default function LiteItem({
               >
                 <DropdownMenuItem
                   className='cursor-pointer gap-2 rounded-md font-medium'
-                  onClick={() => handleSummerization()}
+                  onClick={() => {
+                    handleSummarization();
+                  }}
                 >
                   <Sparkle className='mb-0 h-4 w-4' />
                   <span>Summarize with Relite AI</span>
@@ -933,6 +993,39 @@ export default function LiteItem({
           setOpenEditDialog={setOpenEditDialog}
           liteId={lite?._id}
         />
+      )}
+
+      {loading && (
+        <Dialog open={loading}>
+          <DialogContent className='select-none pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[30rem]'>
+            <DialogHeader>
+              <DialogTitle className='flex justify-center text-sm font-bold'>
+                Lite is being summarized, please wait...
+              </DialogTitle>
+            </DialogHeader>
+
+            <div className='flex flex-row border-t-2 dark:border-gray-600'></div>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {openSummarizeDialog && (
+        <Dialog
+          open={openSummarizeDialog}
+          onOpenChange={setOpenSummarizeDialog}
+        >
+          <DialogContent className='select-none pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[40rem]'>
+            <DialogHeader>
+              <DialogTitle className='flex justify-center text-sm font-bold'>
+                Summarized Content
+              </DialogTitle>
+            </DialogHeader>
+            <p className='mb-0 flex justify-center pr-3 text-sm font-normal'>
+              {summarizedText}
+            </p>
+            <div className='flex flex-row border-t-2 dark:border-gray-600'></div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {openCancelDialog && (

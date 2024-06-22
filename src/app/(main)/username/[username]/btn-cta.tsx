@@ -54,6 +54,9 @@ export default function BtnCta({ user: userData }: any) {
     const { result } = await updateUser.mutateAsync();
     setUser(result);
     router.push('/');
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   };
 
   return (
