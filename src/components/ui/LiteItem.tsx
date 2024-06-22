@@ -453,15 +453,17 @@ export default function LiteItem({
                     </DropdownMenuItem>
                   </Link>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    className='cursor-pointer gap-2 rounded-md font-medium'
-                    onClick={() => {
-                      handleSummarization();
-                    }}
-                  >
-                    <Sparkle className='mb-0 h-4 w-4' />
-                    <span>Summarize with Relite AI</span>
-                  </DropdownMenuItem>
+                  {lite?.media?.type !== 1 && (
+                    <DropdownMenuItem
+                      className='cursor-pointer gap-2 rounded-md font-medium'
+                      onClick={() => {
+                        handleSummarization();
+                      }}
+                    >
+                      <Sparkle className='mb-0 h-4 w-4' />
+                      <span>Summarize with Relite AI</span>
+                    </DropdownMenuItem>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
@@ -490,15 +492,17 @@ export default function LiteItem({
                   align='end'
                   className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
                 >
-                  <DropdownMenuItem
-                    className='cursor-pointer gap-2 rounded-md font-medium'
-                    onClick={() => {
-                      handleSummarization();
-                    }}
-                  >
-                    <Sparkle className='mb-0 h-4 w-4' />
-                    <span>Summarize with Relite AI</span>
-                  </DropdownMenuItem>
+                  {lite?.media?.type !== 1 && (
+                    <DropdownMenuItem
+                      className='cursor-pointer gap-2 rounded-md font-medium'
+                      onClick={() => {
+                        handleSummarization();
+                      }}
+                    >
+                      <Sparkle className='mb-0 h-4 w-4' />
+                      <span>Summarize with Relite AI</span>
+                    </DropdownMenuItem>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
@@ -718,15 +722,17 @@ export default function LiteItem({
                   <span>Edit lite</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className='cursor-pointer gap-2 rounded-md font-medium'
-                  onClick={() => {
-                    handleSummarization();
-                  }}
-                >
-                  <Sparkle className='mb-0 h-4 w-4' />
-                  <span>Summarize with Relite AI</span>
-                </DropdownMenuItem>
+                {lite?.media?.type !== 1 && (
+                  <DropdownMenuItem
+                    className='cursor-pointer gap-2 rounded-md font-medium'
+                    onClick={() => {
+                      handleSummarization();
+                    }}
+                  >
+                    <Sparkle className='mb-0 h-4 w-4' />
+                    <span>Summarize with Relite AI</span>
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
@@ -755,15 +761,17 @@ export default function LiteItem({
                 align='end'
                 className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
               >
-                <DropdownMenuItem
-                  className='cursor-pointer gap-2 rounded-md font-medium'
-                  onClick={() => {
-                    handleSummarization();
-                  }}
-                >
-                  <Sparkle className='mb-0 h-4 w-4' />
-                  <span>Summarize with Relite AI</span>
-                </DropdownMenuItem>
+                {lite?.media?.type !== 1 && (
+                  <DropdownMenuItem
+                    className='cursor-pointer gap-2 rounded-md font-medium'
+                    onClick={() => {
+                      handleSummarization();
+                    }}
+                  >
+                    <Sparkle className='mb-0 h-4 w-4' />
+                    <span>Summarize with Relite AI</span>
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           )}
