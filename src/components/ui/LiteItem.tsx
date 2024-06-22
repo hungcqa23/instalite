@@ -94,7 +94,8 @@ export default function LiteItem({
       .then(() => {
         setCopied(true);
         toast({
-          description: 'Lite URL copied to clipboard!',
+          title: 'Share lite',
+          description: 'Lite URL copied to clipboard! Send it to your friend!',
           duration: 2000
         });
         setTimeout(() => {
@@ -387,14 +388,18 @@ export default function LiteItem({
         <div className='mb-2 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
           <div className='mb-2 flex flex-row items-center justify-between '>
             <div className='flex flex-row items-end '>
-              <Avatar className='z-[-1] h-9 w-9'>
-                <AvatarImage src={lite?.user_id?.avatar} alt='@shadcn' />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
+              <Link href={`/username/${lite?.user_id.username}`}>
+                <Avatar className='z-[-1] h-9 w-9'>
+                  <AvatarImage src={lite?.user_id?.avatar} alt='@shadcn' />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </Link>
               <div className='ms-2.5 flex flex-col justify-end '>
-                <span className='text-[13px] font-semibold'>
-                  {lite?.user_id?.username}
-                </span>
+                <Link href={`/username/${lite?.user_id.username}`}>
+                  <span className='text-[13px] font-semibold'>
+                    {lite?.user_id?.username}
+                  </span>
+                </Link>
                 <span className='text-xs font-normal text-gray-500'>
                   {calculateTimeAgo(lite?.created_at)}
                 </span>
@@ -608,7 +613,7 @@ export default function LiteItem({
             <DialogContent className='select-none pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[30rem]'>
               <DialogHeader>
                 <DialogTitle className='flex justify-center text-sm font-bold'>
-                  The post content is being summarized, please wait...
+                  Lite is being summarized, please wait...
                 </DialogTitle>
               </DialogHeader>
 
@@ -643,14 +648,18 @@ export default function LiteItem({
       <div className='mb-0 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
         <div className='mb-2 flex flex-row items-center justify-between'>
           <div className='flex flex-row items-end'>
-            <Avatar className='z-[-1] h-9 w-9'>
-              <AvatarImage src={lite?.user_id?.avatar} alt='@shadcn' />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+            <Link href={`/username/${lite?.user_id.username}`}>
+              <Avatar className='z-[-1] h-9 w-9'>
+                <AvatarImage src={lite?.user_id?.avatar} alt='@shadcn' />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            </Link>
             <div className='ms-2.5 flex flex-col justify-end '>
-              <span className='text-[13px] font-semibold'>
-                {lite?.user_id?.username}
-              </span>
+              <Link href={`/username/${lite?.user_id.username}`}>
+                <span className='text-[13px] font-semibold'>
+                  {lite?.user_id?.username}
+                </span>
+              </Link>
               <span className='text-xs font-normal text-gray-500'>
                 {calculateTimeAgo(lite?.created_at)}
               </span>
@@ -991,7 +1000,7 @@ export default function LiteItem({
           <DialogContent className='select-none pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[30rem]'>
             <DialogHeader>
               <DialogTitle className='flex justify-center text-sm font-bold'>
-                The post content is being summarized, please wait...
+                Lite is being summarized, please wait...
               </DialogTitle>
             </DialogHeader>
 

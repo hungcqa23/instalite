@@ -19,6 +19,7 @@ import React, { useState } from 'react';
 
 export default function Profile({ data }: { data: any }) {
   const { user } = data;
+
   const [followedUsers, setFollowedUsers] = useState<FollowUser[]>([]);
   const [followers, setFollowers] = useState<FollowUser[]>([]);
 
@@ -80,7 +81,9 @@ export default function Profile({ data }: { data: any }) {
     <div className='flex flex-col'>
       <div className='flex h-20 justify-between'>
         <div className='mt-4 flex flex-col items-start justify-start space-y-2'>
-          <p className='text-lg font-medium'>{user?.full_name}</p>
+          <p className='text-lg font-medium'>
+            {user?.full_name || 'Instalite User'}
+          </p>
           <p className='text-lg font-semibold'>{user?.username}</p>
         </div>
 
