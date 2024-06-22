@@ -383,7 +383,7 @@ export default function LiteItem({
     setOpenSummarizeDialog(true);
   };
 
-  const { data: dataSaved } = usePostSaved(lite._id);
+  const { data: dataSaved } = usePostSaved(lite?._id);
   useEffect(() => {
     if (dataSaved?.result) setBookmarked(true);
   }, [dataSaved?.result]);
@@ -503,7 +503,7 @@ export default function LiteItem({
               </DropdownMenu>
             )}
           </div>
-          <Link href={`/posts/${lite._id}`} className='w-full'>
+          <Link href={`/posts/${lite?._id}`} className='w-full'>
             <p className=' text-[0.8125rem]'>{lite?.content}</p>
           </Link>
 
@@ -569,12 +569,12 @@ export default function LiteItem({
                 />
               </button>
 
-              <Link href={`/posts/${lite._id}`}>
+              <Link href={`/posts/${lite?._id}`}>
                 <MessageCircle className='h-5 w-5 cursor-pointer' />
               </Link>
               <button
                 onClick={() => {
-                  const url = window.location.href + `/posts/${lite._id}`;
+                  const url = window.location.href + `/posts/${lite?._id}`;
                   handleCopyUrl(url);
                 }}
               >

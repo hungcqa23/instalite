@@ -24,6 +24,7 @@ export default function Tab({
   const posts = data?.map((post: any) => post?.post_id);
   const { data: userPostsData } = usePostByUsername(user.user.username || '');
   const currentPosts = userPostsData?.result;
+  const { user: currentUser, setUser } = useAppContext();
 
   return (
     <div className='w- mt-[31px]'>
@@ -80,25 +81,31 @@ export default function Tab({
             Saved
           </TabsContent>
         )} */}
-        <TabsContent value='saved' className=' w-full text-sm'>
-          {posts &&
-            posts.length !== 0 &&
-            List<Post>({
-              listItems: posts || [],
-              mapFn: (post: Post, index: number) => (
-                <div
-                  className='mt-2 flex w-full max-w-[30rem] flex-col xl:ml-[calc((100%-30rem)/2)] xl:mr-20'
-                  key={index}
-                >
-                  <div className='flex flex-col items-center'>
-                    <LiteItem lite={post} isLink />
+        {user?.user.username === currentUser?.username ? (
+          <TabsContent value='saved' className=' w-full text-sm'>
+            {posts &&
+              posts.length !== 0 &&
+              List<Post>({
+                listItems: posts || [],
+                mapFn: (post: Post, index: number) => (
+                  <div
+                    className='mt-2 flex w-full max-w-[30rem] flex-col xl:ml-[calc((100%-30rem)/2)] xl:mr-20'
+                    key={index}
+                  >
+                    <div className='flex flex-col items-center'>
+                      <LiteItem lite={post} isLink />
+                    </div>
                   </div>
-                </div>
-              ),
-              className: 'mt-8'
-              // className: 'w-full xl:block flex flex-col items-center'
-            })}
-        </TabsContent>
+                ),
+                className: 'mt-8'
+                // className: 'w-full xl:block flex flex-col items-center'
+              })}
+          </TabsContent>
+        ) : (
+          <div className='mt-14 flex w-full justify-center font-bold'>
+            This area is restricted for you, it belongs to this user only.
+          </div>
+        )}
       </Tabs>
     </div>
   );

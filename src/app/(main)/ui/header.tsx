@@ -87,11 +87,6 @@ export default function Header() {
                 'text-zinc-400 dark:text-zinc-700': activeTab !== ''
               }
             )}`}
-            onClick={() => {
-              setTimeout(() => {
-                window.location.reload();
-              }, 700);
-            }}
           >
             <Home className='h-7 w-7 ' />
           </Button>
@@ -151,11 +146,6 @@ export default function Header() {
                 'text-zinc-400 dark:text-zinc-700': activeTab !== 'me'
               }
             )}`}
-            onClick={() => {
-              setTimeout(() => {
-                window.location.reload();
-              }, 700);
-            }}
           >
             <UserRound className='h-7 w-7' />
           </Button>
