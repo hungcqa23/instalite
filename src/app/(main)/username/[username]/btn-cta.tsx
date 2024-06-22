@@ -1,4 +1,5 @@
 'use client';
+import { accountApiRequest } from '@/app/api-request/account';
 import { useAppContext, User } from '@/app/context/app-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -35,7 +36,7 @@ export default function BtnCta({ user: userData }: any) {
   const [avatar, setAvatar] = useState<string | undefined>('');
   const [file, setFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-
+  const [isFollowed, setIsFollowed] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // const previewImage = useMemo(() => {
@@ -121,6 +122,47 @@ export default function BtnCta({ user: userData }: any) {
     }
   });
 
+  const { data: followData } = useQuery({
+    queryKey: ['follow', accessToken, user?.username],
+    queryFn: async () => {
+      const res = await fetch(
+        `http://localhost:8000/users/${user?.username}/follow`,
+        {
+          method: 'GET',
+          headers: {
+            Cookie: `access_token=${accessToken}`
+          },
+          credentials: 'include'
+        }
+      );
+
+      const data = await res.json();
+      const { result }: { result: boolean } = data;
+      console.log(result);
+      setIsFollowed(result);
+      return data;
+    }
+  });
+  const followMutation = useMutation({
+    mutationFn: (followedUserId: string) =>
+      accountApiRequest.follow(followedUserId)
+  });
+  const unFollowMutation = useMutation({
+    mutationFn: (followedUserId: string) =>
+      accountApiRequest.unFollow(followedUserId)
+  });
+
+  const handleClick = () => {
+    if (!isFollowed) {
+      followMutation.mutate(user?._id);
+      setIsFollowed(true);
+    } else {
+      unFollowMutation.mutate(user?._id);
+      setIsFollowed(false);
+    }
+  };
+  if (!followData) return null;
+
   if (!data) return null;
 
   return (
@@ -130,8 +172,9 @@ export default function BtnCta({ user: userData }: any) {
           <Button
             className='mt-3.5 w-full text-sm dark:bg-zinc-50 dark:hover:bg-zinc-50'
             variant={'default'}
+            onClick={handleClick}
           >
-            Follow
+            {isFollowed ? 'Unfollow' : 'Follow'}
           </Button>
           {/* <Button
             className='mt-3.5 w-full text-sm dark:bg-zinc-950 dark:hover:bg-transparent'
