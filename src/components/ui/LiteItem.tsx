@@ -43,6 +43,7 @@ import {
 import axios from 'axios';
 import clsx from 'clsx';
 import { getCookie } from 'cookies-next';
+import { setFips } from 'crypto';
 import {
   Bookmark,
   Clapperboard,
@@ -153,10 +154,27 @@ export default function LiteItem({
   };
 
   const likeMutation = useMutation({
-    mutationFn: (postId: string) => postApiRequest.like(postId)
+    mutationFn: (postId: string) => postApiRequest.like(postId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        predicate: query => {
+          console.log(query.queryKey);
+          return query.queryKey[0] === 'posts';
+        }
+        // queryKey: ['posts'],
+        // exact: true
+      });
+    }
   });
   const unLikeMutation = useMutation({
-    mutationFn: (postId: string) => postApiRequest.unLike(postId)
+    mutationFn: (postId: string) => postApiRequest.unLike(postId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        predicate: query => {
+          return query.queryKey.includes('posts');
+        }
+      });
+    }
   });
   const bookmarkMutation = useMutation({
     mutationFn: (postId: string) => postApiRequest.bookmark(postId)
@@ -230,6 +248,11 @@ export default function LiteItem({
         typePost: 2,
         parentPostId: lite?._id
       });
+    },
+    onSuccess: () => {
+      setImageFile(null);
+      setVideoFile(null);
+      setImages([]);
     }
   });
 
@@ -338,7 +361,6 @@ export default function LiteItem({
       });
 
       const data = await res.json();
-      console.log('Like data:' + data.result);
       return data;
     }
   });

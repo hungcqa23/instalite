@@ -11,8 +11,9 @@ export default function ListPost() {
   const accessToken = getCookie('access_key');
 
   const { data } = useQuery({
-    queryKey: ['posts', accessToken],
+    queryKey: ['posts'],
     queryFn: async () => {
+      console.log('Query again!');
       const res = await fetch('http://localhost:8000/posts', {
         method: 'GET',
         headers: {
