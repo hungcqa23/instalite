@@ -1,16 +1,8 @@
 'use client';
-import '@vidstack/react/player/styles/default/layouts/audio.css';
-import '@vidstack/react/player/styles/default/layouts/video.css';
-import '@vidstack/react/player/styles/default/theme.css';
-
-import { MediaPlayer, MediaProvider, Poster, Track } from '@vidstack/react';
-import {
-  DefaultVideoLayout,
-  defaultLayoutIcons
-} from '@vidstack/react/player/layouts/default';
 
 import { postApiRequest } from '@/app/api-request/post';
 import { useAppContext } from '@/app/context/app-context';
+import { usePostSaved, useSaved } from '@/app/queries/use-saved';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -43,6 +35,14 @@ import { calculateTimeAgo, formatSocialNumber } from '@/lib/helper';
 import { http } from '@/lib/http';
 import { Post } from '@/schema-validations/post.schema';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { MediaPlayer, MediaProvider, Poster, Track } from '@vidstack/react';
+import {
+  DefaultVideoLayout,
+  defaultLayoutIcons
+} from '@vidstack/react/player/layouts/default';
+import '@vidstack/react/player/styles/default/layouts/audio.css';
+import '@vidstack/react/player/styles/default/layouts/video.css';
+import '@vidstack/react/player/styles/default/theme.css';
 // import axios from 'axios';
 import axios from 'axios';
 import clsx from 'clsx';
@@ -64,7 +64,6 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { usePostSaved, useSaved } from '@/app/queries/use-saved';
 
 export default function LiteItem({
   lite,
@@ -370,8 +369,8 @@ export default function LiteItem({
     return (
       <>
         <div className='mb-2 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
-          <div className='mb-2 flex flex-row items-center justify-between '>
-            <div className='flex flex-row items-end '>
+          <div className='mb-2 flex flex-row items-center justify-between'>
+            <div className='flex flex-row items-end'>
               <Avatar className='z-[-1] h-9 w-9'>
                 <AvatarImage
                   src={
@@ -383,7 +382,7 @@ export default function LiteItem({
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              <div className='ms-2.5 flex flex-col justify-end '>
+              <div className='ms-2.5 flex flex-col justify-end'>
                 <span className='text-[13px] font-semibold'>
                   {lite?.user_id?.username}
                 </span>
@@ -488,7 +487,7 @@ export default function LiteItem({
             )}
           </div>
           <Link href={`/posts/${lite._id}`} className='w-full'>
-            <p className=' text-[0.8125rem]'>{lite?.content}</p>
+            <p className='text-[0.8125rem]'>{lite?.content}</p>
           </Link>
 
           {/* {lite.url && (
@@ -504,13 +503,13 @@ export default function LiteItem({
         )} */}
 
           {lite?.media?.type == 0 && (
-            <div className='my-2 '>
+            <div className='my-2'>
               <Image
                 src={lite.media.url}
                 alt='image'
                 width={430}
                 height={430}
-                className=' rounded-md border-2'
+                className='rounded-md border-2'
               />
             </div>
           )}
@@ -534,7 +533,7 @@ export default function LiteItem({
             </MediaPlayer>
           )}
 
-          <div className='mt-3 flex flex-row justify-between '>
+          <div className='mt-3 flex flex-row justify-between'>
             <div className='ms-0.5 flex flex-row gap-3'>
               <button onClick={handleLike}>
                 <Heart
@@ -609,7 +608,7 @@ export default function LiteItem({
               <AvatarImage src={lite?.user_id?.avatar} alt='@shadcn' />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            <div className='ms-2.5 flex flex-col justify-end '>
+            <div className='ms-2.5 flex flex-col justify-end'>
               <span className='text-[13px] font-semibold'>
                 {lite?.user_id?.username}
               </span>
@@ -731,7 +730,7 @@ export default function LiteItem({
               alt='image'
               width={430}
               height={430}
-              className=' rounded-md border-2'
+              className='rounded-md border-2'
             />
           </div>
         )}
@@ -777,7 +776,7 @@ export default function LiteItem({
               <DialogTrigger>
                 <MessageCircle className='h-5 w-5 cursor-pointer' />
               </DialogTrigger>
-              <DialogContent className='select-none  dark:bg-zinc-950 sm:max-w-[34rem]'>
+              <DialogContent className='select-none dark:bg-zinc-950 sm:max-w-[34rem]'>
                 <DialogHeader>
                   <DialogTitle className='flex justify-center text-sm font-bold'>
                     Reply to {lite?.user_id?.username}
@@ -794,7 +793,7 @@ export default function LiteItem({
                 </DialogHeader>
                 <div className='flex flex-col overflow-hidden'>
                   <div className='flex flex-row'>
-                    <Avatar className='h-8 w-8 cursor-pointer  '>
+                    <Avatar className='h-8 w-8 cursor-pointer'>
                       <AvatarImage
                         src={
                           user?.avatar ||
@@ -811,7 +810,7 @@ export default function LiteItem({
                       <textarea
                         ref={textareaRef}
                         placeholder='Write something...'
-                        className=' max-h-[60vh] w-[28rem] resize-none overflow-y-auto bg-transparent py-1 text-sm outline-none'
+                        className='max-h-[60vh] w-[28rem] resize-none overflow-y-auto bg-transparent py-1 text-sm outline-none'
                         rows={1}
                         autoFocus
                         value={text}
@@ -873,7 +872,7 @@ export default function LiteItem({
                         </Carousel>
                       )}
                       {videoUrl && (
-                        <div className='relative my-3 max-h-[20rem] w-fit '>
+                        <div className='relative my-3 max-h-[20rem] w-fit'>
                           <video
                             controls
                             className='h-auto max-h-[20rem] w-auto rounded'
@@ -969,7 +968,7 @@ export default function LiteItem({
               </div>
 
               <div
-                className=' w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
+                className='w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
                 onClick={confirmClose}
               >
                 Close

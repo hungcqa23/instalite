@@ -4,11 +4,12 @@ import { Account, FollowUser } from '@/schema-validations/account.schema';
 import { User } from '@/types/user.type';
 import Link from 'next/link';
 import React from 'react';
+
 export default function FollowUserItem({ user }: { user: FollowUser }) {
   return (
     <Link
       href={`/username/${user.username}`}
-      className='flex h-fit w-full max-w-full flex-col items-start justify-center border-b-[1px] border-gray-300  py-3 dark:border-gray-800'
+      className='flex h-fit w-full max-w-full flex-col items-start justify-center border-b-[1px] border-gray-300 py-3 dark:border-gray-800'
     >
       <div className='flex w-full max-w-full flex-row gap-3'>
         <Avatar className='h-8 w-8'>
@@ -16,7 +17,7 @@ export default function FollowUserItem({ user }: { user: FollowUser }) {
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <div className='flex w-[21.875rem] flex-col'>
-          <span className='text-sm font-semibold '>{user.username}</span>
+          <span className='text-sm font-semibold'>{user.username}</span>
           <div className='text-xs font-normal text-gray-500'>
             {user.full_name}
           </div>

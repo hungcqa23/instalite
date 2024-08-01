@@ -1,7 +1,4 @@
 'use client';
-import '@vidstack/react/player/styles/default/layouts/audio.css';
-import '@vidstack/react/player/styles/default/layouts/video.css';
-import '@vidstack/react/player/styles/default/theme.css';
 
 import { useAppContext } from '@/app/context/app-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -23,6 +20,9 @@ import {
   DefaultVideoLayout,
   defaultLayoutIcons
 } from '@vidstack/react/player/layouts/default';
+import '@vidstack/react/player/styles/default/layouts/audio.css';
+import '@vidstack/react/player/styles/default/layouts/video.css';
+import '@vidstack/react/player/styles/default/theme.css';
 import { X } from 'lucide-react';
 import { duration } from 'moment';
 import Image from 'next/image';

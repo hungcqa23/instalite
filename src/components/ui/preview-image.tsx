@@ -1,6 +1,7 @@
-import React from 'react';
-import { X } from 'lucide-react'; // Using the close icon from Lucide, adjust import if necessary
+import { X } from 'lucide-react';
+// Using the close icon from Lucide, adjust import if necessary
 import Image from 'next/image';
+import React from 'react';
 
 interface ImagePreviewProps {
   src: string;
@@ -9,7 +10,7 @@ interface ImagePreviewProps {
 
 const ImagePreview: React.FC<ImagePreviewProps> = ({ src, onDelete }) => {
   return (
-    <div className='relative h-auto w-[14rem] '>
+    <div className='relative h-auto w-[14rem]'>
       <Image
         src={src}
         width={240}

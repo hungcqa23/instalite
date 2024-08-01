@@ -1,4 +1,5 @@
 'use client';
+
 import { useAppContext } from '@/app/context/app-context';
 import IconProfile from '@/components/ui/icon-profile';
 import UserAvatar from '@/components/ui/user-avatar';

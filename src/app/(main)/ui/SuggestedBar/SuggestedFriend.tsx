@@ -1,4 +1,5 @@
 'use client';
+
 import { accountApiRequest } from '@/app/api-request/account';
 import IconProfile from '@/components/ui/icon-profile';
 import { User } from '@/schema-validations/account.schema';

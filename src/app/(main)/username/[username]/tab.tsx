@@ -3,8 +3,8 @@
 import { useAppContext } from '@/app/context/app-context';
 import { usePostByUsername } from '@/app/queries/use-post';
 import { useSaved } from '@/app/queries/use-saved';
-import List from '@/components/ui/list';
 import LiteItem from '@/components/ui/LiteItem';
+import List from '@/components/ui/list';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { User } from '@/schema-validations/account.schema';
 import { Post } from '@/schema-validations/post.schema';
@@ -31,7 +31,7 @@ export default function Tab({
       <Tabs defaultValue='post' className='w-full'>
         <TabsList className='flex w-full rounded-none border-b bg-transparent p-0 dark:bg-transparent'>
           <TabsTrigger
-            className='shadow-none data-[state=active]:shadow-none  relative flex h-9 w-full gap-1.5 rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 text-base font-semibold uppercase text-muted-foreground transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground'
+            className='shadow-none data-[state=active]:shadow-none relative flex h-9 w-full gap-1.5 rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 text-base font-semibold uppercase text-muted-foreground transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground'
             value='post'
           >
             <Grid2X2 className='h-8 w-8 md:h-6 md:w-6' />{' '}
@@ -82,7 +82,7 @@ export default function Tab({
           </TabsContent>
         )} */}
         {user?.user.username === currentUser?.username ? (
-          <TabsContent value='saved' className=' w-full text-sm'>
+          <TabsContent value='saved' className='w-full text-sm'>
             {posts &&
               posts.length !== 0 &&
               List<Post>({

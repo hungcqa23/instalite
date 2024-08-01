@@ -1,6 +1,7 @@
 'use client';
+
 import { accountApiRequest } from '@/app/api-request/account';
-import { useAppContext, User } from '@/app/context/app-context';
+import { User, useAppContext } from '@/app/context/app-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -202,11 +203,11 @@ export default function BtnCta({ user: userData }: any) {
               </DialogTitle>
             </DialogHeader>
             <div className='flex flex-col gap-1'>
-              <div className='flex flex-row justify-between '>
+              <div className='flex flex-row justify-between'>
                 <div className='flex flex-col'>
                   <Label className='text-sm font-semibold'>Username</Label>
                   <Input
-                    className='mt-1 w-[378px] '
+                    className='mt-1 w-[378px]'
                     placeholder='Enter your username'
                     value={username}
                     onChange={e => setUsername(e.target.value)}
@@ -215,7 +216,7 @@ export default function BtnCta({ user: userData }: any) {
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Avatar className='mt-2.5 h-[50px] w-[50px] cursor-pointer  '>
+                    <Avatar className='mt-2.5 h-[50px] w-[50px] cursor-pointer'>
                       <AvatarImage
                         src={avatarPreview || user?.avatar}
                         className='object-cover'
@@ -226,10 +227,10 @@ export default function BtnCta({ user: userData }: any) {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
                     align='end'
-                    className='w-30 rounded-xl dark:bg-zinc-950 '
+                    className='w-30 rounded-xl dark:bg-zinc-950'
                   >
                     <DropdownMenuItem
-                      className=' rounded-md font-medium dark:hover:bg-zinc-950'
+                      className='rounded-md font-medium dark:hover:bg-zinc-950'
                       onClick={() => {
                         if (fileInputRef.current) {
                           fileInputRef.current?.click();
@@ -251,7 +252,7 @@ export default function BtnCta({ user: userData }: any) {
               <div className='mt-2 flex flex-col'>
                 <Label className='text-sm font-semibold'>Name</Label>
                 <Input
-                  className='mt-1 w-full '
+                  className='mt-1 w-full'
                   placeholder='Enter your name'
                   value={name}
                   onChange={e => setName(e.target.value)}
@@ -260,7 +261,7 @@ export default function BtnCta({ user: userData }: any) {
               <div className='mt-2 flex flex-col'>
                 <Label className='text-sm font-semibold'>Bio</Label>
                 <Input
-                  className='mt-1 w-full '
+                  className='mt-1 w-full'
                   placeholder='Enter your bio'
                   value={bio}
                   onChange={e => setBio(e.target.value)}

@@ -237,7 +237,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
     <>
       <Dialog open={isOpen} onOpenChange={handleDialogChange}>
         <DialogTrigger>{children}</DialogTrigger>
-        <DialogContent className=' select-none dark:bg-zinc-950 sm:max-w-[34rem]'>
+        <DialogContent className='select-none dark:bg-zinc-950 sm:max-w-[34rem]'>
           <DialogHeader>
             <DialogTitle className='flex justify-center text-sm font-bold'>
               New Lite
@@ -254,7 +254,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
           </DialogHeader>
           <div className='flex flex-col overflow-hidden'>
             <div className='flex flex-row'>
-              <Avatar className='h-8 w-8 cursor-pointer  '>
+              <Avatar className='h-8 w-8 cursor-pointer'>
                 <AvatarImage
                   src={
                     user?.avatar ||
@@ -264,7 +264,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              <div className='ms-2.5 flex max-w-full flex-col '>
+              <div className='ms-2.5 flex max-w-full flex-col'>
                 <div className='text-sm font-semibold'>{user?.username}</div>
                 <textarea
                   ref={textareaRef}
@@ -314,13 +314,13 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                     opts={{
                       align: 'start'
                     }}
-                    className='my-3 w-full max-w-full '
+                    className='my-3 w-full max-w-full'
                   >
                     <CarouselContent className='-ml-1 flex w-full max-w-full'>
                       {images.map((image, index) => (
                         <CarouselItem
                           key={index}
-                          className=' basis-1/2 pl-1 pr-1'
+                          className='basis-1/2 pl-1 pr-1'
                         >
                           <ImagePreview
                             src={image}
@@ -332,7 +332,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                   </Carousel>
                 )}
                 {videoUrl && (
-                  <div className='relative my-3 max-h-[20rem] w-fit '>
+                  <div className='relative my-3 max-h-[20rem] w-fit'>
                     <video
                       controls
                       className='h-auto max-h-[20rem] w-auto rounded'
@@ -352,7 +352,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
                 )}
               </div>
             </div>
-            <div className='mt-2 flex flex-row items-end justify-end '>
+            <div className='mt-2 flex flex-row items-end justify-end'>
               <Button
                 className='rounded-3xl'
                 disabled={
@@ -387,7 +387,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
               </div>
 
               <div
-                className=' w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
+                className='w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
                 onClick={confirmClose}
               >
                 Close

@@ -18,7 +18,7 @@ export default function MainLayout({
   return (
     <>
       <Header />
-      <main className='flex w-screen flex-col items-center justify-start '>
+      <main className='flex w-screen flex-col items-center justify-start'>
         {children}
       </main>
     </>

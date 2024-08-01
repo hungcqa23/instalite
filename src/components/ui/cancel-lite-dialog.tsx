@@ -26,7 +26,7 @@ const CancelLiteDialog: React.FC<CancelPostDialogProps> = ({
           </div>
 
           <div
-            className=' w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
+            className='w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
             onClick={() => confirmClose}
           >
             Delete

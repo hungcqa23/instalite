@@ -40,9 +40,9 @@ export default function CommentItem({ comment }: { comment: Post }) {
             <AvatarImage src={comment?.user_id?.avatar} alt='@shadcn' />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <div className='ms-2.5 flex w-full flex-col justify-start '>
+          <div className='ms-2.5 flex w-full flex-col justify-start'>
             <div className='flex flex-row items-center justify-between'>
-              <div className='flex flex-row gap-1 '>
+              <div className='flex flex-row gap-1'>
                 <span className='text-xs font-semibold'>
                   {comment?.user_id?.username}
                 </span>
@@ -104,7 +104,7 @@ export default function CommentItem({ comment }: { comment: Post }) {
                   alt='image'
                   width={200}
                   height={200}
-                  className=' rounded-md border-2'
+                  className='rounded-md border-2'
                 />
               </div>
             )}

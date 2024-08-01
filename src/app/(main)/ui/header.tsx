@@ -1,4 +1,5 @@
 'use client';
+
 import ButtonLogout from '@/app/(main)/ui/button-logout';
 import { notificationRequest } from '@/app/api-request/notification';
 import { useAppContext } from '@/app/context/app-context';
@@ -81,14 +82,14 @@ export default function Header() {
         <Link href='/'>
           <Button
             className={`${clsx(
-              'duration-400 flex h-16 w-24 items-center justify-center rounded-lg bg-white transition-colors hover:bg-gray-200 hover:text-black dark:bg-zinc-950  dark:hover:bg-gray-700/40 dark:hover:text-white',
+              'duration-400 flex h-16 w-24 items-center justify-center rounded-lg bg-white transition-colors hover:bg-gray-200 hover:text-black dark:bg-zinc-950 dark:hover:bg-gray-700/40 dark:hover:text-white',
               {
                 'text-black dark:text-zinc-50': activeTab === '',
                 'text-zinc-400 dark:text-zinc-700': activeTab !== ''
               }
             )}`}
           >
-            <Home className='h-7 w-7 ' />
+            <Home className='h-7 w-7' />
           </Button>
         </Link>
         <Link href='/search'>
@@ -101,7 +102,7 @@ export default function Header() {
               }
             )}`}
           >
-            <Search className='h-7 w-7 ' />
+            <Search className='h-7 w-7' />
           </Button>
         </Link>
         <CreateLiteDialog>
@@ -114,13 +115,13 @@ export default function Header() {
               }
             )}`}
           >
-            <SquarePen className='h-7 w-7 ' />
+            <SquarePen className='h-7 w-7' />
           </div>
         </CreateLiteDialog>
         <Link href='/notification'>
           <Button
             className={`${clsx(
-              'duration-400 flex h-16 w-24 items-center  justify-center rounded-lg bg-white transition-colors hover:bg-gray-200 hover:text-black dark:bg-zinc-950 dark:hover:bg-gray-700/40 dark:hover:text-white',
+              'duration-400 flex h-16 w-24 items-center justify-center rounded-lg bg-white transition-colors hover:bg-gray-200 hover:text-black dark:bg-zinc-950 dark:hover:bg-gray-700/40 dark:hover:text-white',
               {
                 'text-black dark:text-zinc-50': activeTab === 'notification',
                 'text-zinc-400 dark:text-zinc-700': activeTab !== 'notification'
@@ -158,12 +159,12 @@ export default function Header() {
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button className='duration-400 flex h-16 w-16 items-center justify-center bg-white text-zinc-400 transition-colors hover:bg-white hover:text-zinc-950 dark:bg-zinc-950 dark:text-zinc-700 dark:hover:bg-zinc-950 dark:hover:text-white'>
-            <AlignRightIcon className='h-7 w-7 ' />
+            <AlignRightIcon className='h-7 w-7' />
           </Button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent
-          className='py-3shadow-default z-20 flex w-60 flex-col gap-1 rounded-lg border  px-2'
+          className='py-3shadow-default z-20 flex w-60 flex-col gap-1 rounded-lg border px-2'
           align='end'
         >
           {/* <DropdownMenuItem className='flex h-6 w-56 gap-2 rounded-md py-4 pl-3 text-base font-medium'>
@@ -176,12 +177,12 @@ export default function Header() {
 
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className='flex h-6 w-56 gap-2 rounded-md py-4 pl-3 text-base font-medium'>
-              <SunIcon className='h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 ' />
+              <SunIcon className='h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0' />
               <MoonIcon className='absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100' />
               Set Appearance
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
-              <DropdownMenuSubContent className=' dark:bg-black'>
+              <DropdownMenuSubContent className='dark:bg-black'>
                 <DropdownMenuItem
                   className='rounded-md text-base font-medium'
                   onClick={() => {

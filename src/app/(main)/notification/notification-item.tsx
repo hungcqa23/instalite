@@ -47,12 +47,12 @@ export default function NotificationItem({
           <Image
             src={src}
             alt='type'
-            className='absolute right-0 top-5 rounded-full bg-zinc-50 ring-1 ring-zinc-50 dark:ring-zinc-950 '
+            className='absolute right-0 top-5 rounded-full bg-zinc-50 ring-1 ring-zinc-50 dark:ring-zinc-950'
             width={15}
             height={15}
           />
         </div>
-        <div className='flex w-[21.875rem] flex-col '>
+        <div className='flex w-[21.875rem] flex-col'>
           <div className='flex flex-row items-end gap-1.5'>
             <span className='text-[0.8125rem] font-bold'>
               {notification.user_id.username}

@@ -1,4 +1,5 @@
 'use client';
+
 import CommentItem from '@/components/ui/comment-item';
 import List from '@/components/ui/list';
 import { Post } from '@/schema-validations/post.schema';
@@ -32,7 +33,7 @@ export default function ListComment({ postId }: { postId: string }) {
   console.log(comments.result);
 
   return (
-    <div className=' w-full border-gray-200 p-0 sm:pb-5 '>
+    <div className='w-full border-gray-200 p-0 sm:pb-5'>
       {comments.result &&
         List<Post>({
           listItems: comments.result,

@@ -1,5 +1,5 @@
-import ListPost from '@/app/(main)/ui/list-posts';
 import SuggestedBar from '@/app/(main)/ui/SuggestedBar';
+import ListPost from '@/app/(main)/ui/list-posts';
 import CreateLiteDialog from '@/components/ui/create-lite-dialog';
 import IconProfile from '@/components/ui/icon-profile';
 import UserAvatar from '@/components/ui/user-avatar';
@@ -26,7 +26,7 @@ export default function Home() {
             </CreateLiteDialog>
           </div>
 
-          <div className='flex '>
+          <div className='flex'>
             <ListPost />
           </div>
         </div>

@@ -1,4 +1,5 @@
 'use client';
+
 import { http } from '@/lib/http';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getCookie } from 'cookies-next';
@@ -63,7 +64,7 @@ const DeleteLiteDialog: React.FC<DeletePostDialogProps> = ({
           </div>
 
           <div
-            className=' w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
+            className='w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
             onClick={() => {
               handleDeleteLite();
               setOpenDeleteDialog(false);

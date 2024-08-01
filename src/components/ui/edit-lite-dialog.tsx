@@ -1,7 +1,4 @@
 'use client';
-import '@vidstack/react/player/styles/default/layouts/audio.css';
-import '@vidstack/react/player/styles/default/layouts/video.css';
-import '@vidstack/react/player/styles/default/theme.css';
 
 import { useAppContext } from '@/app/context/app-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -23,6 +20,9 @@ import {
   DefaultVideoLayout,
   defaultLayoutIcons
 } from '@vidstack/react/player/layouts/default';
+import '@vidstack/react/player/styles/default/layouts/audio.css';
+import '@vidstack/react/player/styles/default/layouts/video.css';
+import '@vidstack/react/player/styles/default/theme.css';
 import { X } from 'lucide-react';
 import { duration } from 'moment';
 import Image from 'next/image';
@@ -65,6 +65,7 @@ const EditLiteDialog: React.FC<EditLiteDialogProps> = ({
     if (openEditDialog) {
       fetchContent();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openEditDialog]);
 
   const getPostContentMutation = useMutation({
@@ -142,7 +143,7 @@ const EditLiteDialog: React.FC<EditLiteDialogProps> = ({
           </DialogHeader>
           <div className='flex flex-col overflow-hidden'>
             <div className='flex flex-row'>
-              <Avatar className='h-8 w-8 cursor-pointer  '>
+              <Avatar className='h-8 w-8 cursor-pointer'>
                 <AvatarImage
                   src={
                     user?.avatar ||
@@ -152,7 +153,7 @@ const EditLiteDialog: React.FC<EditLiteDialogProps> = ({
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              <div className='ms-2.5 flex max-w-full flex-col '>
+              <div className='ms-2.5 flex max-w-full flex-col'>
                 <div className='text-sm font-semibold'>{user?.username}</div>
                 <textarea
                   ref={textareaRef}
@@ -170,7 +171,7 @@ const EditLiteDialog: React.FC<EditLiteDialogProps> = ({
                       alt='image'
                       width={430}
                       height={430}
-                      className=' rounded-md border-2'
+                      className='rounded-md border-2'
                     />
                   </div>
                 )}
@@ -196,7 +197,7 @@ const EditLiteDialog: React.FC<EditLiteDialogProps> = ({
                 )}
               </div>
             </div>
-            <div className='mt-2 flex flex-row items-end justify-end '>
+            <div className='mt-2 flex flex-row items-end justify-end'>
               <Button
                 className='rounded-3xl'
                 onClick={() => handleUpdatePost(text)}
@@ -228,7 +229,7 @@ const EditLiteDialog: React.FC<EditLiteDialogProps> = ({
               </div>
 
               <div
-                className=' w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
+                className='w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
                 onClick={confirmClose}
               >
                 Close

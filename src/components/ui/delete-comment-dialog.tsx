@@ -1,4 +1,5 @@
 'use client';
+
 import { http } from '@/lib/http';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getCookie } from 'cookies-next';
@@ -58,7 +59,7 @@ const DeleteCommentDialog: React.FC<DeleteCommentDialogProps> = ({
           </div>
 
           <div
-            className=' w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
+            className='w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
             onClick={() => {
               handleDeleteComment();
               setOpenDeleteDialog(false);

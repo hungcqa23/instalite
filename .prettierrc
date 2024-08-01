@@ -7,6 +7,9 @@
   "singleQuote": true,
   "printWidth": 80,
   "jsxSingleQuote": true,
+  "importOrder": ["^@nestjs/(.*)$", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
   "plugins": [
     "eslint-config-prettier",
     "eslint-plugin-import",
@@ -15,6 +18,7 @@
     "eslint-plugin-react",
     "eslint-plugin-react-hooks",
     "eslint-plugin-storybook",
+    "@trivago/prettier-plugin-sort-imports",
     "prettier-plugin-tailwindcss"
   ]
 }

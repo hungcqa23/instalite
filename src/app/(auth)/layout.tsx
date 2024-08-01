@@ -1,4 +1,5 @@
 'use client';
+
 import { OrbitIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
@@ -51,7 +52,7 @@ export default function AuthLayout({
         <p className='absolute right-10 top-10 hidden text-right text-sm md:inline'>
           {testimonials.find(t => `/${t.path}` === pathname)?.title}
         </p>
-        <div className='flex h-full items-center justify-center '>
+        <div className='flex h-full items-center justify-center'>
           <div className='w-[21.875rem]'>{children}</div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -116,14 +117,14 @@ export default function Profile({ data }: { data: any }) {
             </Button>
           </DialogTrigger>
 
-          <DialogContent className=' w-[456px] dark:bg-zinc-950 sm:max-w-[500px]'>
+          <DialogContent className='w-[456px] dark:bg-zinc-950 sm:max-w-[500px]'>
             <DialogHeader>
               <DialogTitle className='flex justify-center text-sm font-bold'>
                 Followers
               </DialogTitle>
             </DialogHeader>
 
-            <div className='h-[30rem] max-h-[30rem] '>
+            <div className='h-[30rem] max-h-[30rem]'>
               {List<FollowUser>({
                 listItems: followers,
                 mapFn: user => <FollowUserItem key={user._id} user={user} />,
@@ -146,14 +147,14 @@ export default function Profile({ data }: { data: any }) {
               </p>
             </Button>
           </DialogTrigger>
-          <DialogContent className='  w-[456px] dark:bg-zinc-950 sm:max-w-[500px]'>
+          <DialogContent className='w-[456px] dark:bg-zinc-950 sm:max-w-[500px]'>
             <DialogHeader>
               <DialogTitle className='flex justify-center text-sm font-bold'>
                 Following
               </DialogTitle>
             </DialogHeader>
 
-            <div className='h-[30rem] max-h-[30rem] '>
+            <div className='h-[30rem] max-h-[30rem]'>
               {List<FollowUser>({
                 listItems: followedUsers,
                 mapFn: user => <FollowUserItem key={user._id} user={user} />,

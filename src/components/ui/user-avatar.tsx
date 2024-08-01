@@ -6,6 +6,7 @@ import { Account } from '@/schema-validations/account.schema';
 import { useQuery } from '@tanstack/react-query';
 import { getCookie } from 'cookies-next';
 import React, { useState } from 'react';
+
 export default function UserAvatar() {
   const accessToken = getCookie('access_key');
   const [user, setUser] = useState<Account>();
