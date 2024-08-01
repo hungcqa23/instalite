@@ -78,9 +78,13 @@
     "typescript": "^5"
   },
   "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npm run lint",
+      "npm run format"
+    ],
     "*/.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
+      "npm run lint",
+      "npm run format"
     ]
   }
 }
