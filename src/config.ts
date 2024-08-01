@@ -6,9 +6,7 @@ const configSchema = z.object({
 
 const configProject = configSchema.safeParse({
   NEXT_PUBLIC_API_ENDPOINT: process.env.NEXT_PUBLIC_API_ENDPOINT
-});
-
-if (!configProject.success) {
+});if (!configProject.success) {
   console.log(configProject.error.issues);
   throw new Error('Invalid config');
 }
