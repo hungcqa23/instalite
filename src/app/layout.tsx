@@ -1,7 +1,6 @@
-import Header from '@/app/(main)/ui/header';
 import AppProvider from '@/app/context/app-context';
 import QueryProvider from '@/app/context/query-context';
-import { ThemeProvider } from '@/components/theme-provider';
+import { ThemeProvider } from '@/app/context/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';

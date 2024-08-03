@@ -1,10 +1,10 @@
 'use client';
 
 import { useAppContext } from '@/app/context/app-context';
-import { usePostByUsername } from '@/app/queries/use-post';
-import { useSaved } from '@/app/queries/use-saved';
-import LiteItem from '@/components/ui/LiteItem';
+import { usePostByUsername } from '@/app/queries/usePost';
+import { useSaved } from '@/app/queries/useSaved';
 import List from '@/components/ui/list';
+import LiteItem from '@/components/ui/lite-item';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { User } from '@/schema-validations/account.schema';
 import { Post } from '@/schema-validations/post.schema';

@@ -3,7 +3,7 @@
 import authApiRequest from '@/app/api-request/auth';
 import { useAppContext } from '@/app/context/app-context';
 import { GoogleIcon } from '@/components/icons/google-icon';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import {
   Form,
   FormControl,
@@ -11,8 +11,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from '@/components/ui/form/form';
+import { Input } from '@/components/ui/form/input';
 import { useToast } from '@/components/ui/use-toast';
 import { LoginBody, LoginBodyType } from '@/schema-validations/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -154,6 +154,7 @@ export default function LoginForm() {
         <Button
           className='mt-4 flex w-full items-center gap-1 font-semibold'
           variant={'outline'}
+          type='button'
         >
           <GoogleIcon />
           Sign in with Google

@@ -1,7 +1,6 @@
-import Header from '@/app/(main)/ui/header';
+import Header from '@/components/sections/home/header';
 
 export const metadata = {
-  // title: "The Wild Oasis",
   title: {
     template: '%s • Instalite',
     default: 'Home • Instalite'

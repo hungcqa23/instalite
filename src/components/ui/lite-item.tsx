@@ -2,9 +2,9 @@
 
 import { postApiRequest } from '@/app/api-request/post';
 import { useAppContext } from '@/app/context/app-context';
-import { usePostSaved, useSaved } from '@/app/queries/use-saved';
+import { usePostSaved, useSaved } from '@/app/queries/useSaved';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import {
   Carousel,
   CarouselContent,
@@ -19,20 +19,21 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
+import EditLiteDialog from '@/components/ui/edit-lite-dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import EditLiteDialog from '@/components/ui/edit-lite-dialog';
-import { Input } from '@/components/ui/input';
+} from '@/components/ui/form/dropdown-menu';
+import { Input } from '@/components/ui/form/input';
 import ListComment from '@/components/ui/list-comment';
 import ImagePreview from '@/components/ui/preview-image';
 import { useToast } from '@/components/ui/use-toast';
 import { calculateTimeAgo, formatSocialNumber } from '@/lib/helper';
 import { http } from '@/lib/http';
+import { cn } from '@/lib/utils';
 import { Post } from '@/schema-validations/post.schema';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { MediaPlayer, MediaProvider, Poster, Track } from '@vidstack/react';
@@ -45,7 +46,6 @@ import '@vidstack/react/player/styles/default/layouts/video.css';
 import '@vidstack/react/player/styles/default/theme.css';
 // import axios from 'axios';
 import axios from 'axios';
-import clsx from 'clsx';
 import { getCookie } from 'cookies-next';
 import {
   Bookmark,
@@ -537,7 +537,7 @@ export default function LiteItem({
             <div className='ms-0.5 flex flex-row gap-3'>
               <button onClick={handleLike}>
                 <Heart
-                  className={`${clsx(
+                  className={`${cn(
                     'h-5 w-5 cursor-pointer transition-colors duration-300',
                     {
                       'fill-red-500 stroke-red-500': liked,
@@ -563,7 +563,7 @@ export default function LiteItem({
 
             <button onClick={handleBookmark}>
               <Bookmark
-                className={`${clsx(
+                className={`${cn(
                   'h-5 w-5 cursor-pointer transition-colors duration-300',
                   {
                     'fill-black stroke-black dark:fill-white dark:stroke-white':
@@ -759,7 +759,7 @@ export default function LiteItem({
           <div className='ms-0.5 flex flex-row gap-3'>
             <button onClick={handleLike}>
               <Heart
-                className={`${clsx(
+                className={`${cn(
                   'h-5 w-5 cursor-pointer transition-colors duration-300',
                   {
                     'fill-red-500 stroke-red-500': liked,
@@ -916,7 +916,7 @@ export default function LiteItem({
 
           <button onClick={handleBookmark}>
             <Bookmark
-              className={`${clsx(
+              className={`${cn(
                 'h-5 w-5 cursor-pointer transition-colors duration-300',
                 {
                   'fill-black stroke-black dark:fill-white dark:stroke-white':

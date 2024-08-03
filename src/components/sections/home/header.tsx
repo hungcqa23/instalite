@@ -1,10 +1,9 @@
 'use client';
 
-import ButtonLogout from '@/app/(main)/ui/button-logout';
-import { notificationRequest } from '@/app/api-request/notification';
 import { useAppContext } from '@/app/context/app-context';
-import { Button } from '@/components/ui/button';
-import CreateLiteDialog from '@/components/ui/create-lite-dialog';
+import ButtonLogout from '@/components/sections/home/button-logout';
+import CreateLiteDialog from '@/components/sections/home/create-lite-dialog';
+import { Button } from '@/components/ui/button/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,11 +14,11 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
+} from '@/components/ui/form/dropdown-menu';
+import { cn } from '@/lib/utils';
 import { Notification } from '@/schema-validations/notification.schema';
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import { useQuery } from '@tanstack/react-query';
-import clsx from 'clsx';
 import { getCookie } from 'cookies-next';
 import {
   AlignRightIcon,
@@ -81,7 +80,7 @@ export default function Header() {
       <div className='flex md:gap-2'>
         <Link href='/'>
           <Button
-            className={`${clsx(
+            className={`${cn(
               'duration-400 flex h-16 w-24 items-center justify-center rounded-lg bg-white transition-colors hover:bg-gray-200 hover:text-black dark:bg-zinc-950 dark:hover:bg-gray-700/40 dark:hover:text-white',
               {
                 'text-black dark:text-zinc-50': activeTab === '',
@@ -94,7 +93,7 @@ export default function Header() {
         </Link>
         <Link href='/search'>
           <Button
-            className={`${clsx(
+            className={`${cn(
               'duration-400 flex h-16 w-24 items-center justify-center rounded-lg bg-white transition-colors hover:bg-gray-200 hover:text-black dark:bg-zinc-950 dark:hover:bg-gray-700/40 dark:hover:text-white',
               {
                 'text-black dark:text-zinc-50': activeTab === 'search',
@@ -107,7 +106,7 @@ export default function Header() {
         </Link>
         <CreateLiteDialog>
           <div
-            className={`${clsx(
+            className={`${cn(
               'duration-400 flex h-16 w-24 items-center justify-center rounded-lg bg-white transition-colors hover:bg-gray-200 hover:text-black dark:bg-zinc-950 dark:hover:bg-gray-700/40 dark:hover:text-white',
               {
                 'text-black dark:text-zinc-50': activeTab === 'lite',
@@ -120,7 +119,7 @@ export default function Header() {
         </CreateLiteDialog>
         <Link href='/notification'>
           <Button
-            className={`${clsx(
+            className={`${cn(
               'duration-400 flex h-16 w-24 items-center justify-center rounded-lg bg-white transition-colors hover:bg-gray-200 hover:text-black dark:bg-zinc-950 dark:hover:bg-gray-700/40 dark:hover:text-white',
               {
                 'text-black dark:text-zinc-50': activeTab === 'notification',
@@ -140,7 +139,7 @@ export default function Header() {
 
         <Link href={`/username/${user?.username}`}>
           <Button
-            className={`${clsx(
+            className={`${cn(
               'duration-400 flex h-16 w-24 items-center justify-center rounded-lg bg-white transition-colors hover:bg-gray-200 hover:text-black dark:bg-zinc-950 dark:hover:bg-gray-700/40 dark:hover:text-white',
               {
                 'text-black dark:text-zinc-50': activeTab === 'me',

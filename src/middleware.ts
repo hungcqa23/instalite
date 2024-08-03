@@ -5,6 +5,9 @@ const privatePaths = ['/me', '/notification', '/search'];
 const authPaths = ['/login', '/register'];
 
 export async function middleware(req: NextRequest) {
+  console.log('Hello World! ---------');
+  console.log(req.nextUrl.pathname);
+  console.log('Hello World!');
   // const { pathname } = req.nextUrl;
   // console.log(pathname);
   // const accessToken = req.cookies.get('access_token')?.value;

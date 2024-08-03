@@ -3,7 +3,7 @@
 import { accountApiRequest } from '@/app/api-request/account';
 import { User, useAppContext } from '@/app/context/app-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import {
   Dialog,
   DialogContent,
@@ -17,9 +17,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from '@/components/ui/form/dropdown-menu';
+import { Input } from '@/components/ui/form/input';
+import { Label } from '@/components/ui/form/label';
 import { http } from '@/lib/http';
 import { Account } from '@/schema-validations/account.schema';
 import { useMutation, useQuery } from '@tanstack/react-query';

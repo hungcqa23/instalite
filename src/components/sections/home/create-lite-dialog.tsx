@@ -2,7 +2,7 @@
 
 import { useAppContext } from '@/app/context/app-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import {
   Carousel,
   CarouselContent,
@@ -15,7 +15,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/form/input';
 import ImagePreview from '@/components/ui/preview-image';
 import { http } from '@/lib/http';
 import { DialogClose } from '@radix-ui/react-dialog';

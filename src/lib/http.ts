@@ -13,7 +13,7 @@ export class HttpError extends Error {
   }
 }
 
-export const isClient = () => typeof window !== 'undefined';
+export const isClient = typeof window !== 'undefined';
 
 const request = async <Response>(
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
@@ -21,27 +21,28 @@ const request = async <Response>(
   options?: CustomOptions | undefined
 ) => {
   let body: FormData | string | undefined = undefined;
+
   if (options?.body instanceof FormData) {
     body = options.body;
   } else if (options?.body) {
-    body = JSON.stringify(options?.body);
+    body = JSON.stringify(options.body);
   }
 
-  const baseHeaders: any =
+  const baseHeaders: {
+    [key: string]: string;
+  } =
     body instanceof FormData
-      ? {
-          'Content-Type': 'multipart/form-data'
-        }
+      ? {}
       : {
           'Content-Type': 'application/json'
         };
 
-  if (isClient()) {
-    const accessToken = localStorage.getItem('access_key');
-    if (accessToken) {
-      baseHeaders.Cookie = `access_token=${accessToken}`;
-    }
-  }
+  // if (isClient) {
+  //   const accessToken = localStorage.getItem('access_key');
+  //   if (accessToken) {
+  //     baseHeaders.Cookie = `access_token=${accessToken}`;
+  //   }
+  // }
 
   const baseUrl = options?.baseUrl ?? envConfig.NEXT_PUBLIC_API_ENDPOINT;
 

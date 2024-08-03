@@ -1,5 +1,5 @@
 import authApiRequest from '@/app/api-request/auth';
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { DropdownMenuItem } from '@/components/ui/form/dropdown-menu';
 import { LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 

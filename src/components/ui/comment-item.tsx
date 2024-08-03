@@ -2,17 +2,17 @@
 
 import { useAppContext } from '@/app/context/app-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import DeleteCommentDialog from '@/components/ui/delete-comment-dialog';
 import DeleteLiteDialog from '@/components/ui/delete-lite-dialog';
+import EditCommentDialog from '@/components/ui/edit-comment-dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import EditCommentDialog from '@/components/ui/edit-comment-dialog';
+} from '@/components/ui/form/dropdown-menu';
 import { calculateTimeAgo } from '@/lib/helper';
 import { Post } from '@/schema-validations/post.schema';
 import { MediaPlayer, MediaProvider, Poster, Track } from '@vidstack/react';

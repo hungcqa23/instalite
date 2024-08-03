@@ -42,7 +42,7 @@
     "lucide": "^0.378.0",
     "lucide-react": "^0.309.0",
     "moment": "^2.30.1",
-    "next": "^14.1.4",
+    "next": "^14.2.5",
     "next-themes": "^0.3.0",
     "react": "^18.2.0",
     "react-day-picker": "^8.10.0",
@@ -51,7 +51,8 @@
     "react-resizable-panels": "^2.0.19",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
@@ -81,13 +82,13 @@
     "typescript": "^5"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "npm run lint",
-      "npm run format"
+    "*/**/*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix",
+      "eslint"
     ],
-    "*/.{js,jsx,ts,tsx}": [
-      "npm run lint",
-      "npm run format"
+    "*/**/*.{json,css,md}": [
+      "prettier --write"
     ]
   }
 }

@@ -1,7 +1,6 @@
 import SuggestedBar from '@/app/(main)/ui/SuggestedBar';
-import ListPost from '@/app/(main)/ui/list-posts';
-import CreateLiteDialog from '@/components/ui/create-lite-dialog';
-import IconProfile from '@/components/ui/icon-profile';
+import CreateLiteDialog from '@/components/sections/home/create-lite-dialog';
+import ListPost from '@/components/sections/home/list-posts';
 import UserAvatar from '@/components/ui/user-avatar';
 
 export default function Home() {
@@ -19,6 +18,7 @@ export default function Home() {
                 </p>
               </div>
             </CreateLiteDialog>
+
             <CreateLiteDialog>
               <div className='flex h-7 w-14 items-center justify-center rounded-full bg-gray-300 text-sm font-semibold text-white'>
                 Post

@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import { Account } from '@/schema-validations/account.schema';
 import { User } from '@/types/user.type';
 import Link from 'next/link';
