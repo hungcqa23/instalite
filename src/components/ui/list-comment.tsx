@@ -1,7 +1,7 @@
 'use client';
 
 import CommentItem from '@/components/ui/comment-item';
-import List from '@/components/ui/list';
+import List from '@/components/ui/generic-list';
 import { Post } from '@/schema-validations/post.schema';
 import { useQuery } from '@tanstack/react-query';
 import { getCookie } from 'cookies-next';

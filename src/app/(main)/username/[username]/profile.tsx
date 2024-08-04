@@ -8,9 +8,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@/components/ui/dialog';
+} from '@/components/ui/dialog/dialog';
 import FollowUserItem from '@/components/ui/follow-user-item';
-import List from '@/components/ui/list';
+import List from '@/components/ui/generic-list';
 import { http } from '@/lib/http';
 import { FollowUser } from '@/schema-validations/account.schema';
 import { useMutation } from '@tanstack/react-query';

@@ -1,4 +1,4 @@
-import SuggestedBar from '@/app/(main)/ui/SuggestedBar';
+import SuggestedBar from '@/components/sections/home/SuggestedBar';
 import CreateLiteDialog from '@/components/sections/home/create-lite-dialog';
 import ListPost from '@/components/sections/home/list-posts';
 import UserAvatar from '@/components/ui/user-avatar';

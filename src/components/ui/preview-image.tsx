@@ -1,5 +1,4 @@
 import { X } from 'lucide-react';
-// Using the close icon from Lucide, adjust import if necessary
 import Image from 'next/image';
 import React from 'react';
 

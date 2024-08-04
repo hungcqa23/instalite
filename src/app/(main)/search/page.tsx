@@ -2,7 +2,7 @@
 
 import { useSearch } from '@/app/queries/useSearch';
 import { Input } from '@/components/ui/form/input';
-import List from '@/components/ui/list';
+import List from '@/components/ui/generic-list';
 import UserItem from '@/components/ui/user';
 import { Account } from '@/schema-validations/account.schema';
 import { Search } from 'lucide-react';

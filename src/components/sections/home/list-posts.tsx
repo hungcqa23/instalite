@@ -1,6 +1,6 @@
 'use client';
 
-import List from '@/components/ui/list';
+import List from '@/components/ui/generic-list';
 import LiteItem from '@/components/ui/lite-item';
 import { Post } from '@/schema-validations/post.schema';
 import { useQuery } from '@tanstack/react-query';

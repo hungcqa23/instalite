@@ -1,7 +1,7 @@
 import AppProvider from '@/app/context/app-context';
 import QueryProvider from '@/app/context/query-context';
 import { ThemeProvider } from '@/app/context/theme-provider';
-import { Toaster } from '@/components/ui/toaster';
+import { Toaster } from '@/components/ui/toast/toaster';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 

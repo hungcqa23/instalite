@@ -3,9 +3,14 @@
 import { useAppContext } from '@/app/context/app-context';
 import { usePostByUsername } from '@/app/queries/usePost';
 import { useSaved } from '@/app/queries/useSaved';
-import List from '@/components/ui/list';
+import List from '@/components/ui/generic-list';
 import LiteItem from '@/components/ui/lite-item';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger
+} from '@/components/ui/tab/tabs';
 import { User } from '@/schema-validations/account.schema';
 import { Post } from '@/schema-validations/post.schema';
 import { Bookmark, Grid2X2, ImageIcon, Repeat2 } from 'lucide-react';

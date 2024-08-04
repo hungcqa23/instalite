@@ -4,6 +4,8 @@ import authApiRequest from '@/app/api-request/auth';
 import { useAppContext } from '@/app/context/app-context';
 import { GoogleIcon } from '@/components/icons/google-icon';
 import { Button } from '@/components/ui/button/button';
+import { Calendar } from '@/components/ui/calendar/calendar';
+import { TimePicker } from '@/components/ui/calendar/time-picker';
 import {
   Form,
   FormControl,
@@ -13,10 +15,18 @@ import {
   FormMessage
 } from '@/components/ui/form/form';
 import { Input } from '@/components/ui/form/input';
-import { useToast } from '@/components/ui/use-toast';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover/popover';
+import { useToast } from '@/components/ui/toast/use-toast';
+import { cn } from '@/lib/utils';
 import { LoginBody, LoginBodyType } from '@/schema-validations/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getCookie } from 'cookies-next';
+import { format } from 'date-fns';
+import { CalendarIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -125,6 +135,52 @@ export default function LoginForm() {
         />
 
         <p className='min-h-[20px]'></p>
+
+        {false && (
+          <FormField
+            control={form.control}
+            name='finishTime'
+            render={({ field }) => (
+              <FormItem className='flex items-center gap-2 space-y-0'>
+                <FormLabel className='min-w-20 text-left'>Due date:</FormLabel>
+
+                <Popover>
+                  <FormControl>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant='outline'
+                        className={cn(
+                          'w-[280px] flex-grow justify-start text-left font-normal',
+                          !field.value && 'text-muted-foreground'
+                        )}
+                      >
+                        <CalendarIcon className='mr-2 h-4 w-4' />
+                        {field.value ? (
+                          format(field.value, 'PPP HH:mm:ss')
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                  </FormControl>
+
+                  <PopoverContent className='w-auto p-0'>
+                    <Calendar
+                      mode='single'
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      initialFocus
+                    />
+                    <div className='border-t border-border p-3'>
+                      <TimePicker setDate={field.onChange} date={field.value} />
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </FormItem>
+            )}
+          />
+        )}
+
         <div className='text-right'>
           <Button className='pr-0' variant={'link'} asChild>
             <Link

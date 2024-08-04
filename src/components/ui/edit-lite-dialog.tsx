@@ -10,8 +10,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@/components/ui/dialog';
-import { useToast } from '@/components/ui/use-toast';
+} from '@/components/ui/dialog/dialog';
+import { useToast } from '@/components/ui/toast/use-toast';
 import { http } from '@/lib/http';
 import { Post } from '@/schema-validations/post.schema';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

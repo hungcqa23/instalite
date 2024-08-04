@@ -14,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@/components/ui/dialog';
+} from '@/components/ui/dialog/dialog';
 import { Input } from '@/components/ui/form/input';
 import ImagePreview from '@/components/ui/preview-image';
 import { http } from '@/lib/http';

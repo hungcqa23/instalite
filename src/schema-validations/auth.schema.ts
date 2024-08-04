@@ -9,7 +9,8 @@ export const RegisterBody = z.object({
 export const LoginBody = z
   .object({
     email: z.string().email(),
-    password: z.string().min(6).max(100)
+    password: z.string().min(6).max(100),
+    finishTime: z.date().optional()
   })
   .strict();
 

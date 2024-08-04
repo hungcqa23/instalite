@@ -18,7 +18,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@/components/ui/dialog';
+} from '@/components/ui/dialog/dialog';
 import EditLiteDialog from '@/components/ui/edit-lite-dialog';
 import {
   DropdownMenu,
@@ -30,7 +30,7 @@ import {
 import { Input } from '@/components/ui/form/input';
 import ListComment from '@/components/ui/list-comment';
 import ImagePreview from '@/components/ui/preview-image';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/components/ui/toast/use-toast';
 import { calculateTimeAgo, formatSocialNumber } from '@/lib/helper';
 import { http } from '@/lib/http';
 import { cn } from '@/lib/utils';
