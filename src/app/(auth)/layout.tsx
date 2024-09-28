@@ -43,9 +43,7 @@ export default function AuthLayout({
           <p className='w-3/4'>
             {testimonials.find(t => `/${t.path}` === pathname)?.text}
           </p>
-          <p className='mt-3 w-3/4 font-semibold'>
-            Cao Quảng An Hưng - user of Instalite
-          </p>
+          <p className='mt-3 w-3/4 font-semibold'>An Hung - User Instalite</p>
         </div>
       </div>
       <div className='relative h-full basis-1/2 p-10 font-medium'>

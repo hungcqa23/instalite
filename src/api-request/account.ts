@@ -1,5 +1,9 @@
 import { http } from '@/lib/http';
-import { User } from '@/types/schema-validations/account.schema';
+import {
+  UpdateUserResType,
+  UpdateUserType,
+  User
+} from '@/types/schema-validations/account.schema';
 
 const accountApiRequest = {
   me: () => http.get('/users/me'),
@@ -16,7 +20,9 @@ const accountApiRequest = {
   unFollow: (followedUserId: string) =>
     http.delete(`/users/follow`, {
       followedUserId
-    })
+    }),
+  update: (body: UpdateUserType) =>
+    http.put<UpdateUserResType>('users/me', body)
 };
 
 export { accountApiRequest };

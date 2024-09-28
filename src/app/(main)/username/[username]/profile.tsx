@@ -13,73 +13,33 @@ import {
   FollowUserItem,
   List
 } from '@/components/ui';
-import { http } from '@/lib/http';
-import { FollowUser } from '@/types/schema-validations/account.schema';
-import { useMutation } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import {
+  useGetAllFollowersQuery,
+  useGetAllFollowingsQuery
+} from '@/hooks/queries/useFollow';
+import { User } from '@/types/schema-validations/account.schema';
+import React from 'react';
 
-export default function Profile({ data }: { data: any }) {
-  const { user } = data;
-
-  const [followedUsers, setFollowedUsers] = useState<FollowUser[]>([]);
-  const [followers, setFollowers] = useState<FollowUser[]>([]);
-
-  const getAllFollowerMutation = useMutation({
-    mutationFn: async () => {
-      return await http.get(`/users/${user?.username}/followers`);
-    }
-  });
-
-  const handleGetAllFollower = async () => {
-    const res = await getAllFollowerMutation.mutateAsync();
-
-    const followerList: FollowUser[] = res.data.map((item: { userId: any }) => {
-      const follower = item.userId;
-      return {
-        _id: follower._id,
-        username: follower.username,
-        avatar:
-          follower.avatar ||
-          'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        full_name: follower.full_name || 'Instalite User'
-      };
-    });
-
-    setFollowers(followerList);
-  };
-
-  const getAllFollowingsMutation = useMutation({
-    mutationFn: async () => {
-      return await http.get(`/users/${user?.username}/followings`);
-    }
-  });
-
-  const handleGetAllFollowings = async () => {
-    const res = await getAllFollowingsMutation.mutateAsync();
-
-    const followedUsersList: FollowUser[] = res.data.map(
-      (item: { followed_userId: any }) => {
-        const followedUser = item.followed_userId;
-        return {
-          _id: followedUser._id,
-          username: followedUser.username,
-          avatar:
-            followedUser.avatar ||
-            'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-          full_name: followedUser.full_name || 'Instalite User'
-        };
-      }
-    );
-
-    setFollowedUsers(followedUsersList);
-  };
+export default function Profile({
+  user,
+  isFollowing,
+  username
+}: {
+  username: string;
+  user?: User;
+  isFollowing: boolean;
+}) {
+  const { data: followersData } = useGetAllFollowersQuery(username);
+  const followers = followersData?.data;
+  const { data: followingData } = useGetAllFollowingsQuery(username);
+  const following = followingData?.data;
 
   return (
     <div className='flex flex-col'>
       <div className='flex h-20 justify-between'>
         <div className='mt-4 flex flex-col items-start justify-start space-y-2'>
           <p className='text-lg font-medium'>
-            {user?.full_name || 'Instalite User'}
+            {user?.fullName || 'Instalite User'}
           </p>
           <p className='text-lg font-semibold'>{user?.username}</p>
         </div>
@@ -99,19 +59,15 @@ export default function Profile({ data }: { data: any }) {
           className='cursor-default p-0 hover:no-underline'
         >
           <p className='font-light'>
-            <span className='font-normal'>{user?.posts_count}</span> posts
+            <span className='font-normal'>{user?.postsCount}</span> posts
           </p>
         </Button>
 
         <Dialog>
           <DialogTrigger asChild>
-            <Button
-              variant={'link'}
-              className='p-0 hover:no-underline'
-              onClick={() => handleGetAllFollower()}
-            >
+            <Button variant={'link'} className='p-0 hover:no-underline'>
               <p className='font-light'>
-                <span className='font-normal'>{user?.followers_count}</span>{' '}
+                <span className='font-normal'>{user?.followersCount}</span>{' '}
                 followers
               </p>
             </Button>
@@ -125,24 +81,22 @@ export default function Profile({ data }: { data: any }) {
             </DialogHeader>
 
             <div className='h-[30rem] max-h-[30rem]'>
-              {List<FollowUser>({
-                listItems: followers,
-                mapFn: user => <FollowUserItem key={user._id} user={user} />,
-                as: 'ul'
-              })}
+              {followers &&
+                followers.length > 0 &&
+                List<User>({
+                  listItems: followers,
+                  mapFn: user => <FollowUserItem key={user._id} user={user} />,
+                  as: 'ul'
+                })}
             </div>
           </DialogContent>
         </Dialog>
 
         <Dialog>
           <DialogTrigger asChild>
-            <Button
-              variant={'link'}
-              className='p-0 hover:no-underline'
-              onClick={() => handleGetAllFollowings()}
-            >
+            <Button variant={'link'} className='p-0 hover:no-underline'>
               <p className='font-light'>
-                <span className='font-normal'>{user?.following_count}</span>{' '}
+                <span className='font-normal'>{user?.followingCount}</span>
                 following
               </p>
             </Button>
@@ -155,11 +109,13 @@ export default function Profile({ data }: { data: any }) {
             </DialogHeader>
 
             <div className='h-[30rem] max-h-[30rem]'>
-              {List<FollowUser>({
-                listItems: followedUsers,
-                mapFn: user => <FollowUserItem key={user._id} user={user} />,
-                as: 'ul'
-              })}
+              {following &&
+                following.length > 0 &&
+                List<User>({
+                  listItems: following,
+                  mapFn: user => <FollowUserItem key={user._id} user={user} />,
+                  as: 'ul'
+                })}
             </div>
           </DialogContent>
         </Dialog>

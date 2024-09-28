@@ -43,6 +43,7 @@ export default function LoginForm() {
 
   const router = useRouter();
   const { user, setUser } = useUserStore();
+  const loginMutation = useLoginMutation();
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
     defaultValues: {
@@ -50,8 +51,6 @@ export default function LoginForm() {
       password: ''
     }
   });
-
-  const loginMutation = useLoginMutation();
 
   const handleLoginError = (error: any) => {
     toast({
@@ -85,7 +84,7 @@ export default function LoginForm() {
           description: 'Welcome back'
         });
       }, 1000);
-
+      console.log(result);
       setUser(result.data);
       router.push('/');
     } catch (error: any) {

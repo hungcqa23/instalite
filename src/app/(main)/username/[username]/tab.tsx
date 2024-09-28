@@ -22,7 +22,7 @@ export default function Tab({
   user: {
     user: User;
   } & {
-    is_following: boolean;
+    isFollowing: boolean;
   };
 }) {
   const { data } = useSaved();

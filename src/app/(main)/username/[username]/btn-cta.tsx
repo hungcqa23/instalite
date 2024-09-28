@@ -1,7 +1,6 @@
 'use client';
 
-import { accountApiRequest } from '@/api-request';
-import { useAppContext } from '@/app/context';
+import { accountApiRequest } from '@/api-request/account';
 import {
   Avatar,
   AvatarFallback,
@@ -18,20 +17,27 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   Input,
-  Label
+  Label,
+  toast
 } from '@/components/ui';
-import { http } from '@/lib/http';
-import { Account } from '@/types/schema-validations/account.schema';
+import { useUpdateUserMutation } from '@/hooks/queries/useUser';
+import { useUserStore } from '@/stores/user.stores';
+import { User } from '@/types/schema-validations/account.schema';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-export default function BtnCta({ user: userData }: any) {
-  const { user } = userData;
+export default function BtnCta({
+  user,
+  isFollowing
+}: {
+  user: User;
+  isFollowing: boolean;
+}) {
   const router = useRouter();
-  const { user: currentUser, setUser } = useAppContext();
-  const [username, setUsername] = useState('');
+  const { user: currentUser, setUser } = useUserStore();
+
+  const [username, setUsername] = useState<string | undefined>('');
   const [name, setName] = useState<string | undefined>('');
   const [bio, setBio] = useState<string | undefined>('');
   const [avatar, setAvatar] = useState<string | undefined>('');
@@ -52,11 +58,11 @@ export default function BtnCta({ user: userData }: any) {
     mutationFn: async ({ formData }: { formData: FormData }) => {
       const res = await fetch(`http://localhost:8000/users/avatar`, {
         method: 'PATCH',
-        body: formData,
-        headers: {
-          Cookie: `access_token=${accessToken}`
-        },
-        credentials: 'include'
+        body: formData
+        // headers: {
+        //   Cookie: `access_token=${accessToken}`
+        // },
+        // credentials: 'include'
       });
       return await res.json();
     }
@@ -72,60 +78,39 @@ export default function BtnCta({ user: userData }: any) {
     }
   };
 
-  const updateUser = useMutation({
-    mutationFn: async () => {
-      const data = await http.put(`users/me`, {
-        username,
-        fullName: name,
-        bio
-      });
-
-      return data;
-    }
-  });
-
+  const updateUserMutation = useUpdateUserMutation();
   const handleSaveButton = async () => {
-    handleUploadAvatar();
-    const { result } = await updateUser.mutateAsync();
-    setUser(result);
-    router.push('/');
-    setTimeout(() => {
-      window.location.reload();
-    }, 500);
-  };
-  const accessToken = getCookie('access_key');
-
-  const { data } = useQuery({
-    queryKey: ['users', accessToken],
-    queryFn: async () => {
-      const res = await fetch('http://localhost:8000/users/me', {
-        method: 'GET',
-        headers: {
-          Cookie: `access_token=${accessToken}`
-        },
-        credentials: 'include'
+    try {
+      const { data } = await updateUserMutation.mutateAsync({
+        fullName: name,
+        username: username,
+        bio: bio
       });
-
-      const data = await res.json();
-      const { user }: { user: Account } = data;
-      setUsername(user.username);
-      setBio(user.bio);
-      setName(user.full_name);
-      setAvatar(user.avatar);
-      return data;
+      setUser(data);
+      toast({
+        title: 'Profile updated',
+        description: 'Your profile has been updated'
+      });
+      setTimeout(() => {
+        router.push('/');
+      }, 1000);
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong'
+      });
     }
-  });
+  };
 
   const { data: followData } = useQuery({
-    queryKey: ['follow', accessToken, user?.username],
+    queryKey: ['follow', user?.username],
     queryFn: async () => {
       const res = await fetch(
         `http://localhost:8000/users/${user?.username}/follow`,
         {
           method: 'GET',
-          headers: {
-            Cookie: `access_token=${accessToken}`
-          },
+
           credentials: 'include'
         }
       );
@@ -157,8 +142,14 @@ export default function BtnCta({ user: userData }: any) {
     }
   };
 
+  useEffect(() => {
+    setName(currentUser?.fullName);
+    setUsername(currentUser?.username);
+    setBio(currentUser?.bio);
+  }, [currentUser]);
   if (!followData) return null;
-  if (!data) return null;
+
+  const isCurrentUser = user?.username === currentUser?.username;
 
   return (
     <>
@@ -174,7 +165,7 @@ export default function BtnCta({ user: userData }: any) {
         </div>
       )}
 
-      {user?.username === currentUser?.username && (
+      {isCurrentUser && (
         <Dialog>
           <DialogTrigger asChild>
             <Button

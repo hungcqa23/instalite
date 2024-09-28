@@ -1,9 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
-import { FollowUser } from '@/types/schema-validations/account.schema';
+import { User } from '@/types/schema-validations/account.schema';
 import Link from 'next/link';
 import React from 'react';
 
-const FollowUserItem = ({ user }: { user: FollowUser }) => {
+const FollowUserItem = ({ user }: { user: User }) => {
   return (
     <Link
       href={`/username/${user.username}`}
@@ -17,7 +17,7 @@ const FollowUserItem = ({ user }: { user: FollowUser }) => {
         <div className='flex w-[21.875rem] flex-col'>
           <span className='text-sm font-semibold'>{user.username}</span>
           <div className='text-xs font-normal text-gray-500'>
-            {user.full_name}
+            {user.fullName}
           </div>
         </div>
         {/* <div className='flex flex-col justify-center '>

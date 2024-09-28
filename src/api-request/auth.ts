@@ -1,7 +1,9 @@
 import { http } from '@/lib/http';
 import {
   LoginBodyType,
-  LoginResType
+  LoginResType,
+  RegisterBodyType,
+  RegisterResType
 } from '@/types/schema-validations/auth.schema';
 
 const authApiRequest = {
@@ -11,7 +13,8 @@ const authApiRequest = {
       credentials: 'include'
     });
   },
-  // register: (body: RegisterBodyType) => http.post('/auth/register', body),
+  register: (body: RegisterBodyType) =>
+    http.post<RegisterResType>('/auth/register', body),
   logoutFromNextClientToServer: (
     force?: boolean | undefined,
     signal?: AbortSignal | undefined

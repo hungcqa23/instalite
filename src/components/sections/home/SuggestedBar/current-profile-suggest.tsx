@@ -16,7 +16,7 @@ export default function CurrentProfileSuggest() {
           {user?.username}
         </Link>
         <p className='mt-1 text-sm font-normal leading-4 text-gray-500'>
-          {user?.full_name}
+          {user?.fullName}
         </p>
       </div>
     </div>

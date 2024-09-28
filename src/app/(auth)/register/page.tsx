@@ -1,30 +1,35 @@
 'use client';
 
 import {
+  Button,
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
+  Input,
+  useToast
 } from '@/components/ui';
-import { Button } from '@/components/ui';
-import { Input } from '@/components/ui';
 import { GoogleIcon } from '@/components/ui/icons';
+import { useSignUpMutation } from '@/hooks/queries/useAuth';
+import { useUserStore } from '@/stores/user.stores';
+import { RegisterBodyType } from '@/types/schema-validations/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const formSchema = z
   .object({
-    username: z.string().min(1, {
-      message: 'Required'
+    username: z.string().min(3, {
+      message: 'Username must be at least 3 characters.'
     }),
     email: z.string().email(),
-    password: z.string().min(3, {
-      message: 'Password must be at least 3 characters.'
+    password: z.string().min(6, {
+      message: 'Password must be at least 6 characters.'
     }),
     passwordConfirm: z.string()
   })
@@ -56,7 +61,7 @@ const Login = () => (
 const Continue = () => (
   <div className='relative mt-8'>
     <div className='absolute inset-0 flex items-center'>
-      <span className='w-full border-t'></span>
+      <span className='w-full border-t' />
     </div>
     <div className='relative flex justify-center text-xs uppercase'>
       <span className='bg-white px-2 text-gray-400 dark:bg-black'>
@@ -67,7 +72,16 @@ const Continue = () => (
 );
 
 export default function Register() {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const { user, setUser } = useUserStore();
+  const registerMutation = useSignUpMutation();
+  const form = useForm<
+    RegisterBodyType & {
+      passwordConfirm: string;
+    }
+  >({
     resolver: zodResolver(formSchema),
     defaultValues: {
       password: '',
@@ -77,10 +91,55 @@ export default function Register() {
     }
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  const handleLoginError = (error: any) => {
+    toast({
+      variant: 'destructive',
+      title: 'Error',
+      description: error.message
+    });
+
+    form.setError('username', {
+      type: 'server',
+      message: 'Please check your email and password'
+    });
+
+    form.setError('email', {
+      type: 'server',
+      message: 'Please check your email and password'
+    });
+
+    form.setError('password', {
+      type: 'server',
+      message: 'Please check your email and password'
+    });
+
+    form.setError('passwordConfirm', {
+      type: 'server',
+      message: 'Please check your email and password'
+    });
+  };
+
+  async function onSubmit({ username, password, email }: RegisterBodyType) {
+    toast({
+      title: 'Loading...'
+    });
+    try {
+      const result = await registerMutation.mutateAsync({
+        username,
+        password,
+        email
+      });
+
+      setUser(result?.data);
+      setTimeout(() => {
+        toast({
+          title: 'Sign up successful',
+          description: 'Nice to meet you!'
+        });
+      }, 1000);
+    } catch (error: any) {
+      handleLoginError(error);
+    }
   }
   return (
     <Form {...form}>
