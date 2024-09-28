@@ -8,8 +8,8 @@ import {
   TabsTrigger
 } from '@/components/ui';
 import LiteItem from '@/components/ui/lite';
-import { usePostByUsername } from '@/queries/usePost';
-import { useSaved } from '@/queries/useSaved';
+import { usePostByUsername } from '@/hooks/queries/usePost';
+import { useSaved } from '@/hooks/queries/useSaved';
 import { useUserStore } from '@/stores/user.stores';
 import { User } from '@/types/schema-validations/account.schema';
 import { Post } from '@/types/schema-validations/post.schema';

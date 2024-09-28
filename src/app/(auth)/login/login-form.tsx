@@ -12,7 +12,7 @@ import {
   useToast
 } from '@/components/ui';
 import { GoogleIcon } from '@/components/ui/icons';
-import { useLoginMutation } from '@/queries/useAuth';
+import { useLoginMutation } from '@/hooks/queries/useAuth';
 import { useUserStore } from '@/stores/user.stores';
 import {
   LoginBody,

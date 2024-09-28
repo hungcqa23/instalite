@@ -1,4 +1,4 @@
-import { LiteItem } from '@/components/ui';
+import LiteItem from '@/components/ui/lite';
 import { http } from '@/lib/http';
 import { Post, PostResType } from '@/types/schema-validations/post.schema';
 import { cookies } from 'next/headers';
@@ -21,13 +21,12 @@ export default async function DetailPostPage(param: {
         : ''
     }
   });
-  const { post }: { post: Post } = res;
 
   return (
     <div className='mb-2 flex w-full justify-center xl:justify-normal'>
       <div className='mt-2 flex w-full max-w-[30rem] flex-col xl:ml-[calc((100%-30rem)/2)] xl:mr-20'>
         <div className='flex flex-col items-center'>
-          <LiteItem lite={post} />
+          {/* <LiteItem lite={post} /> */}
         </div>
       </div>
     </div>

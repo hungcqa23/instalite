@@ -4,7 +4,7 @@ export const NotificationBody = z.object({
   _id: z.string(),
   content: z.string(),
   type: z.number(),
-  user_id: z.object({
+  userId: z.object({
     _id: z.string(),
     username: z.string(),
     avatar: z.string()

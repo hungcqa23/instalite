@@ -1,3 +1,4 @@
+import { postApiRequest } from '@/api-request/post';
 import { useQuery } from '@tanstack/react-query';
 import { getCookie } from 'cookies-next';
 
@@ -21,3 +22,9 @@ export const usePostByUsername = (username: string) => {
     }
   });
 };
+
+export const useGetAllPostsQuery = () =>
+  useQuery({
+    queryKey: ['posts'],
+    queryFn: postApiRequest.getAll
+  });

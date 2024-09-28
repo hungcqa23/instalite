@@ -14,7 +14,7 @@ export type CreatePost = z.infer<typeof CreatePostBody>;
 
 export const PostBody = z.object({
   _id: z.string(),
-  user_id: z.object({
+  userId: z.object({
     _id: z.string(),
     username: z.string(),
     avatar: z.string()
@@ -24,18 +24,18 @@ export const PostBody = z.object({
     type: z.number()
   }),
   content: z.string(),
-  type_post: z.number(),
+  typePost: z.number(),
   likes: z.number(),
   comments: z.number(),
-  created_at: z.string(),
-  updated_at: z.string()
+  createdAt: z.string(),
+  updatedAt: z.string()
 });
 
 export type Post = z.infer<typeof PostBody>;
 
 export const PostRes = z.object({
   message: z.string(),
-  post: z.array(PostBody)
+  data: z.array(PostBody)
 });
 
 export type PostResType = z.infer<typeof PostRes>;

@@ -15,3 +15,4 @@ export * from './follow-user-item';
 export * from './icon-profile';
 export * from './preview-image';
 export * from './lite';
+export * from './skeleton';

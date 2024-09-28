@@ -4,8 +4,6 @@ import { AccountResType } from '@/types/schema-validations/account.schema';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-export type User = AccountResType['result'];
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

@@ -1,3 +1,5 @@
+'use client';
+
 import { Label } from '@/components/ui/form/Label';
 import { cn } from '@/lib/utils';
 import * as LabelPrimitive from '@radix-ui/react-label';

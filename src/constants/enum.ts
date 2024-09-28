@@ -4,3 +4,8 @@ export enum NotificationType {
   Reply,
   Follow
 }
+
+export enum MediaType {
+  IMAGE,
+  VIDEO
+}

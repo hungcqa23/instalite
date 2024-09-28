@@ -84,7 +84,7 @@ export default function CommentItem({ comment }: { comment: Post }) {
       <div className='my-3 w-full border-b-[1px] border-gray-200 p-0'>
         <div className='mb-2 flex flex-row'>
           <Avatar className='z-[-1] mt-0.5 h-8 w-8'>
-            <AvatarImage src={comment?.user_id?.avatar} alt='@shadcn' />
+            <AvatarImage src={comment?.userId?.avatar} alt='@shadcn' />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
 
@@ -92,14 +92,14 @@ export default function CommentItem({ comment }: { comment: Post }) {
             <div className='flex flex-row items-center justify-between'>
               <div className='flex flex-row gap-1'>
                 <span className='text-xs font-semibold'>
-                  {comment?.user_id?.username}
+                  {comment?.userId?.username}
                 </span>
                 <span className='text-xs font-normal text-gray-500'>
                   {calculateTimeAgo(comment?.created_at)}
                 </span>
               </div>
 
-              {user?._id === comment?.user_id?._id && (
+              {user?._id === comment?.userId?._id && (
                 <DropdownMenu modal={false}>
                   <DropdownMenuTrigger asChild>
                     <Button variant={'link'} className='me-1 h-5 w-5 px-0'>

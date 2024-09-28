@@ -26,29 +26,31 @@ import {
 import ListComment from '@/components/ui/comment/list-comment';
 import {
   Clapperboard,
+  EllipsisIcon,
   ImageIcon,
   MessageCircle,
+  MessageCircleIcon,
   Pencil,
+  PencilIcon,
   Sparkle,
+  SparkleIcon,
   Trash,
-  X
+  TrashIcon,
+  X,
+  XIcon
 } from '@/components/ui/icons';
+import MediaSection from '@/components/ui/lite/media-section';
+import { isVideo } from '@/lib/check';
 import { calculateTimeAgo } from '@/lib/helper';
 import { http } from '@/lib/http';
 import { useUserStore } from '@/stores/user.stores';
 import { Post } from '@/types/schema-validations/post.schema';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { MediaPlayer, MediaProvider } from '@vidstack/react';
-import {
-  DefaultVideoLayout,
-  defaultLayoutIcons
-} from '@vidstack/react/player/layouts/default';
 import '@vidstack/react/player/styles/default/layouts/audio.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
 import '@vidstack/react/player/styles/default/theme.css';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -79,15 +81,11 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
   const videoFileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+    if (fileInputRef.current) fileInputRef.current.click();
   };
 
   const handleVideoClick = () => {
-    if (videoFileInputRef.current) {
-      videoFileInputRef.current.click();
-    }
+    if (videoFileInputRef.current) videoFileInputRef.current.click();
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,16 +100,12 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
   const handleDeleteVideo = () => {
     setVideoFile(null);
     setVideoUrl(null);
-    if (videoFileInputRef.current) {
-      videoFileInputRef.current.value = '';
-    }
+    if (videoFileInputRef.current) videoFileInputRef.current.value = '';
   };
 
   const handleDeleteImage = (index: number) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,6 +128,7 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
   const unBookmarkMutation = useMutation({
     mutationFn: (postId: string) => postApiRequest.unBookmark(postId)
   });
+
   const updateVideoMutation = useMutation({
     mutationFn: async ({
       commentPostId,
@@ -163,6 +158,7 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
       // window.location.reload();
     }
   });
+
   const updatePostMutation = useMutation({
     mutationFn: async ({
       commentPostId,
@@ -190,6 +186,7 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
       // window.location.reload();
     }
   });
+
   const createCommentMutation = useMutation({
     mutationFn: async (text: string) => {
       return await http.post('/posts', {
@@ -287,6 +284,7 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
       setLiked(false);
     }
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
@@ -330,191 +328,216 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
     const res = await summarizeMutation.mutateAsync(formData);
   };
 
+  const ActionMenu = ({
+    lite,
+    isCurrentUser
+  }: {
+    lite: Post;
+    isCurrentUser: boolean;
+  }) => (
+    <DropdownMenu modal={false}>
+      <DropdownMenuTrigger asChild>
+        <Button variant='link' className='me-1 h-5 w-5 px-0'>
+          <EllipsisIcon />
+        </Button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent
+        align='end'
+        className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
+      >
+        {isCurrentUser && (
+          <>
+            <DropdownMenuItem
+              className='cursor-pointer gap-2 rounded-md font-medium'
+              onClick={() => setOpenDeleteDialog(true)}
+            >
+              <TrashIcon className='size-4' /> <span>Delete lite</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className='cursor-pointer gap-2 rounded-md font-medium'
+              onClick={() => setOpenEditDialog(true)}
+            >
+              <PencilIcon className='size-4' /> <span>Edit lite</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+          </>
+        )}
+
+        {!isVideo(lite?.media?.type) && (
+          <DropdownMenuItem
+            className='cursor-pointer gap-2 rounded-md font-medium'
+            onClick={() => handleSummarization()}
+          >
+            <SparkleIcon className='size-4' />
+            <span>Summarize with Relite AI</span>
+          </DropdownMenuItem>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+  const HeaderSection = ({
+    lite,
+    isCurrentUser
+  }: {
+    lite: Post;
+    isCurrentUser: boolean;
+  }) => (
+    <div className='mb-2 flex flex-row items-center justify-between'>
+      <div className='flex flex-row items-end'>
+        <Avatar className='z-[-1] h-9 w-9'>
+          <AvatarImage
+            src={lite?.userId?.avatar}
+            alt={lite?.userId?.username}
+          />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+        <div className='ms-2.5 flex flex-col justify-end'>
+          <span className='text-[13px] font-semibold'>
+            {lite?.userId?.username}
+          </span>
+          <span className='text-xs font-normal text-gray-500'>
+            {calculateTimeAgo(lite?.createdAt)}
+          </span>
+        </div>
+      </div>
+      <ActionMenu lite={lite} isCurrentUser={isCurrentUser} />
+    </div>
+  );
+
+  const isCurrentUser = user?._id === lite?.userId._id;
+
+  const FooterLinkSection = () => (
+    <div className='mt-3 flex flex-row justify-between'>
+      <div className='ms-0.5 flex flex-row gap-3'>
+        <ButtonLike liked={liked} handleLike={handleLike} />
+        <Link href={`/posts/${lite._id}`}>
+          <MessageCircle className='size-5 cursor-pointer' />
+        </Link>
+        <ButtonSend />
+      </div>
+
+      <ButtonBookMark bookmarked={bookmarked} handleBookmark={handleBookmark} />
+    </div>
+  );
+
+  const FooterSection = ({
+    liked,
+    handleLike,
+    bookmarked,
+    handleBookmark,
+    lite
+  }: {
+    liked: boolean;
+    handleLike: () => void;
+    bookmarked: boolean;
+    handleBookmark: () => void;
+    lite: Post;
+  }) => (
+    <div className='mt-3 flex flex-row justify-between'>
+      <div className='ms-0.5 flex flex-row gap-3'>
+        <ButtonLike liked={liked} handleLike={handleLike} />
+        <CommentDialog lite={lite} />
+        <ButtonSend />
+      </div>
+      <ButtonBookMark bookmarked={bookmarked} handleBookmark={handleBookmark} />
+    </div>
+  );
+
+  const CommentDialog = ({ lite }: { lite: Post }) => (
+    <Dialog open={isOpenCommentDialog} onOpenChange={handleDialogChange}>
+      <DialogTrigger>
+        <MessageCircleIcon className='h-5 w-5 cursor-pointer' />
+      </DialogTrigger>
+      <DialogContent className='select-none dark:bg-zinc-950 sm:max-w-[34rem]'>
+        <DialogHeader>
+          <DialogTitle className='flex justify-center text-sm font-bold'>
+            Reply to {lite?.userId?.username}
+          </DialogTitle>
+          <DialogClose asChild>
+            <Button
+              className='absolute right-0 top-0 z-10 hover:bg-transparent dark:hover:bg-transparent'
+              variant='ghost'
+              onClick={() => handleDialogChange(false)}
+            >
+              <XIcon size={16} />
+            </Button>
+          </DialogClose>
+        </DialogHeader>
+        {/* <CommentForm lite={lite} /> */}
+      </DialogContent>
+    </Dialog>
+  );
+
+  const DialogComponents = ({ liteId }: { liteId: string }) => (
+    <>
+      {openDeleteDialog && (
+        <DeleteLiteDialog
+          setOpenDeleteDialog={setOpenDeleteDialog}
+          liteId={liteId}
+        />
+      )}
+      {openEditDialog && (
+        <EditLiteDialog
+          openEditDialog={openEditDialog}
+          setOpenEditDialog={setOpenEditDialog}
+          liteId={liteId}
+        />
+      )}
+      {openCancelDialog && (
+        <Dialog open={openCancelDialog} onOpenChange={setOpenCancelDialog}>
+          <DialogContent className='select-none px-0 pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[20rem]'>
+            <DialogHeader>
+              <DialogTitle className='mb-0 flex justify-center text-sm font-bold'>
+                Close comment?
+              </DialogTitle>
+              <DialogClose asChild>
+                <div className='absolute right-0 top-0 z-10 h-8 w-16 bg-white dark:bg-zinc-950' />
+              </DialogClose>
+            </DialogHeader>
+            <CancelDialogActions
+              cancelClose={cancelClose}
+              confirmClose={confirmClose}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
+  );
+
+  const CancelDialogActions = ({
+    cancelClose,
+    confirmClose
+  }: {
+    cancelClose: () => void;
+    confirmClose: () => void;
+  }) => (
+    <div className='flex flex-row border-t-2 dark:border-gray-600'>
+      <div
+        className='w-full cursor-pointer rounded-bl-3xl border-r-2 py-4 text-center dark:border-gray-600'
+        onClick={cancelClose}
+      >
+        Cancel
+      </div>
+      <div
+        className='w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
+        onClick={confirmClose}
+      >
+        Close
+      </div>
+    </div>
+  );
+
   if (isLink)
     return (
       <>
         <div className='mb-2 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
-          <div className='mb-2 flex flex-row items-center justify-between'>
-            <div className='flex flex-row items-end'>
-              <Avatar className='z-[-1] h-9 w-9'>
-                <AvatarImage
-                  src={
-                    lite?.user_id?.username === 'anhung1'
-                      ? 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                      : undefined
-                  }
-                  alt='@shadcn'
-                />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <div className='ms-2.5 flex flex-col justify-end'>
-                <span className='text-[13px] font-semibold'>
-                  {lite?.user_id?.username}
-                </span>
-                <span className='text-xs font-normal text-gray-500'>
-                  {calculateTimeAgo(lite?.created_at)}
-                </span>
-              </div>
-            </div>
-
-            {user?._id === lite?.user_id._id ? (
-              <DropdownMenu modal={false}>
-                <DropdownMenuTrigger asChild>
-                  <Button variant={'link'} className='me-1 h-5 w-5 px-0'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      width='24'
-                      height='24'
-                      viewBox='0 0 24 24'
-                      fill='none'
-                      stroke='currentColor'
-                      strokeWidth='2'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      className='lucide lucide-ellipsis'
-                    >
-                      <circle cx='12' cy='12' r='1' />
-                      <circle cx='19' cy='12' r='1' />
-                      <circle cx='5' cy='12' r='1' />
-                    </svg>
-                  </Button>
-                </DropdownMenuTrigger>
-
-                <DropdownMenuContent
-                  align='end'
-                  className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
-                >
-                  <DropdownMenuItem
-                    className='cursor-pointer gap-2 rounded-md font-medium'
-                    onClick={() => setOpenDeleteDialog(true)}
-                  >
-                    <Trash className='mb-0 h-4 w-4' />
-                    <span className=''>Delete lite</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <Link href={`/posts/${lite._id}`}>
-                    <DropdownMenuItem className='cursor-pointer gap-2 rounded-md font-medium'>
-                      <Pencil className='mb-0 h-4 w-4' />
-                      <span className=''>Edit lite</span>
-                    </DropdownMenuItem>
-                  </Link>
-                  <DropdownMenuSeparator />
-
-                  {lite?.media?.type !== 1 && (
-                    <DropdownMenuItem
-                      className='cursor-pointer gap-2 rounded-md font-medium'
-                      onClick={() => handleSummarization()}
-                    >
-                      <Sparkle className='mb-0 h-4 w-4' />
-                      <span className=''>Summarize with Relite AI</span>
-                    </DropdownMenuItem>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <DropdownMenu modal={false}>
-                <DropdownMenuTrigger asChild>
-                  <Button variant={'link'} className='me-1 h-5 w-5 px-0'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      width='24'
-                      height='24'
-                      viewBox='0 0 24 24'
-                      fill='none'
-                      stroke='currentColor'
-                      strokeWidth='2'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      className='lucide lucide-ellipsis'
-                    >
-                      <circle cx='12' cy='12' r='1' />
-                      <circle cx='19' cy='12' r='1' />
-                      <circle cx='5' cy='12' r='1' />
-                    </svg>
-                  </Button>
-                </DropdownMenuTrigger>
-
-                <DropdownMenuContent
-                  align='end'
-                  className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
-                >
-                  {lite?.media?.type !== 1 && (
-                    <DropdownMenuItem
-                      className='cursor-pointer gap-2 rounded-md font-medium'
-                      onClick={() => handleSummarization()}
-                    >
-                      <Sparkle className='mb-0 h-4 w-4' />
-                      <span className=''>Summarize with Relite AI</span>
-                    </DropdownMenuItem>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
-          </div>
+          <HeaderSection lite={lite} isCurrentUser={isCurrentUser} />
           <Link href={`/posts/${lite._id}`} className='w-full'>
             <p className='text-[0.8125rem]'>{lite?.content}</p>
           </Link>
-
-          {/* {lite.url && (
-          <div className='my-3'>
-            <Image
-              src={lite.url}
-              alt='image'
-              width={430}
-              height={430}
-              className=' rounded-md'
-            />
-          </div>
-        )} */}
-
-          {lite?.media?.type == 0 && (
-            <div className='my-2'>
-              <Image
-                src={lite.media.url}
-                alt='image'
-                width={430}
-                height={430}
-                className='rounded-md border-2'
-              />
-            </div>
-          )}
-
-          {lite?.media?.type == 1 && (
-            <MediaPlayer
-              src={`http://localhost:8000/files/video-hls/${lite._id}/master.m3u8`}
-              viewType='video'
-              streamType='on-demand'
-              logLevel='warn'
-              crossOrigin
-              className='z-0 my-2'
-              playsInline
-              title='Sprite Fight'
-              poster='https://files.vidstack.io/sprite-fight/poster.webp'
-            >
-              <MediaProvider />
-              <DefaultVideoLayout
-                // thumbnails='https://files.vidstack.io/sprite-fight/thumbnails.vtt'
-                icons={defaultLayoutIcons}
-              />
-            </MediaPlayer>
-          )}
-
-          <div className='mt-3 flex flex-row justify-between'>
-            <div className='ms-0.5 flex flex-row gap-3'>
-              <ButtonLike liked={liked} handleLike={handleLike} />
-
-              <Link href={`/posts/${lite._id}`}>
-                <MessageCircle className='h-5 w-5 cursor-pointer' />
-              </Link>
-
-              <ButtonSend />
-            </div>
-
-            <ButtonBookMark
-              bookmarked={bookmarked}
-              handleBookmark={handleBookmark}
-            />
-          </div>
+          <MediaSection lite={lite} />
         </div>
 
         {openDeleteDialog && (
@@ -529,146 +552,9 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
   return (
     <>
       <div className='mb-0 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
-        <div className='mb-2 flex flex-row items-center justify-between'>
-          <div className='flex flex-row items-end'>
-            <Avatar className='z-[-1] h-9 w-9'>
-              <AvatarImage src={lite?.user_id?.avatar} alt='@shadcn' />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-
-            <div className='ms-2.5 flex flex-col justify-end'>
-              <span className='text-[13px] font-semibold'>
-                {lite?.user_id?.username}
-              </span>
-              <span className='text-xs font-normal text-gray-500'>
-                {calculateTimeAgo(lite?.created_at)}
-              </span>
-            </div>
-          </div>
-
-          {user?._id === lite?.user_id._id ? (
-            <DropdownMenu modal={false}>
-              <DropdownMenuTrigger asChild>
-                <Button variant={'link'} className='me-1 h-5 w-5 px-0'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    className='lucide lucide-ellipsis'
-                  >
-                    <circle cx='12' cy='12' r='1' />
-                    <circle cx='19' cy='12' r='1' />
-                    <circle cx='5' cy='12' r='1' />
-                  </svg>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align='end'
-                className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
-              >
-                <DropdownMenuItem
-                  className='cursor-pointer gap-2 rounded-md font-medium'
-                  onClick={() => setOpenDeleteDialog(true)}
-                >
-                  <Trash className='mb-0 h-4 w-4' />
-                  <span className=''>Delete lite</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className='cursor-pointer gap-2 rounded-md font-medium'
-                  onClick={() => setOpenEditDialog(true)}
-                >
-                  <Pencil className='mb-0 h-4 w-4' />
-                  <span className=''>Edit lite</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                {lite?.media?.type !== 1 && (
-                  <DropdownMenuItem
-                    className='cursor-pointer gap-2 rounded-md font-medium'
-                    onClick={() => handleSummarization()}
-                  >
-                    <Sparkle className='mb-0 h-4 w-4' />
-                    <span className=''>Summarize with Relite AI</span>
-                  </DropdownMenuItem>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <DropdownMenu modal={false}>
-              <DropdownMenuTrigger asChild>
-                <Button variant={'link'} className='me-1 h-5 w-5 px-0'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    className='lucide lucide-ellipsis'
-                  >
-                    <circle cx='12' cy='12' r='1' />
-                    <circle cx='19' cy='12' r='1' />
-                    <circle cx='5' cy='12' r='1' />
-                  </svg>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align='end'
-                className='-ms-3 w-56 rounded-lg py-2 shadow-default dark:bg-zinc-950'
-              >
-                {lite?.media?.type !== 1 && (
-                  <DropdownMenuItem
-                    className='cursor-pointer gap-2 rounded-md font-medium'
-                    onClick={() => handleSummarization()}
-                  >
-                    <Sparkle className='mb-0 h-4 w-4' />
-                    <span className=''>Summarize with Relite AI</span>
-                  </DropdownMenuItem>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
-        </div>
-
+        <HeaderSection lite={lite} isCurrentUser={isCurrentUser} />
         <p className='text-[0.8125rem]'>{lite?.content}</p>
-
-        {lite?.media?.type == 0 && (
-          <div className='my-2'>
-            <Image
-              src={lite.media.url}
-              alt='image'
-              width={430}
-              height={430}
-              className='rounded-md border-2'
-            />
-          </div>
-        )}
-
-        {lite?.media?.type == 1 && (
-          <MediaPlayer
-            src={`http://localhost:8000/files/video-hls/${lite._id}/master.m3u8`}
-            viewType='video'
-            streamType='on-demand'
-            logLevel='warn'
-            crossOrigin
-            className='z-0 my-2'
-            playsInline
-            title='Sprite Fight'
-            poster='https://files.vidstack.io/sprite-fight/poster.webp'
-          >
-            <MediaProvider />
-            <DefaultVideoLayout icons={defaultLayoutIcons} />
-          </MediaPlayer>
-        )}
+        <MediaSection lite={lite} />
 
         <div className='mt-3 flex flex-row justify-between'>
           <div className='ms-0.5 flex flex-row gap-3'>
@@ -683,7 +569,7 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
               <DialogContent className='select-none dark:bg-zinc-950 sm:max-w-[34rem]'>
                 <DialogHeader>
                   <DialogTitle className='flex justify-center text-sm font-bold'>
-                    Reply to {lite?.user_id?.username}
+                    Reply to {lite?.userId?.username}
                   </DialogTitle>
                   <DialogClose asChild>
                     <Button
@@ -821,52 +707,7 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
       </div>
 
       <ListComment postId={lite?._id} />
-
-      {openDeleteDialog && (
-        <DeleteLiteDialog
-          setOpenDeleteDialog={setOpenDeleteDialog}
-          liteId={lite?._id}
-        />
-      )}
-
-      {openEditDialog && (
-        <EditLiteDialog
-          openEditDialog={openEditDialog}
-          setOpenEditDialog={setOpenEditDialog}
-          liteId={lite?._id}
-        />
-      )}
-
-      {openCancelDialog && (
-        <Dialog open={openCancelDialog} onOpenChange={setOpenCancelDialog}>
-          <DialogContent className='select-none px-0 pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[20rem]'>
-            <DialogHeader>
-              <DialogTitle className='mb-0 flex justify-center text-sm font-bold'>
-                Close comment?
-              </DialogTitle>
-              <DialogClose asChild>
-                <div className='absolute right-0 top-0 z-10 h-8 w-16 bg-white dark:bg-zinc-950'></div>
-              </DialogClose>
-            </DialogHeader>
-
-            <div className='flex flex-row border-t-2 dark:border-gray-600'>
-              <div
-                className='w-full cursor-pointer rounded-bl-3xl border-r-2 py-4 text-center dark:border-gray-600'
-                onClick={cancelClose}
-              >
-                Cancel
-              </div>
-
-              <div
-                className='w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
-                onClick={confirmClose}
-              >
-                Close
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
+      <DialogComponents liteId={lite?._id} />
     </>
   );
 };

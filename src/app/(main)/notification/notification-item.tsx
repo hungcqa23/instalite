@@ -20,8 +20,8 @@ export default function NotificationItem({
       break;
     case NotificationType.Follow:
       src = '/follow.svg';
-      notification.content = `${notification.user_id.username} started following you`;
-      href = `${notification.user_id.username}`;
+      notification.content = `${notification.userId.username} started following you`;
+      href = `${notification.userId.username}`;
       break;
     default:
       href = '/';
@@ -38,7 +38,7 @@ export default function NotificationItem({
           <Avatar className='h-8 w-8'>
             <AvatarImage
               src={
-                notification?.user_id?.avatar ??
+                notification?.userId?.avatar ??
                 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
               }
               alt='User avatar'
@@ -55,7 +55,7 @@ export default function NotificationItem({
         <div className='flex w-[21.875rem] flex-col'>
           <div className='flex flex-row items-end gap-1.5'>
             <span className='text-[0.8125rem] font-bold'>
-              {notification.user_id.username}
+              {notification.userId.username}
             </span>
             <p className='text-xs font-normal text-gray-500'>1 minutes</p>
           </div>

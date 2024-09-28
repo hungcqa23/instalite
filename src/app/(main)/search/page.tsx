@@ -1,16 +1,17 @@
 'use client';
 
-import { Input, List, UserItem } from '@/components/ui';
+import { Input, Skeleton, SkeletonContainer, UserItem } from '@/components/ui';
 import { Search } from '@/components/ui/icons';
-import { useSearch } from '@/queries/useSearch';
-import { Account } from '@/types/schema-validations/account.schema';
+import { useSearch } from '@/hooks/queries/useSearch';
+import { useDebounce } from '@/hooks/use-debounce';
 import { useState } from 'react';
 
 export default function SearchPage() {
   const [username, setUsername] = useState('');
-  const { data: searchData, isLoading } = useSearch(username);
+  const debouncedUsername = useDebounce(username, 1000);
+  const { data: searchData, isPending } = useSearch(debouncedUsername);
 
-  const users = searchData?.users;
+  const users = searchData?.data ?? [];
 
   return (
     <>
@@ -24,14 +25,34 @@ export default function SearchPage() {
           />
         </div>
 
-        {username === '' && <div />}
+        {/* Handle loading state */}
+        {username && isPending && (
+          <SkeletonContainer className='text-center'>
+            {Array.from(Array(10).keys()).map(i => (
+              <div className='mb-4 flex h-9 w-full gap-2' key={i}>
+                <div className='size-8 shrink-0 rounded-full bg-slate-200' />
+                <div className='flex w-full flex-col gap-2'>
+                  <div className='h-3 w-full rounded-lg bg-slate-200' />
+                  <div className='h-3 w-full rounded-lg bg-slate-200' />
+                </div>
+              </div>
+            ))}
+          </SkeletonContainer>
+        )}
 
-        {username !== '' &&
-          List<Account>({
-            listItems: users,
-            mapFn: user => <UserItem key={user._id} user={user} />,
-            as: 'ul'
-          })}
+        {/* Display user search results */}
+        {username && users.length > 0 && (
+          <ul>
+            {users.map(user => (
+              <UserItem key={user._id} user={user} />
+            ))}
+          </ul>
+        )}
+
+        {/* Handle no results */}
+        {debouncedUsername && !isPending && users.length === 0 && (
+          <div className='text-center text-gray-500'>No users found...</div>
+        )}
       </div>
     </>
   );

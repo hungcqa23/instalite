@@ -17,6 +17,7 @@ import {
   Input
 } from '@/components/ui';
 import { http } from '@/lib/http';
+import { cn } from '@/lib/utils';
 import { useUserStore } from '@/stores/user.stores';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -30,7 +31,13 @@ import React, {
   useState
 } from 'react';
 
-const CreateLiteDialog = ({ children }: { children: ReactNode }) => {
+const CreateLiteDialog = ({
+  children,
+  className
+}: {
+  children: ReactNode;
+  className?: string;
+}) => {
   const queryClient = useQueryClient();
   const { user } = useUserStore();
   const [isOpen, setIsOpen] = useState(false);
@@ -218,7 +225,7 @@ const CreateLiteDialog = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleDialogChange}>
-        <DialogTrigger>{children}</DialogTrigger>
+        <DialogTrigger className={cn(className)}>{children}</DialogTrigger>
         <DialogContent className='select-none dark:bg-zinc-950 sm:max-w-[34rem]'>
           <DialogHeader>
             <DialogTitle className='flex justify-center text-sm font-bold'>
