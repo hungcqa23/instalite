@@ -1,19 +1,19 @@
 'use client';
 
-import { useAppContext } from '@/app/context/app-context';
-import { usePostByUsername } from '@/app/queries/usePost';
-import { useSaved } from '@/app/queries/useSaved';
-import List from '@/components/ui/generic-list';
-import LiteItem from '@/components/ui/lite-item';
 import {
+  List,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger
-} from '@/components/ui/tab/tabs';
-import { User } from '@/schema-validations/account.schema';
-import { Post } from '@/schema-validations/post.schema';
-import { Bookmark, Grid2X2, ImageIcon, Repeat2 } from 'lucide-react';
+} from '@/components/ui';
+import LiteItem from '@/components/ui/lite';
+import { usePostByUsername } from '@/queries/usePost';
+import { useSaved } from '@/queries/useSaved';
+import { useUserStore } from '@/stores/user.stores';
+import { User } from '@/types/schema-validations/account.schema';
+import { Post } from '@/types/schema-validations/post.schema';
+import { Bookmark, Grid2X2 } from 'lucide-react';
 import React from 'react';
 
 export default function Tab({
@@ -29,7 +29,7 @@ export default function Tab({
   const posts = data?.map((post: any) => post?.post_id);
   const { data: userPostsData } = usePostByUsername(user.user.username || '');
   const currentPosts = userPostsData?.result;
-  const { user: currentUser, setUser } = useAppContext();
+  const { user: currentUser, setUser } = useUserStore();
 
   return (
     <div className='w- mt-[31px]'>

@@ -1,5 +1,5 @@
 import { http } from '@/lib/http';
-import { CreatePost, PostType } from '@/schema-validations/post.schema';
+import { CreatePost, PostType } from '@/types/schema-validations/post.schema';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 

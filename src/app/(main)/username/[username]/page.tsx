@@ -2,7 +2,7 @@ import BtnCta from '@/app/(main)/username/[username]/btn-cta';
 import Profile from '@/app/(main)/username/[username]/profile';
 import Tab from '@/app/(main)/username/[username]/tab';
 import { http } from '@/lib/http';
-import { User } from '@/schema-validations/account.schema';
+import { User } from '@/types/schema-validations/account.schema';
 import { cookies } from 'next/headers';
 
 export async function generateMetadata({

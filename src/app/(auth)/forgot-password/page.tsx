@@ -1,15 +1,15 @@
 'use client';
 
-import { Button } from '@/components/ui/button/button';
 import {
+  Button,
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/components/ui/form/form';
-import { Input } from '@/components/ui/form/input';
+  FormMessage,
+  Input
+} from '@/components/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -31,6 +31,7 @@ export default function ForgotPassword() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+    console.log('Hello World!');
   }
 
   return (

@@ -1,7 +1,6 @@
-import AppProvider from '@/app/context/app-context';
-import QueryProvider from '@/app/context/query-context';
+import { AppContextProvider as AppProvider } from '@/app/context';
 import { ThemeProvider } from '@/app/context/theme-provider';
-import { Toaster } from '@/components/ui/toast/toaster';
+import { Toaster } from '@/components/ui/toast';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
@@ -28,17 +27,17 @@ export default function RootLayout({
       <body
         className={`${inter.className} overflow-x-hidden overflow-y-scroll`}
       >
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem
-          disableTransitionOnChange
-        >
-          <QueryProvider>
-            <AppProvider>{children}</AppProvider>
-          </QueryProvider>
-        </ThemeProvider>
-        <Toaster />
+        <AppProvider>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='system'
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </AppProvider>
       </body>
     </html>
   );

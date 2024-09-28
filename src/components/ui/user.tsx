@@ -1,10 +1,12 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button/button';
-import { Account } from '@/schema-validations/account.schema';
-import { User } from '@/types/user.type';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage
+} from '@/components/ui/avatar/Avatar';
+import { Account } from '@/types/schema-validations/account.schema';
 import Link from 'next/link';
 
-export default function UserItem({ user }: { user: Account }) {
+const UserItem = ({ user }: { user: Account }) => {
   user.full_name = user.full_name || 'Instalite User';
   user.avatar =
     user.avatar ||
@@ -39,4 +41,5 @@ export default function UserItem({ user }: { user: Account }) {
       </div>
     </Link>
   );
-}
+};
+export { UserItem };

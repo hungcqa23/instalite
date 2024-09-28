@@ -27,4 +27,4 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ src, onDelete }) => {
   );
 };
 
-export default ImagePreview;
+export { ImagePreview };

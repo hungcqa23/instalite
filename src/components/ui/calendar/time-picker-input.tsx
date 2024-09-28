@@ -1,4 +1,4 @@
-import { Input } from '@/components/ui/form/input';
+import { Input } from '@/components/ui/form/Input';
 import {
   Period,
   TimePickerType,

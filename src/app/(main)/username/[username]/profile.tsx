@@ -1,18 +1,20 @@
 'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button/button';
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog/dialog';
-import FollowUserItem from '@/components/ui/follow-user-item';
-import List from '@/components/ui/generic-list';
+  DialogTrigger,
+  FollowUserItem,
+  List
+} from '@/components/ui';
 import { http } from '@/lib/http';
-import { FollowUser } from '@/schema-validations/account.schema';
+import { FollowUser } from '@/types/schema-validations/account.schema';
 import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 

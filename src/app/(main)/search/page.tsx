@@ -1,11 +1,9 @@
 'use client';
 
-import { useSearch } from '@/app/queries/useSearch';
-import { Input } from '@/components/ui/form/input';
-import List from '@/components/ui/generic-list';
-import UserItem from '@/components/ui/user';
-import { Account } from '@/schema-validations/account.schema';
-import { Search } from 'lucide-react';
+import { Input, List, UserItem } from '@/components/ui';
+import { Search } from '@/components/ui/icons';
+import { useSearch } from '@/queries/useSearch';
+import { Account } from '@/types/schema-validations/account.schema';
 import { useState } from 'react';
 
 export default function SearchPage() {

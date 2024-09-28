@@ -9,7 +9,8 @@ interface Props {
   isImage?: boolean;
   onClick?: () => void;
 }
-export default function IconProfile(props: Props) {
+
+const IconProfile = (props: Props) => {
   const {
     className = 'h-8 w-8',
     classNameImage = 'h-full w-full',
@@ -19,29 +20,22 @@ export default function IconProfile(props: Props) {
     onClick
   } = props;
 
-  if (isImage) {
-    return (
-      <div className={'block shrink-0 ' + className}>
-        <Image
-          src={src}
-          alt='Profile User'
-          className={'rounded-full object-cover ' + classNameImage}
-          width={32}
-          height={32}
-        />
-      </div>
-    );
-  }
+  const imageComponent = (
+    <Image
+      src={src}
+      alt='Profile User'
+      className={`rounded-full object-cover ${classNameImage}`}
+      width={32}
+      height={32}
+    />
+  );
 
-  return (
-    <Link href={to} className={'block shrink-0 ' + className} onClick={onClick}>
-      <Image
-        src={src}
-        alt='Profile User'
-        className={'rounded-full object-cover ' + classNameImage}
-        width={32}
-        height={32}
-      />
+  return isImage ? (
+    <div className={`block shrink-0 ${className}`}>{imageComponent}</div>
+  ) : (
+    <Link href={to} className={`block shrink-0 ${className}`} onClick={onClick}>
+      {imageComponent}
     </Link>
   );
-}
+};
+export { IconProfile };

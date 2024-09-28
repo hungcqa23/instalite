@@ -1,8 +1,8 @@
 'use client';
 
-import { useAppContext } from '@/app/context/app-context';
+import { useAppContext } from '@/app/context/app-provider';
+import UserAvatar from '@/components/sections/home/user-avatar';
 import IconProfile from '@/components/ui/icon-profile';
-import UserAvatar from '@/components/ui/user-avatar';
 import Link from 'next/link';
 import React from 'react';
 

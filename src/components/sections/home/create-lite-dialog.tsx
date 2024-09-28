@@ -1,23 +1,23 @@
 'use client';
 
-import { useAppContext } from '@/app/context/app-context';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button/button';
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
   Carousel,
   CarouselContent,
-  CarouselItem
-} from '@/components/ui/carousel';
-import {
+  CarouselItem,
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog/dialog';
-import { Input } from '@/components/ui/form/input';
-import ImagePreview from '@/components/ui/preview-image';
+  DialogTrigger,
+  ImagePreview,
+  Input
+} from '@/components/ui';
 import { http } from '@/lib/http';
+import { useUserStore } from '@/stores/user.stores';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getCookie } from 'cookies-next';
@@ -30,20 +30,11 @@ import React, {
   useState
 } from 'react';
 
-interface CreateLiteDialogProps {
-  children: ReactNode;
-}
-
-const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
-  children
-}: {
-  children: ReactNode;
-}) => {
+const CreateLiteDialog = ({ children }: { children: ReactNode }) => {
   const queryClient = useQueryClient();
-  const { user } = useAppContext();
+  const { user } = useUserStore();
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState('');
-  const [privacy, setPrivacy] = useState('Anyone can answer');
   const [images, setImages] = useState<string[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -124,7 +115,6 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
 
   const resetDialog = useCallback(() => {
     setText('');
-    setPrivacy('Anyone can answer');
     setImages([]);
     setImageFile(null);
     setVideoFile(null);
@@ -154,15 +144,11 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
   };
 
   const handleImageClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+    if (fileInputRef.current) fileInputRef.current.click();
   };
 
   const handleVideoClick = () => {
-    if (videoFileInputRef.current) {
-      videoFileInputRef.current.click();
-    }
+    if (videoFileInputRef.current) videoFileInputRef.current.click();
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -185,16 +171,12 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
   const handleDeleteVideo = () => {
     setVideoFile(null);
     setVideoUrl(null);
-    if (videoFileInputRef.current) {
-      videoFileInputRef.current.value = '';
-    }
+    if (videoFileInputRef.current) videoFileInputRef.current.value = '';
   };
 
   const handleDeleteImage = (index: number) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const handleDialogChange = (open: boolean) => {
@@ -209,28 +191,28 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
   const handleCreatePost = async (content: string) => {
     if (content === null || content === '') content = ' ';
     const res = await createPostMutation.mutateAsync(content);
-    const postId = res.post._id;
-    if (!postId) return;
-    const formData = new FormData();
+    // const postId = res.post._id;
+    // if (!postId) return;
+    // const formData = new FormData();
 
-    if (videoFile) {
-      formData.append('media', videoFile);
-      await updateVideoMutation.mutateAsync({
-        postId,
-        formData
-      });
-      setText('');
-      return;
-    } else if (imageFile) {
-      formData.append('media', imageFile);
+    // if (videoFile) {
+    //   formData.append('media', videoFile);
+    //   await updateVideoMutation.mutateAsync({
+    //     postId,
+    //     formData
+    //   });
+    //   setText('');
+    //   return;
+    // } else if (imageFile) {
+    //   formData.append('media', imageFile);
 
-      const updateImage = await updatePostMutation.mutateAsync({
-        postId,
-        formData
-      });
-      setText('');
-      return;
-    } else window.location.reload();
+    //   const updateImage = await updatePostMutation.mutateAsync({
+    //     postId,
+    //     formData
+    //   });
+    //   setText('');
+    //   return;
+    // } else window.location.reload();
   };
 
   return (
@@ -366,6 +348,7 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
           </div>
         </DialogContent>
       </Dialog>
+
       {openCancelDialog && (
         <Dialog open={openCancelDialog} onOpenChange={setOpenCancelDialog}>
           <DialogContent className='select-none px-0 pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[20rem]'>
@@ -400,4 +383,4 @@ const CreateLiteDialog: React.FC<CreateLiteDialogProps> = ({
   );
 };
 
-export default CreateLiteDialog;
+export { CreateLiteDialog };

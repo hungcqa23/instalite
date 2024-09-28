@@ -1,6 +1,6 @@
-import LiteItem from '@/components/ui/LiteItem';
+import { LiteItem } from '@/components/ui';
 import { http } from '@/lib/http';
-import { Post, PostResType } from '@/schema-validations/post.schema';
+import { Post, PostResType } from '@/types/schema-validations/post.schema';
 import { cookies } from 'next/headers';
 
 export const metadata = {

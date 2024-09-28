@@ -1,6 +1,6 @@
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarImage } from '@/components/ui';
 import { NotificationType } from '@/constants/enum';
-import { Notification } from '@/schema-validations/notification.schema';
+import { Notification } from '@/types/schema-validations/notification.schema';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -41,7 +41,7 @@ export default function NotificationItem({
                 notification?.user_id?.avatar ??
                 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
               }
-              alt='@shadcn'
+              alt='User avatar'
             />
           </Avatar>
           <Image

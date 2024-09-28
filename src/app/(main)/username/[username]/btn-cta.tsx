@@ -1,31 +1,31 @@
 'use client';
 
-import { accountApiRequest } from '@/app/api-request/account';
-import { User, useAppContext } from '@/app/context/app-context';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button/button';
+import { accountApiRequest } from '@/api-request';
+import { useAppContext } from '@/app/context';
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog/dialog';
-import {
+  DialogTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui/form/dropdown-menu';
-import { Input } from '@/components/ui/form/input';
-import { Label } from '@/components/ui/form/label';
+  DropdownMenuTrigger,
+  Input,
+  Label
+} from '@/components/ui';
 import { http } from '@/lib/http';
-import { Account } from '@/schema-validations/account.schema';
+import { Account } from '@/types/schema-validations/account.schema';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 export default function BtnCta({ user: userData }: any) {
   const { user } = userData;
@@ -40,13 +40,6 @@ export default function BtnCta({ user: userData }: any) {
   const [isFollowed, setIsFollowed] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // const previewImage = useMemo(() => {
-  //   return file ? URL.createObjectURL(file) : '';
-  // }, [file]);
-
-  // const handleChangeFile = (file?: File) => {
-  //   setFile(file);
-  // };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
@@ -86,6 +79,7 @@ export default function BtnCta({ user: userData }: any) {
         fullName: name,
         bio
       });
+
       return data;
     }
   });
@@ -114,7 +108,6 @@ export default function BtnCta({ user: userData }: any) {
 
       const data = await res.json();
       const { user }: { user: Account } = data;
-      console.log(user.username);
       setUsername(user.username);
       setBio(user.bio);
       setName(user.full_name);
@@ -139,15 +132,16 @@ export default function BtnCta({ user: userData }: any) {
 
       const data = await res.json();
       const { result }: { result: boolean } = data;
-      console.log(result);
       setIsFollowed(result);
       return data;
     }
   });
+
   const followMutation = useMutation({
     mutationFn: (followedUserId: string) =>
       accountApiRequest.follow(followedUserId)
   });
+
   const unFollowMutation = useMutation({
     mutationFn: (followedUserId: string) =>
       accountApiRequest.unFollow(followedUserId)
@@ -162,8 +156,8 @@ export default function BtnCta({ user: userData }: any) {
       setIsFollowed(false);
     }
   };
-  if (!followData) return null;
 
+  if (!followData) return null;
   if (!data) return null;
 
   return (
@@ -177,12 +171,6 @@ export default function BtnCta({ user: userData }: any) {
           >
             {isFollowed ? 'Unfollow' : 'Follow'}
           </Button>
-          {/* <Button
-            className='mt-3.5 w-full text-sm dark:bg-zinc-950 dark:hover:bg-transparent'
-            variant={'outline'}
-          >
-            Mention
-          </Button> */}
         </div>
       )}
 

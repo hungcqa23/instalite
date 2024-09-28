@@ -1,12 +1,12 @@
 'use client';
 
-import List from '@/components/ui/generic-list';
-import LiteItem from '@/components/ui/lite-item';
-import { Post } from '@/schema-validations/post.schema';
+import { List } from '@/components/ui';
+import LiteItem from '@/components/ui/lite';
+import { Post } from '@/types/schema-validations/post.schema';
 import { useQuery } from '@tanstack/react-query';
 import { getCookie } from 'cookies-next';
 
-export default function ListPost() {
+const ListPost = () => {
   const accessToken = getCookie('access_key');
 
   const { data } = useQuery({
@@ -42,4 +42,6 @@ export default function ListPost() {
         })}
     </div>
   );
-}
+};
+
+export { ListPost };

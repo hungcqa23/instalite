@@ -4,10 +4,9 @@ import type { NextRequest } from 'next/server';
 const privatePaths = ['/me', '/notification', '/search'];
 const authPaths = ['/login', '/register'];
 
-export async function middleware(req: NextRequest) {
-  console.log('Hello World! ---------');
-  console.log(req.nextUrl.pathname);
-  console.log('Hello World!');
+export async function middleware(request: NextRequest) {
+  const accessToken = request.cookies.get('accessToken')?.value;
+  const refreshToken = request.cookies.get('refreshToken')?.value;
   // const { pathname } = req.nextUrl;
   // console.log(pathname);
   // const accessToken = req.cookies.get('access_token')?.value;
@@ -27,6 +26,7 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
+    '/',
     '/login',
     '/register',
     '/me',

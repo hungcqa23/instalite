@@ -1,4 +1,4 @@
-import Header from '@/components/sections/home/header';
+import Header from '@/components/sections/header';
 
 export const metadata = {
   title: {

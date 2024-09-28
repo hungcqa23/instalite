@@ -1,4 +1,4 @@
-import { envConfig } from '@/config';
+import envConfig from '@/config';
 
 type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string | undefined;
@@ -6,15 +6,19 @@ type CustomOptions = Omit<RequestInit, 'method'> & {
 
 export class HttpError extends Error {
   status: number;
-
+  // payload: {
+  //   message: string;
+  //   [key: string]: any;
+  // };
   constructor({ status, message }: { status: number; message: string }) {
     super('HTTP Error');
     this.status = status;
+    // this.payload = payload;
   }
 }
 
+let clientLogoutRequest: null | Promise<any> = null;
 export const isClient = typeof window !== 'undefined';
-
 const request = async <Response>(
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
   url: string,
@@ -22,11 +26,8 @@ const request = async <Response>(
 ) => {
   let body: FormData | string | undefined = undefined;
 
-  if (options?.body instanceof FormData) {
-    body = options.body;
-  } else if (options?.body) {
-    body = JSON.stringify(options.body);
-  }
+  if (options?.body instanceof FormData) body = options.body;
+  else if (options?.body) body = JSON.stringify(options.body);
 
   const baseHeaders: {
     [key: string]: string;
@@ -55,14 +56,20 @@ const request = async <Response>(
     headers: {
       ...baseHeaders,
       ...options?.headers
-    },
+    } as any,
     credentials: 'include',
-    method,
-    body
+    body,
+    method
   });
-  const result = await response.json();
+  const result: Response & {
+    message?: string;
+  } = await response.json();
 
-  if (!response.ok) console.log('Error', response);
+  if (!response.ok) {
+    if (result.message) {
+      throw Error(JSON.stringify(result?.message));
+    }
+  }
 
   return result;
 };

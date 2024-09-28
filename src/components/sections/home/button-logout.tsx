@@ -1,9 +1,11 @@
-import authApiRequest from '@/app/api-request/auth';
-import { DropdownMenuItem } from '@/components/ui/form/dropdown-menu';
-import { LogOut } from 'lucide-react';
+'use client';
+
+import { authApiRequest } from '@/api-request/auth';
+import { DropdownMenuItem } from '@/components/ui';
+import { LogOut } from '@/components/ui/icons';
 import { useRouter } from 'next/navigation';
 
-export default function ButtonLogout() {
+const ButtonLogout = () => {
   const router = useRouter();
   const handleLogout = async () => {
     try {
@@ -23,4 +25,6 @@ export default function ButtonLogout() {
       <LogOut size={22} /> Log out
     </DropdownMenuItem>
   );
-}
+};
+
+export { ButtonLogout };

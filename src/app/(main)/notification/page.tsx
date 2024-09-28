@@ -1,10 +1,10 @@
+import { notificationRequest } from '@/api-request/notification';
 import NotificationItem from '@/app/(main)/notification/notification-item';
-import { notificationRequest } from '@/app/api-request/notification';
-import List from '@/components/ui/generic-list';
+import { List } from '@/components/ui';
 import {
   Notification,
   NotificationResType
-} from '@/schema-validations/notification.schema';
+} from '@/types/schema-validations/notification.schema';
 
 export const metadata = {
   title: 'Notification'

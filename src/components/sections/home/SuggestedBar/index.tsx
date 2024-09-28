@@ -1,11 +1,12 @@
-import SuggestedFriend from '@/app/(main)/ui/SuggestedBar/SuggestedFriend';
-import CurrentProfileSuggest from '@/app/(main)/ui/SuggestedBar/current-profile-suggest';
-import List from '@/components/ui/generic-list';
+import { List } from '@/components/ui';
 import { http } from '@/lib/http';
-import { User } from '@/schema-validations/account.schema';
+import { User } from '@/types/schema-validations/account.schema';
 import { cookies } from 'next/headers';
 
-export default async function SuggestedBar() {
+import CurrentProfileSuggest from './current-profile-suggest';
+import SuggestedFriend from './suggested-friend';
+
+const SuggestedBar = async () => {
   const cookieStore = cookies();
   const { users }: { users: User[] } = await http.get(`/users/recommend`, {
     headers: {
@@ -38,4 +39,6 @@ export default async function SuggestedBar() {
       </div>
     </div>
   );
-}
+};
+
+export { SuggestedBar };

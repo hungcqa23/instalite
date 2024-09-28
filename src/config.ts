@@ -13,4 +13,6 @@ if (!configProject.success) {
   throw new Error('Invalid config');
 }
 
-export const envConfig = configProject.data;
+const envConfig = configProject.data;
+
+export default envConfig;

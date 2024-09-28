@@ -1,16 +1,15 @@
 'use client';
 
-import { Button } from '@/components/ui/button/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage
-} from '@/components/ui/form/form';
-import { Input } from '@/components/ui/form/input';
+} from '@/components/ui';
+import { Button } from '@/components/ui';
+import { Input } from '@/components/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import React from 'react';
