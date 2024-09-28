@@ -20,10 +20,28 @@ import {
 } from '@/types/schema-validations/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+
+const ForgotPassWord = () => {
+  return (
+    <div className='text-right'>
+      <Button className='pr-0' variant={'link'} asChild>
+        <Link
+          href='forgot-password'
+          className='font-semibold hover:no-underline'
+        >
+          Forgot password?
+        </Link>
+      </Button>
+    </div>
+  );
+};
 
 export default function LoginForm() {
   const { toast } = useToast();
+
+  const router = useRouter();
   const { user, setUser } = useUserStore();
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
@@ -67,27 +85,13 @@ export default function LoginForm() {
           description: 'Welcome back'
         });
       }, 1000);
-      console.log('User: ', user);
-      console.log('Result: ', result.data);
+
+      setUser(result.data);
+      router.push('/');
     } catch (error: any) {
       handleLoginError(error);
     }
   }
-
-  const ForgotPassWord = () => {
-    return (
-      <div className='text-right'>
-        <Button className='pr-0' variant={'link'} asChild>
-          <Link
-            href='forgot-password'
-            className='font-semibold hover:no-underline'
-          >
-            Forgot password?
-          </Link>
-        </Button>
-      </div>
-    );
-  };
 
   return (
     <Form {...form}>

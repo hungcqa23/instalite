@@ -24,7 +24,7 @@ const ListPost = () => {
       return data;
     }
   });
-
+  console.log(data);
   if (!data) return null;
   return (
     <div className='-ms-10 h-full w-full'>

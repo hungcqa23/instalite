@@ -6,7 +6,7 @@ import React from 'react';
 
 const UserAvatar = () => {
   const { user } = useUserStore();
-
+  console.log(user);
   return (
     <Avatar className='mt-0.5 h-8 w-8'>
       <AvatarImage src={user?.avatar} alt='@shadcn' />
