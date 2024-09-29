@@ -4,12 +4,13 @@ import { User } from '@/types/schema-validations/account.schema';
 const followApiRequest = {
   getAllFollowers: (username: string) =>
     http.get<{
-      message: string;
-      data: User[];
+      data: {
+        followedUserId: User;
+        _id: string;
+      }[];
     }>(`/users/${username}/followers`),
   getAllFollowings: (username: string) =>
     http.get<{
-      message: string;
       data: {
         followedUserId: User;
         _id: string;
