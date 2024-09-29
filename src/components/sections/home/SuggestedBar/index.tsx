@@ -8,12 +8,16 @@ import SuggestedFriend from './suggested-friend';
 
 const SuggestedBar = async () => {
   const cookieStore = cookies();
-  const { users }: { users: User[] } = await http.get(`/users/recommend`, {
+  const data = await http.get<{
+    message: string;
+    data: User[];
+  }>(`/users/recommend`, {
     headers: {
       'Content-Type': 'application/json',
       Cookie: `access_token=${cookieStore.get('access_token')?.value}; refresh_token=${cookieStore.get('refresh_token')?.value}`
     }
   });
+  const users = data.data;
 
   return (
     <div className='hidden w-80 flex-col xl:flex'>

@@ -30,3 +30,37 @@ export const useSummarizeLiteMutation = () =>
       return await http.post('/files/summary', formData);
     }
   });
+
+export const useUpdateVideoMutation = () =>
+  useMutation({
+    mutationFn: async ({
+      commentPostId,
+      formData
+    }: {
+      commentPostId: string;
+      formData: FormData;
+    }) => {
+      const res = await fetch(`http://localhost:8000/posts/${commentPostId}/upload-hls`, {
+        method: 'PUT',
+        body: formData
+      });
+      return await res.json();
+    }
+  });
+
+export const useUpdatePostMutation = () =>
+  useMutation({
+    mutationFn: async ({
+      commentPostId,
+      formData
+    }: {
+      commentPostId: string;
+      formData: FormData;
+    }) => {
+      const res = await fetch(`http://localhost:8000/posts/${commentPostId}`, {
+        method: 'PUT',
+        body: formData
+      });
+      return await res.json();
+    }
+  });

@@ -20,15 +20,7 @@ import { Notification } from '@/types/schema-validations/notification.schema';
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import { useQuery } from '@tanstack/react-query';
 import { getCookie } from 'cookies-next';
-import {
-  AlignRightIcon,
-  Bell,
-  Bookmark,
-  Home,
-  Search,
-  SquarePen,
-  UserRound
-} from 'lucide-react';
+import { AlignRightIcon, Bell, Bookmark, Home, Search, SquarePen, UserRound } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -60,9 +52,7 @@ export default function Header() {
       }).then(res => res.json())
   });
   const newNotification =
-    data?.result?.some(
-      (notification: Notification) => notification.checked === false
-    ) || false;
+    data?.result?.some((notification: Notification) => notification.checked === false) || false;
 
   useEffect(() => {
     if (newNotification) {

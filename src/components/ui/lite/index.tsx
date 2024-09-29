@@ -5,9 +5,6 @@ import {
   AvatarFallback,
   AvatarImage,
   Button,
-  Carousel,
-  CarouselContent,
-  CarouselItem,
   Dialog,
   DialogClose,
   DialogContent,
@@ -18,32 +15,32 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  ImagePreview,
-  Input
+  DropdownMenuTrigger
 } from '@/components/ui';
 import ListComment from '@/components/ui/comment/list-comment';
 import {
-  Clapperboard,
   EllipsisIcon,
-  ImageIcon,
   MessageCircle,
   MessageCircleIcon,
   PencilIcon,
   SparkleIcon,
   TrashIcon,
-  X,
   XIcon
 } from '@/components/ui/icons';
 import CancelDialog from '@/components/ui/lite/cancel-dialog';
+import CommentForm from '@/components/ui/lite/comment/comment-form';
 import MediaSection from '@/components/ui/lite/media-section';
 import { useCreateCommentMutation } from '@/hooks/queries/useComment';
-import { useSummarizeLiteMutation } from '@/hooks/queries/usePost';
+import {
+  useSummarizeLiteMutation,
+  useUpdatePostMutation,
+  useUpdateVideoMutation
+} from '@/hooks/queries/usePost';
 import { isVideo } from '@/lib/check';
 import { calculateTimeAgo } from '@/lib/helper';
 import { useUserStore } from '@/stores/user.stores';
 import { Post } from '@/types/schema-validations/post.schema';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import '@vidstack/react/player/styles/default/layouts/audio.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
 import '@vidstack/react/player/styles/default/theme.css';
@@ -67,6 +64,7 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
   const [isOpenCommentDialog, setIsOpenCommentDialog] = useState(false);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   //file media
   const [images, setImages] = useState<string[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -111,53 +109,16 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
     }
   };
 
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [text]);
+
   // Media
-  const updateVideoMutation = useMutation({
-    mutationFn: async ({
-      commentPostId,
-      formData
-    }: {
-      commentPostId: string;
-      formData: FormData;
-    }) => {
-      const res = await fetch(`http://localhost:8000/posts/${commentPostId}/upload-hls`, {
-        method: 'PUT',
-        body: formData
-      });
-      return await res.json();
-    },
-    onSuccess: () => {
-      setIsOpenCommentDialog(false);
-      queryClient.invalidateQueries({
-        queryKey: ['comments']
-      });
-      // window.location.reload();
-    }
-  });
-
-  const updatePostMutation = useMutation({
-    mutationFn: async ({
-      commentPostId,
-      formData
-    }: {
-      commentPostId: string;
-      formData: FormData;
-    }) => {
-      const res = await fetch(`http://localhost:8000/posts/${commentPostId}`, {
-        method: 'PUT',
-        body: formData
-      });
-      return await res.json();
-    },
-
-    onSuccess: () => {
-      setIsOpenCommentDialog(false);
-      queryClient.invalidateQueries({
-        queryKey: ['comments']
-      });
-      // window.location.reload();
-    }
-  });
+  const updateVideoMutation = useUpdateVideoMutation();
+  const updatePostMutation = useUpdatePostMutation();
 
   // Comment
   const createCommentMutation = useCreateCommentMutation();
@@ -167,8 +128,6 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
       content,
       parentPostId: lite?._id
     });
-
-    console.log(res);
 
     // const commentPostId = res.post._id;
     // if (!commentPostId) return;
@@ -202,9 +161,8 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
   };
 
   const handleDialogChange = (open: boolean) => {
-    if (!open && (text || images.length > 0 || videoUrl)) {
-      setOpenCancelDialog(true);
-    } else {
+    if (!open && (text || images.length > 0 || videoUrl)) setOpenCancelDialog(true);
+    else {
       setIsOpenCommentDialog(open);
       if (!open) resetDialog();
     }
@@ -220,13 +178,6 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
     setOpenCancelDialog(false);
     setIsOpenCommentDialog(true);
   };
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
-  }, [text]);
 
   const resetDialog = useCallback(() => {
     setText('');
@@ -293,6 +244,7 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
       </DropdownMenuContent>
     </DropdownMenu>
   );
+
   const HeaderSection = ({ lite, isCurrentUser }: { lite: Post; isCurrentUser: boolean }) => (
     <div className='mb-2 flex flex-row items-center justify-between'>
       <div className='flex flex-row items-end'>
@@ -347,102 +299,6 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
       </>
     );
 
-  const CommentForm = () => (
-    <div className='flex flex-col overflow-hidden'>
-      <div className='flex flex-row'>
-        <Avatar className='h-8 w-8 cursor-pointer'>
-          <AvatarImage src={user?.avatar} alt='@shadcn' />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-        <div className='ms-2.5 flex max-w-full flex-col'>
-          <div className='text-sm font-semibold'>{user?.username}</div>
-          <textarea
-            ref={textareaRef}
-            placeholder='Write something...'
-            className='max-h-[60vh] w-[28rem] resize-none overflow-y-auto bg-transparent py-1 text-sm outline-none'
-            rows={1}
-            autoFocus
-            value={text}
-            onChange={e => setText(e.target.value)}
-          />
-          {images.length == 0 && videoUrl == null && (
-            <div className='flex flex-row gap-2'>
-              <Button
-                className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
-                variant='outline'
-                onClick={handleImageClick}
-              >
-                <ImageIcon /> Add Image
-              </Button>
-              <Button
-                className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
-                variant='outline'
-                onClick={handleVideoClick}
-              >
-                <Clapperboard /> Add Video
-              </Button>
-            </div>
-          )}
-
-          <Input
-            type='file'
-            ref={fileInputRef}
-            multiple={true}
-            accept='image/*'
-            className='hidden'
-            onChange={handleFileChange}
-          />
-          <Input
-            type='file'
-            ref={videoFileInputRef}
-            accept='video/*'
-            className='hidden'
-            onChange={handleVideoChange}
-          />
-
-          {images.length > 0 && (
-            <Carousel
-              opts={{
-                align: 'start'
-              }}
-              className='my-3 w-full max-w-full overflow-hidden'
-            >
-              <CarouselContent className='-ml-1 flex'>
-                {images.map((image, index) => (
-                  <CarouselItem key={index} className='basis-1/2 pl-1 pr-1'>
-                    <ImagePreview src={image} onDelete={() => handleDeleteImage(index)} />
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-            </Carousel>
-          )}
-
-          {videoUrl && (
-            <div className='relative my-3 max-h-[20rem] w-fit'>
-              <video controls className='h-auto max-h-[20rem] w-auto rounded' autoPlay>
-                <source src={videoUrl} type='video/mp4' />
-                Your browser does not support the video tag.
-              </video>
-              <Button
-                className='absolute right-2 top-2 rounded-full bg-opacity-75'
-                variant='ghost'
-                onClick={handleDeleteVideo}
-              >
-                <X size={16} />
-              </Button>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className='mt-2 flex flex-row items-end justify-end'>
-        <Button className='rounded-3xl' onClick={() => handleCommentPost(text)}>
-          Post
-        </Button>
-      </div>
-    </div>
-  );
-
   const CommentDialog = ({ lite }: { lite: Post }) => (
     <Dialog open={isOpenCommentDialog} onOpenChange={handleDialogChange}>
       <DialogTrigger>
@@ -465,7 +321,21 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
           </DialogClose>
         </DialogHeader>
 
-        <CommentForm />
+        <CommentForm
+          user={user}
+          fileInputRef={fileInputRef}
+          textareaRef={textareaRef}
+          videoFileInputRef={videoFileInputRef}
+          handleDeleteVideo={handleDeleteVideo}
+          handleDeleteImage={handleDeleteImage}
+          handleImageClick={handleImageClick}
+          handleVideoClick={handleVideoClick}
+          handleCommentPost={handleCommentPost}
+          handleFileChange={handleFileChange}
+          handleVideoChange={handleVideoChange}
+          images={images}
+          videoUrl={videoUrl}
+        />
       </DialogContent>
     </Dialog>
   );

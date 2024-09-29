@@ -1,9 +1,8 @@
 'use client';
 
-import { accountApiRequest } from '@/api-request/account';
 import { IconProfile } from '@/components/ui';
+import { useFollowMutation, useUnFollowMutation } from '@/hooks/queries/useFollow';
 import { User } from '@/types/schema-validations/account.schema';
-import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -12,21 +11,14 @@ interface Props {
 }
 export default function SuggestedFriend(props: Props) {
   const [isFollowed, setIsFollowed] = useState(false);
-  const followMutation = useMutation({
-    mutationFn: (followedUserId: string) =>
-      accountApiRequest.follow(followedUserId)
-  });
-  const unFollowMutation = useMutation({
-    mutationFn: (followedUserId: string) =>
-      accountApiRequest.unFollow(followedUserId)
-  });
+  const followMutation = useFollowMutation();
+  const unFollowMutation = useUnFollowMutation();
 
   const handleClick = () => {
     if (!isFollowed) {
       followMutation.mutate(props.user._id);
       setIsFollowed(true);
     } else {
-      console.log(props.user._id);
       unFollowMutation.mutate(props.user._id);
       setIsFollowed(false);
     }

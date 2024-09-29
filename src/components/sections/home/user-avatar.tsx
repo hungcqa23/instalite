@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  SkeletonContainer
-} from '@/components/ui';
+import { Avatar, AvatarFallback, AvatarImage, SkeletonContainer } from '@/components/ui';
 import { useUserStore } from '@/stores/user.stores';
 import React from 'react';
 
