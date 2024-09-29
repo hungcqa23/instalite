@@ -24,16 +24,12 @@ const SuggestedBar = async () => {
         {/* <SuggestedList /> */}
         <div>
           <div className='px-4 py-1'>
-            <span className='text-sm font-semibold text-gray-500'>
-              Suggested for you
-            </span>
+            <span className='text-sm font-semibold text-gray-500'>Suggested for you</span>
           </div>
 
           {List<User>({
             listItems: users,
-            mapFn: (user: User) => (
-              <SuggestedFriend key={user._id} user={user} />
-            )
+            mapFn: (user: User) => <SuggestedFriend key={user._id} user={user} />
           })}
         </div>
       </div>

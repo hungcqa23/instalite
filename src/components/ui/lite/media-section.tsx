@@ -1,9 +1,6 @@
 import { Post } from '@/types/schema-validations/post.schema';
 import { MediaPlayer, MediaProvider } from '@vidstack/react';
-import {
-  DefaultVideoLayout,
-  defaultLayoutIcons
-} from '@vidstack/react/player/layouts/default';
+import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';
 import '@vidstack/react/player/styles/default/layouts/audio.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
 import '@vidstack/react/player/styles/default/theme.css';

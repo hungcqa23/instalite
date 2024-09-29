@@ -6,7 +6,7 @@
   "endOfLine": "auto",
   "useTabs": false,
   "singleQuote": true,
-  "printWidth": 80,
+  "printWidth": 100,
   "jsxSingleQuote": true,
   "importOrder": ["^@nestjs/(.*)$", "^[./]"],
   "importOrderSeparation": true,

@@ -11,7 +11,7 @@ type AppStoreType = {
 // Wrap your store with persist middleware to save it to localStorage
 const useUserStore = create<AppStoreType>()(
   persist(
-    set => ({
+    (set, get) => ({
       isAuthenticated: false,
       user: null as User | null,
       setUser: (user: User | null) => {

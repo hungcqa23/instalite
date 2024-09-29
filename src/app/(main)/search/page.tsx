@@ -1,6 +1,6 @@
 'use client';
 
-import { Input, Skeleton, SkeletonContainer, UserItem } from '@/components/ui';
+import { Input, SkeletonContainer, UserItem } from '@/components/ui';
 import { Search } from '@/components/ui/icons';
 import { useSearch } from '@/hooks/queries/useSearch';
 import { useDebounce } from '@/hooks/use-debounce';

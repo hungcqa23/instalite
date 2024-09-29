@@ -17,16 +17,10 @@ export const metadata: Metadata = {
     'A game-changing social media app that seamlessly blends sleek design, innovative features, and user-friendly functionality.'
 };
 
-export default function RootLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body
-        className={`${inter.className} overflow-x-hidden overflow-y-scroll`}
-      >
+      <body className={`${inter.className} overflow-x-hidden overflow-y-scroll`}>
         <AppProvider>
           <ThemeProvider
             attribute='class'

@@ -10,14 +10,12 @@ import {
 } from '@/components/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MediaPlayer, MediaProvider, Poster, Track } from '@vidstack/react';
-import {
-  DefaultVideoLayout,
-  defaultLayoutIcons
-} from '@vidstack/react/player/layouts/default';
+import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';
 import '@vidstack/react/player/styles/default/layouts/audio.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
 import '@vidstack/react/player/styles/default/theme.css';
 import { X } from 'lucide-react';
+import React from 'react';
 import { Dispatch, SetStateAction } from 'react';
 
 interface SummarizeDialogProps {
@@ -39,9 +37,7 @@ const SummarizeDialog: React.FC<SummarizeDialogProps> = ({
   const DialogHeaderContent = () => {
     return (
       <DialogHeader>
-        <DialogTitle className='flex justify-center text-sm font-bold'>
-          Edit Lite
-        </DialogTitle>
+        <DialogTitle className='flex justify-center text-sm font-bold'>Edit Lite</DialogTitle>
         <DialogClose asChild>
           <Button
             className='absolute right-0 top-0 z-10 hover:bg-transparent dark:hover:bg-transparent'

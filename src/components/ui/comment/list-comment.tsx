@@ -4,24 +4,16 @@ import { List } from '@/components/ui';
 import CommentItem from '@/components/ui/comment';
 import { Post } from '@/types/schema-validations/post.schema';
 import { useQuery } from '@tanstack/react-query';
-import { getCookie } from 'cookies-next';
 import React from 'react';
 
 const ListComment = ({ postId }: { postId: string }) => {
-  const accessToken = getCookie('access_key');
   const { data } = useQuery({
-    queryKey: ['comments', postId, accessToken],
+    queryKey: ['comments', postId],
     queryFn: async () => {
-      const res = await fetch(
-        `http://localhost:8000/posts/${postId}/comments`,
-        {
-          method: 'GET',
-          headers: {
-            Cookie: `access_token=${accessToken}`
-          },
-          credentials: 'include'
-        }
-      );
+      const res = await fetch(`http://localhost:8000/posts/${postId}/comments`, {
+        method: 'GET',
+        credentials: 'include'
+      });
 
       const data = await res.json();
       return data;
@@ -30,16 +22,13 @@ const ListComment = ({ postId }: { postId: string }) => {
 
   if (!data) return null;
   const comments = data;
-  console.log(comments.result);
 
   return (
     <div className='w-full border-gray-200 p-0 sm:pb-5'>
       {comments.result &&
         List<Post>({
           listItems: comments.result,
-          mapFn: (comment: Post) => (
-            <CommentItem comment={comment} key={comment._id} />
-          ),
+          mapFn: (comment: Post) => <CommentItem comment={comment} key={comment._id} />,
           className: 'w-full'
         })}
     </div>

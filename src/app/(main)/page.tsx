@@ -9,7 +9,7 @@ export default function Home() {
       {/* Main concept list xl:mr-[calc((100%-30rem)/2-16rem)] */}
       <div className='mb-2 flex w-full justify-center xl:justify-normal'>
         <div className='mt-2 flex w-full max-w-[35rem] flex-col justify-start xl:ml-[calc((100%-30rem)/2)] xl:mr-20'>
-          <div className='mb-4 hidden h-12 w-[30rem] items-start justify-between border-b border-gray-200 py-2 sm:flex xl:flex xl:flex-row'>
+          {/* <div className='mb-4 hidden h-12 w-[30rem] items-start justify-between border-b border-gray-200 py-2 sm:flex xl:flex xl:flex-row'>
             <CreateLiteDialog>
               <div className='flex w-[25rem] cursor-text items-center gap-2'>
                 <UserAvatar />
@@ -24,7 +24,7 @@ export default function Home() {
                 Post
               </div>
             </CreateLiteDialog>
-          </div>
+          </div> */}
 
           <ListPost />
         </div>

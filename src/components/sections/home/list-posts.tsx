@@ -16,7 +16,10 @@ const ListPost = () => {
         List<Post>({
           listItems: posts,
           mapFn: (post: Post) => (
-            <div className='mt-2 flex w-full max-w-[30rem] flex-col xl:ml-[calc((100%-30rem)/2)] xl:mr-20'>
+            <div
+              className='mt-2 flex w-full max-w-[30rem] flex-col xl:ml-[calc((100%-30rem)/2)] xl:mr-20'
+              key={post._id}
+            >
               <div className='flex flex-col items-center'>
                 <LiteItem key={post._id} lite={post} isLink />
               </div>

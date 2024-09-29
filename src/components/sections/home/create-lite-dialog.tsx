@@ -23,21 +23,9 @@ import { DialogClose } from '@radix-ui/react-dialog';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getCookie } from 'cookies-next';
 import { Clapperboard, ImageIcon, X } from 'lucide-react';
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useRef,
-  useState
-} from 'react';
+import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 
-const CreateLiteDialog = ({
-  children,
-  className
-}: {
-  children: ReactNode;
-  className?: string;
-}) => {
+const CreateLiteDialog = ({ children, className }: { children: ReactNode; className?: string }) => {
   const queryClient = useQueryClient();
   const { user } = useUserStore();
   const [isOpen, setIsOpen] = useState(false);
@@ -63,19 +51,10 @@ const CreateLiteDialog = ({
   const accessToken = getCookie('access_key');
 
   const updatePostMutation = useMutation({
-    mutationFn: async ({
-      postId,
-      formData
-    }: {
-      postId: string;
-      formData: FormData;
-    }) => {
+    mutationFn: async ({ postId, formData }: { postId: string; formData: FormData }) => {
       const res = await fetch(`http://localhost:8000/posts/${postId}`, {
         method: 'PUT',
         body: formData,
-        headers: {
-          Cookie: `access_token=${accessToken}`
-        },
         credentials: 'include'
       });
       return await res.json();
@@ -91,24 +70,15 @@ const CreateLiteDialog = ({
   });
 
   const updateVideoMutation = useMutation({
-    mutationFn: async ({
-      postId,
-      formData
-    }: {
-      postId: string;
-      formData: FormData;
-    }) => {
-      const res = await fetch(
-        `http://localhost:8000/posts/${postId}/upload-hls`,
-        {
-          method: 'PUT',
-          body: formData,
-          headers: {
-            Cookie: `access_token=${accessToken}`
-          },
-          credentials: 'include'
-        }
-      );
+    mutationFn: async ({ postId, formData }: { postId: string; formData: FormData }) => {
+      const res = await fetch(`http://localhost:8000/posts/${postId}/upload-hls`, {
+        method: 'PUT',
+        body: formData,
+        headers: {
+          Cookie: `access_token=${accessToken}`
+        },
+        credentials: 'include'
+      });
       return await res.json();
     },
     onSuccess: () => {
@@ -228,9 +198,7 @@ const CreateLiteDialog = ({
         <DialogTrigger className={cn(className)}>{children}</DialogTrigger>
         <DialogContent className='select-none dark:bg-zinc-950 sm:max-w-[34rem]'>
           <DialogHeader>
-            <DialogTitle className='flex justify-center text-sm font-bold'>
-              New Lite
-            </DialogTitle>
+            <DialogTitle className='flex justify-center text-sm font-bold'>New Lite</DialogTitle>
             <DialogClose asChild>
               <Button
                 className='absolute right-0 top-0 z-10 hover:bg-transparent dark:hover:bg-transparent'
@@ -307,14 +275,8 @@ const CreateLiteDialog = ({
                   >
                     <CarouselContent className='-ml-1 flex w-full max-w-full'>
                       {images.map((image, index) => (
-                        <CarouselItem
-                          key={index}
-                          className='basis-1/2 pl-1 pr-1'
-                        >
-                          <ImagePreview
-                            src={image}
-                            onDelete={() => handleDeleteImage(index)}
-                          />
+                        <CarouselItem key={index} className='basis-1/2 pl-1 pr-1'>
+                          <ImagePreview src={image} onDelete={() => handleDeleteImage(index)} />
                         </CarouselItem>
                       ))}
                     </CarouselContent>
@@ -322,11 +284,7 @@ const CreateLiteDialog = ({
                 )}
                 {videoUrl && (
                   <div className='relative my-3 max-h-[20rem] w-fit'>
-                    <video
-                      controls
-                      className='h-auto max-h-[20rem] w-auto rounded'
-                      autoPlay
-                    >
+                    <video controls className='h-auto max-h-[20rem] w-auto rounded' autoPlay>
                       <source src={videoUrl} type='video/mp4' />
                       Your browser does not support the video tag.
                     </video>
@@ -344,9 +302,7 @@ const CreateLiteDialog = ({
             <div className='mt-2 flex flex-row items-end justify-end'>
               <Button
                 className='rounded-3xl'
-                disabled={
-                  text.length != 0 || imageFile || videoFile ? false : true
-                }
+                disabled={text.length != 0 || imageFile || videoFile ? false : true}
                 onClick={() => handleCreatePost(text)}
               >
                 Post

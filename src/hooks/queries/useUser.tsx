@@ -6,3 +6,9 @@ export const useUpdateUserMutation = () => {
     mutationFn: accountApiRequest.update
   });
 };
+
+export const useUploadAvatarMutation = () => {
+  return useMutation({
+    mutationFn: accountApiRequest.uploadAvatar
+  });
+};

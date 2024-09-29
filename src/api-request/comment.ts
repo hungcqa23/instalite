@@ -12,8 +12,9 @@ const commentApiRequest = {
     return await res.json();
   },
   getAll: () => http.get('/comments'),
-  updateComment: (id: string, body: { content: string }) =>
-    http.patch(`/posts/${id}`, body)
+  updateComment: (id: string, body: { content: string }) => http.patch(`/posts/${id}`, body),
+  createComment: ({ content, parentPostId }: { content: string; parentPostId: string }) =>
+    http.post('/posts', { content, parentPostId, typePost: 2 })
 };
 
 export default commentApiRequest;

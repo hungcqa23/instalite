@@ -11,7 +11,17 @@ const followApiRequest = {
     http.get<{
       message: string;
       data: User[];
-    }>(`/users/${username}/followings`)
+    }>(`/users/${username}/followings`),
+  follow: (followedUserId: string) =>
+    http.post<{
+      message: string;
+    }>(`/users/follow`, {
+      followedUserId
+    }),
+  unfollow: (followedUserId: string) =>
+    http.delete(`/users/follow`, {
+      followedUserId
+    })
 };
 
 export { followApiRequest };

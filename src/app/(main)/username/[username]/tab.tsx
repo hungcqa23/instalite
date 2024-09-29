@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  List,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger
-} from '@/components/ui';
+import { List, Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui';
 import LiteItem from '@/components/ui/lite';
 import { usePostByUsername } from '@/hooks/queries/usePost';
 import { useSaved } from '@/hooks/queries/useSaved';
@@ -81,11 +75,6 @@ export default function Tab({
             })}
         </TabsContent>
 
-        {/* {user?.username === currentUser?.username && (
-          <TabsContent value='saved' className='text-sm'>
-            Saved
-          </TabsContent>
-        )} */}
         {user?.user.username === currentUser?.username ? (
           <TabsContent value='saved' className='w-full text-sm'>
             {posts &&

@@ -16,7 +16,7 @@ module.exports = {
         endOfLine: 'auto',
         useTabs: false,
         singleQuote: true,
-        printWidth: 80,
+        printWidth: 100,
         jsxSingleQuote: true,
         importOrder: ['^@core/(.*)$', '^@server/(.*)$', '^@ui/(.*)$', '^[./]'],
         importOrderSeparation: true,

@@ -4,14 +4,9 @@ import { Notification } from '@/types/schema-validations/notification.schema';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function NotificationItem({
-  notification
-}: {
-  notification: Notification;
-}) {
+export default function NotificationItem({ notification }: { notification: Notification }) {
   let src = '';
   let href: string = '';
-  console.log(notification);
 
   switch (notification.type) {
     case NotificationType.Like:
@@ -54,9 +49,7 @@ export default function NotificationItem({
         </div>
         <div className='flex w-[21.875rem] flex-col'>
           <div className='flex flex-row items-end gap-1.5'>
-            <span className='text-[0.8125rem] font-bold'>
-              {notification.userId.username}
-            </span>
+            <span className='text-[0.8125rem] font-bold'>{notification.userId.username}</span>
             <p className='text-xs font-normal text-gray-500'>1 minutes</p>
           </div>
           <p className='mt-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-sm text-gray-950 dark:text-gray-200'>
