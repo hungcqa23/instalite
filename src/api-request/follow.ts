@@ -22,9 +22,14 @@ const followApiRequest = {
       followedUserId
     }),
   unfollow: (followedUserId: string) =>
-    http.delete(`/users/follow`, {
+    http.post(`/users/unfollow`, {
       followedUserId
-    })
+    }),
+  isFollowing: (username: string) =>
+    http.get<{
+      message: string;
+      data: boolean;
+    }>(`/users/${username}/follow`)
 };
 
 export { followApiRequest };

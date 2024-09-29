@@ -2,7 +2,7 @@ import z from 'zod';
 
 export const AccountSchema = z.object({
   _id: z.string(),
-  username: z.string().optional(),
+  username: z.string(),
   email: z.string(),
   followersCount: z.number(),
   followingCount: z.number(),

@@ -17,7 +17,6 @@ export async function POST(request: Request) {
           : ''
       }
     });
-    console.log(res.json);
 
     return NextResponse.json({ message: 'Delete post successfully' });
   } catch (error: any) {

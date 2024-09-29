@@ -19,6 +19,7 @@ export class HttpError extends Error {
 
 let clientLogoutRequest: null | Promise<any> = null;
 export const isClient = typeof window !== 'undefined';
+
 const request = async <Response>(
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
   url: string,
@@ -45,8 +46,7 @@ const request = async <Response>(
   //   }
   // }
 
-  const baseUrl = options?.baseUrl ?? envConfig.NEXT_PUBLIC_API_ENDPOINT;
-
+  const baseUrl = options?.baseUrl ? options.baseUrl : envConfig.NEXT_PUBLIC_API_ENDPOINT;
   const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
 
   const response = await fetch(fullUrl, {

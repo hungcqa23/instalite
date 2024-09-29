@@ -23,7 +23,9 @@ export default async function MeProfile({ params }: { params: { username: string
       Cookie: accessToken
         ? `access_token=${accessToken?.value}; refresh_token=${refreshToken?.value}`
         : ''
-    }
+    },
+    next: { tags: ['profile'] },
+    cache: 'no-store'
   });
 
   const { user, isFollowing } = data.data;

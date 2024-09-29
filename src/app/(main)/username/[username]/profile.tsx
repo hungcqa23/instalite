@@ -17,19 +17,13 @@ import { useGetAllFollowersQuery, useGetAllFollowingsQuery } from '@/hooks/queri
 import { User } from '@/types/schema-validations/account.schema';
 import React from 'react';
 
-export default function Profile({
-  user,
-  isFollowing,
-  username
-}: {
-  username: string;
-  user?: User;
-  isFollowing: boolean;
-}) {
+export default function Profile({ user, username }: { username: string; user?: User }) {
   const { data: followersData } = useGetAllFollowersQuery(username);
   const followers = followersData?.data;
+  console.log(followers);
   const { data: followingData } = useGetAllFollowingsQuery(username);
   const following = followingData?.data;
+  console.log(following);
 
   return (
     <div className='flex flex-col'>

@@ -19,15 +19,21 @@ import {
   Label,
   toast
 } from '@/components/ui';
-import { useFollowMutation, useUnFollowMutation } from '@/hooks/queries/useFollow';
+import {
+  useFollowMutation,
+  useGetIsFollowingQuery,
+  useUnFollowMutation
+} from '@/hooks/queries/useFollow';
 import { useUpdateUserMutation, useUploadAvatarMutation } from '@/hooks/queries/useUser';
+import { http } from '@/lib/http';
 import { useUserStore } from '@/stores/user.stores';
 import { User } from '@/types/schema-validations/account.schema';
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-export default function BtnCta({ user, isFollowing }: { user: User; isFollowing: boolean }) {
-  const queryClient = useQueryClient();
+export default function BtnCta({ user }: { user: User }) {
+  const router = useRouter();
   const { user: currentUser, setUser } = useUserStore();
 
   const [username, setUsername] = useState<string | undefined>('');
@@ -37,6 +43,12 @@ export default function BtnCta({ user, isFollowing }: { user: User; isFollowing:
   const [file, setFile] = useState<File | null>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
+  const { data: isFollowingData, isLoading: isFollowingLoading } = useGetIsFollowingQuery(
+    user?.username
+  );
+
+  const isFollowing = isFollowingData?.data || false;
+  const isCurrentUser = user?.username === currentUser?.username;
   useEffect(() => {
     if (currentUser) {
       setName(currentUser?.fullName);
@@ -46,14 +58,12 @@ export default function BtnCta({ user, isFollowing }: { user: User; isFollowing:
     }
   }, [currentUser]);
 
-  const isCurrentUser = user?.username === currentUser?.username;
-
+  //  Avatar upload mutation
   const previewAvatar = useMemo(() => {
     if (file) return URL.createObjectURL(file);
 
     return avatar;
   }, [avatar, file]);
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
@@ -61,8 +71,6 @@ export default function BtnCta({ user, isFollowing }: { user: User; isFollowing:
       setAvatar(avatar);
     }
   };
-
-  //  Avatar upload mutation
   const uploadAvatarMutation = useUploadAvatarMutation();
   const handleUploadAvatarClick = () => {
     if (avatarInputRef.current) avatarInputRef.current.click();
@@ -76,9 +84,6 @@ export default function BtnCta({ user, isFollowing }: { user: User; isFollowing:
       setAvatar(undefined);
       setFile(null);
       setUser(data);
-      queryClient.invalidateQueries({
-        queryKey: ['posts']
-      });
     } catch (error: any) {}
   };
   const handleUploadInformation = async (data: {
@@ -99,6 +104,7 @@ export default function BtnCta({ user, isFollowing }: { user: User; isFollowing:
     }
   };
 
+  //  Update user mutation
   const updateUserMutation = useUpdateUserMutation();
   const handleSaveProfile = async () => {
     try {
@@ -110,6 +116,9 @@ export default function BtnCta({ user, isFollowing }: { user: User; isFollowing:
         title: 'Profile updated',
         description: 'Your profile has been updated'
       });
+      setTimeout(() => {
+        router.push('/');
+      }, 1000);
     } catch (error: any) {
       toast({
         variant: 'destructive',
@@ -126,6 +135,15 @@ export default function BtnCta({ user, isFollowing }: { user: User; isFollowing:
   const handleFollowClick = () => {
     if (isFollowing) unFollowMutation.mutate(user?._id);
     else followMutation.mutate(user?._id);
+
+    const res = http.post(
+      '',
+      {},
+      {
+        baseUrl: '/api/revalidate/profile'
+      }
+    );
+    console.log(res);
   };
 
   return (
@@ -137,7 +155,8 @@ export default function BtnCta({ user, isFollowing }: { user: User; isFollowing:
             variant={'default'}
             onClick={handleFollowClick}
           >
-            {isFollowing ? 'Unfollow' : 'Follow'}
+            {!isFollowingLoading && (isFollowing ? 'Unfollow' : 'Follow')}
+            {isFollowingLoading && 'Loading...'}
           </Button>
         </div>
       )}

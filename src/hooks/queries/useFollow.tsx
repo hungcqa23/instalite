@@ -1,24 +1,38 @@
 import { followApiRequest } from '@/api-request/follow';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useGetAllFollowersQuery = (username: string) =>
   useQuery({
-    queryKey: ['followers', username],
+    queryKey: ['follow', 'followers', username],
     queryFn: () => followApiRequest.getAllFollowers(username)
   });
 
 export const useGetAllFollowingsQuery = (username: string) =>
   useQuery({
-    queryKey: ['followings', username],
+    queryKey: ['follow', 'followings', username],
     queryFn: () => followApiRequest.getAllFollowings(username)
   });
 
-export const useFollowMutation = () =>
-  useMutation({
-    mutationFn: (followedUserId: string) => followApiRequest.follow(followedUserId)
-  });
+export const useFollowMutation = () => {
+  const queryClient = useQueryClient();
 
-export const useUnFollowMutation = () =>
-  useMutation({
-    mutationFn: (followedUserId: string) => followApiRequest.unfollow(followedUserId)
+  return useMutation({
+    mutationFn: (followedUserId: string) => followApiRequest.follow(followedUserId),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['follow'] })
+  });
+};
+
+export const useUnFollowMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (followedUserId: string) => followApiRequest.unfollow(followedUserId),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['follow'] })
+  });
+};
+
+export const useGetIsFollowingQuery = (username: string) =>
+  useQuery({
+    queryKey: ['follow', username],
+    queryFn: () => followApiRequest.isFollowing(username)
   });
