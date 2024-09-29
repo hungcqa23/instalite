@@ -2,7 +2,7 @@ export * from './form';
 export * from './tab';
 export * from './popover';
 export * from './button';
-export * from './comment';
+export * from './lite/comment';
 export * from './toast';
 export * from './calendar';
 export * from './preview-image';

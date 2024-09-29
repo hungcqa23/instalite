@@ -132,7 +132,7 @@ export default function BtnCta({ user, isFollowing }: { user: User; isFollowing:
 
   return (
     <>
-      {!isCurrentUser && (
+      {!isCurrentUser && user && (
         <div className='flex flex-row gap-2'>
           <Button
             className='mt-3.5 w-full text-sm dark:bg-zinc-50 dark:hover:bg-zinc-50'

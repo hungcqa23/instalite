@@ -1,7 +1,7 @@
 'use client';
 
 import { List } from '@/components/ui';
-import CommentItem from '@/components/ui/comment';
+import CommentItem from '@/components/ui/lite/comment';
 import { Post } from '@/types/schema-validations/post.schema';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';

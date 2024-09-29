@@ -50,9 +50,8 @@ const EditLiteDialog: React.FC<EditLiteDialogProps> = ({
   }, [text]);
 
   useEffect(() => {
-    if (openEditDialog) {
-      fetchContent();
-    }
+    if (openEditDialog) fetchContent();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openEditDialog]);
 
@@ -89,11 +88,8 @@ const EditLiteDialog: React.FC<EditLiteDialogProps> = ({
   };
 
   const handleDialogChange = (open: boolean) => {
-    if (!open) {
-      setOpenCancelDialog(true);
-    } else {
-      setOpenEditDialog(open);
-    }
+    if (!open) setOpenCancelDialog(true);
+    else setOpenEditDialog(open);
   };
 
   const updatePostMutation = useMutation({
@@ -130,13 +126,7 @@ const EditLiteDialog: React.FC<EditLiteDialogProps> = ({
           <div className='flex flex-col overflow-hidden'>
             <div className='flex flex-row'>
               <Avatar className='h-8 w-8 cursor-pointer'>
-                <AvatarImage
-                  src={
-                    user?.avatar ||
-                    'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                  }
-                  alt='@shadcn'
-                />
+                <AvatarImage src={user?.avatar} alt='@shadcn' />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className='ms-2.5 flex max-w-full flex-col'>
@@ -191,6 +181,7 @@ const EditLiteDialog: React.FC<EditLiteDialogProps> = ({
           </div>
         </DialogContent>
       </Dialog>
+
       {openCancelDialog && (
         <Dialog open={openCancelDialog} onOpenChange={setOpenCancelDialog}>
           <DialogContent className='select-none px-0 pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[20rem]'>

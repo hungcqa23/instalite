@@ -8,17 +8,14 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui';
+import { EllipsisIcon } from '@/components/ui/icons';
 import { calculateTimeAgo } from '@/lib/helper';
 import { useUserStore } from '@/stores/user.stores';
 import { Post } from '@/types/schema-validations/post.schema';
 import { MediaPlayer, MediaProvider, Poster, Track } from '@vidstack/react';
-import {
-  DefaultVideoLayout,
-  defaultLayoutIcons
-} from '@vidstack/react/player/layouts/default';
+import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';
 import '@vidstack/react/player/styles/default/layouts/audio.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
 import '@vidstack/react/player/styles/default/theme.css';
@@ -74,11 +71,13 @@ const CommentMedia = ({
 
   return null;
 };
+
 export default function CommentItem({ comment }: { comment: Post }) {
   const { user } = useUserStore();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
+  const isCurrentUser = user?._id === comment?.userId?._id;
   return (
     <>
       <div className='my-3 w-full border-b-[1px] border-gray-200 p-0'>
@@ -91,34 +90,17 @@ export default function CommentItem({ comment }: { comment: Post }) {
           <div className='ms-2.5 flex w-full flex-col justify-start'>
             <div className='flex flex-row items-center justify-between'>
               <div className='flex flex-row gap-1'>
-                <span className='text-xs font-semibold'>
-                  {comment?.userId?.username}
-                </span>
+                <span className='text-xs font-semibold'>{comment?.userId?.username}</span>
                 <span className='text-xs font-normal text-gray-500'>
-                  {calculateTimeAgo(comment?.created_at)}
+                  {calculateTimeAgo(comment?.createdAt)}
                 </span>
               </div>
 
-              {user?._id === comment?.userId?._id && (
+              {isCurrentUser && (
                 <DropdownMenu modal={false}>
                   <DropdownMenuTrigger asChild>
                     <Button variant={'link'} className='me-1 h-5 w-5 px-0'>
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        width='24'
-                        height='24'
-                        viewBox='0 0 24 24'
-                        fill='none'
-                        stroke='currentColor'
-                        strokeWidth='2'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        className='lucide lucide-ellipsis'
-                      >
-                        <circle cx='12' cy='12' r='1' />
-                        <circle cx='19' cy='12' r='1' />
-                        <circle cx='5' cy='12' r='1' />
-                      </svg>
+                      <EllipsisIcon />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
@@ -130,12 +112,12 @@ export default function CommentItem({ comment }: { comment: Post }) {
                       onClick={() => setOpenDeleteDialog(true)}
                     >
                       <Trash className='mb-0 h-4 w-4' />
-                      <span className=''>Delete</span>
+                      <span>Delete</span>
                     </DropdownMenuItem>
-                    <DropdownMenuSeparator />
+                    {/* <DropdownMenuSeparator /> */}
                     <DropdownMenuItem
                       className='cursor-pointer gap-2 rounded-md font-medium'
-                      onClick={() => setOpenEditDialog(true)}
+                      onClick={() => setIsEditing(true)}
                     >
                       <Pencil className='mb-0 h-4 w-4' />
                       <span className=''>Edit</span>
@@ -152,15 +134,14 @@ export default function CommentItem({ comment }: { comment: Post }) {
       </div>
 
       {openDeleteDialog && (
-        <DeleteCommentDialog
-          setOpenDeleteDialog={setOpenDeleteDialog}
-          commentId={comment?._id}
-        />
+        <DeleteCommentDialog setOpenDeleteDialog={setOpenDeleteDialog} commentId={comment?._id} />
       )}
-      {openEditDialog && (
+
+      {isEditing && (
         <EditCommentDialog
-          openEditDialog={openEditDialog}
-          setOpenEditDialog={setOpenEditDialog}
+          lite={comment}
+          openEditDialog={isEditing}
+          setOpenEditDialog={setIsEditing}
           commentId={comment?._id}
         />
       )}

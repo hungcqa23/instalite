@@ -19,9 +19,7 @@ const UserItem = ({ user }: { user: User }) => {
         </Avatar>
         <div className='flex w-[21.875rem] flex-col'>
           <span className='text-sm font-semibold'>{user.username}</span>
-          <div className='text-xs font-normal text-gray-500'>
-            {user.fullName}
-          </div>
+          <div className='text-xs font-normal text-gray-500'>{user.fullName}</div>
         </div>
       </div>
     </Link>

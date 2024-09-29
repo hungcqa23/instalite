@@ -47,9 +47,7 @@ const request = async <Response>(
 
   const baseUrl = options?.baseUrl ?? envConfig.NEXT_PUBLIC_API_ENDPOINT;
 
-  const fullUrl = url.startsWith('/')
-    ? `${baseUrl}${url}`
-    : `${baseUrl}/${url}`;
+  const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
 
   const response = await fetch(fullUrl, {
     ...options,
@@ -61,6 +59,9 @@ const request = async <Response>(
     body,
     method
   });
+
+  if (method === 'POST' && response.status === 204) return response as Response;
+
   const result: Response & {
     message?: string;
   } = await response.json();
@@ -75,38 +76,19 @@ const request = async <Response>(
 };
 
 export const http = {
-  get<Response>(
-    url: string,
-    options?: Omit<CustomOptions, 'body'> | undefined
-  ) {
+  get<Response>(url: string, options?: Omit<CustomOptions, 'body'> | undefined) {
     return request<Response>('GET', url, options);
   },
-  post<Response>(
-    url: string,
-    body: any,
-    options?: Omit<CustomOptions, 'body'> | undefined
-  ) {
+  post<Response>(url: string, body: any, options?: Omit<CustomOptions, 'body'> | undefined) {
     return request<Response>('POST', url, { ...options, body });
   },
-  put<Response>(
-    url: string,
-    body: any,
-    options?: Omit<CustomOptions, 'body'> | undefined
-  ) {
+  put<Response>(url: string, body: any, options?: Omit<CustomOptions, 'body'> | undefined) {
     return request<Response>('PUT', url, { ...options, body });
   },
-  delete<Response>(
-    url: string,
-    body: any,
-    options?: Omit<CustomOptions, 'body'> | undefined
-  ) {
+  delete<Response>(url: string, body: any, options?: Omit<CustomOptions, 'body'> | undefined) {
     return request<Response>('DELETE', url, { ...options, body });
   },
-  patch<Response>(
-    url: string,
-    body: any,
-    options?: Omit<CustomOptions, 'body'> | undefined
-  ) {
+  patch<Response>(url: string, body: any, options?: Omit<CustomOptions, 'body'> | undefined) {
     return request<Response>('PATCH', url, { ...options, body });
   }
 };

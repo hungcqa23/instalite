@@ -24,14 +24,14 @@ const CancelDialogActions = ({
 );
 
 const CancelDialog = ({
+  openCancelDialog,
   cancelClose,
   confirmClose,
-  openCancelDialog,
   setOpenCancelDialog
 }: {
+  openCancelDialog: boolean;
   cancelClose: () => void;
   confirmClose: () => void;
-  openCancelDialog: boolean;
   setOpenCancelDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => (
   <Dialog open={openCancelDialog} onOpenChange={setOpenCancelDialog}>

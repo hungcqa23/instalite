@@ -19,7 +19,6 @@ import { useUserStore } from '@/stores/user.stores';
 import { Notification } from '@/types/schema-validations/notification.schema';
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import { useQuery } from '@tanstack/react-query';
-import { getCookie } from 'cookies-next';
 import { AlignRightIcon, Bell, Bookmark, Home, Search, SquarePen, UserRound } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
@@ -34,30 +33,25 @@ export default function Header() {
   const activeTab = pathname.split('/')[1] || '';
   const [svgSrc, setSvgSrc] = useState('/orbit.svg');
   const [newNoti, setNewNoti] = useState(false);
-  const accessToken = getCookie('access_key');
 
   useEffect(() => {
     setSvgSrc(resolvedTheme === 'dark' ? '/orbit-light.svg' : '/orbit.svg');
   }, [resolvedTheme]);
 
   const { data } = useQuery({
-    queryKey: ['notification', accessToken],
+    queryKey: ['notification'],
     queryFn: () =>
       fetch('http://localhost:8000/notifications/me', {
         method: 'GET',
-        headers: {
-          Cookie: `access_token=${accessToken}`
-        },
         credentials: 'include'
       }).then(res => res.json())
   });
+
   const newNotification =
     data?.result?.some((notification: Notification) => notification.checked === false) || false;
 
   useEffect(() => {
-    if (newNotification) {
-      setNewNoti(true);
-    }
+    if (newNotification) setNewNoti(true);
   }, [newNotification]);
 
   return (
@@ -80,7 +74,7 @@ export default function Header() {
               }
             )}`}
           >
-            <Home className='h-7 w-7' />
+            <Home className='size-7' />
           </Button>
         </Link>
         <Link href='/search'>
@@ -93,7 +87,7 @@ export default function Header() {
               }
             )}`}
           >
-            <Search className='h-7 w-7' />
+            <Search className='size-7' />
           </Button>
         </Link>
         <CreateLiteDialog>
@@ -106,10 +100,10 @@ export default function Header() {
               }
             )}`}
           >
-            <SquarePen className='h-7 w-7' />
+            <SquarePen className='size-7' />
           </div>
         </CreateLiteDialog>
-        <Link href='/notification'>
+        {/* <Link href='/notification'>
           <Button
             className={`${cn(
               'duration-400 flex h-16 w-24 items-center justify-center rounded-lg bg-white transition-colors hover:bg-gray-200 hover:text-black dark:bg-zinc-950 dark:hover:bg-gray-700/40 dark:hover:text-white',
@@ -121,14 +115,14 @@ export default function Header() {
             onClick={() => setNewNoti(false)}
           >
             <div className='relative'>
-              <Bell className='relative h-7 w-7' />
+              <Bell className='relative size-7' />
 
               {newNoti && (
                 <span className='absolute right-0 top-0 inline-flex h-2 w-2 animate-ping rounded-full bg-red-500 opacity-100' />
               )}
             </div>
           </Button>
-        </Link>
+        </Link> */}
 
         <Link href={`/username/${user?.username}`}>
           <Button
@@ -140,7 +134,7 @@ export default function Header() {
               }
             )}`}
           >
-            <UserRound className='h-7 w-7' />
+            <UserRound className='size-7' />
           </Button>
         </Link>
       </div>
@@ -148,7 +142,7 @@ export default function Header() {
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button className='duration-400 flex h-16 w-16 items-center justify-center bg-white text-zinc-400 transition-colors hover:bg-white hover:text-zinc-950 dark:bg-zinc-950 dark:text-zinc-700 dark:hover:bg-zinc-950 dark:hover:text-white'>
-            <AlignRightIcon className='h-7 w-7' />
+            <AlignRightIcon className='size-7' />
           </Button>
         </DropdownMenuTrigger>
 

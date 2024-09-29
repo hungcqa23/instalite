@@ -8,6 +8,8 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -15,21 +17,23 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
+  Input,
+  Label
 } from '@/components/ui';
-import ListComment from '@/components/ui/comment/list-comment';
 import {
   EllipsisIcon,
   MessageCircle,
   MessageCircleIcon,
-  PencilIcon,
   SparkleIcon,
   TrashIcon,
   XIcon
 } from '@/components/ui/icons';
 import CancelDialog from '@/components/ui/lite/cancel-dialog';
 import CommentForm from '@/components/ui/lite/comment/comment-form';
+import ListComment from '@/components/ui/lite/comment/list-comment';
 import MediaSection from '@/components/ui/lite/media-section';
+import SummarizationDialog from '@/components/ui/lite/summarization-dialog';
 import { useCreateCommentMutation } from '@/hooks/queries/useComment';
 import {
   useSummarizeLiteMutation,
@@ -58,10 +62,13 @@ import EditLiteDialog from './edit-lite-dialog';
 const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
   const { user } = useUserStore();
   const queryClient = useQueryClient();
-  const [text, setText] = useState('');
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [isOpenCommentDialog, setIsOpenCommentDialog] = useState(false);
+  const [contentSummarization, setContentSummarization] = useState({
+    content: '',
+    isOpenSummarizeDialog: false
+  });
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -109,13 +116,6 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
     }
   };
 
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
-  }, [text]);
-
   // Media
   const updateVideoMutation = useUpdateVideoMutation();
   const updatePostMutation = useUpdatePostMutation();
@@ -123,45 +123,8 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
   // Comment
   const createCommentMutation = useCreateCommentMutation();
 
-  const handleCommentPost = async (content: string) => {
-    const res = await createCommentMutation.mutateAsync({
-      content,
-      parentPostId: lite?._id
-    });
-
-    // const commentPostId = res.post._id;
-    // if (!commentPostId) return;
-    // const formData = new FormData();
-
-    // if (videoFile) {
-    //   formData.append('media', videoFile);
-    //   await updateVideoMutation.mutateAsync({
-    //     commentPostId,
-    //     formData
-    //   });
-    //   setText('');
-    //   return;
-    // }
-
-    // if (imageFile) {
-    //   formData.append('media', imageFile);
-
-    //   const updateImage = await updatePostMutation.mutateAsync({
-    //     commentPostId,
-    //     formData
-    //   });
-    //   setText('');
-    //   return;
-    // }
-    setIsOpenCommentDialog(false);
-    resetDialog();
-    queryClient.invalidateQueries({
-      queryKey: ['comments', lite?._id]
-    });
-  };
-
   const handleDialogChange = (open: boolean) => {
-    if (!open && (text || images.length > 0 || videoUrl)) setOpenCancelDialog(true);
+    if (!open && (images.length > 0 || videoUrl)) setOpenCancelDialog(true);
     else {
       setIsOpenCommentDialog(open);
       if (!open) resetDialog();
@@ -180,25 +143,40 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
   };
 
   const resetDialog = useCallback(() => {
-    setText('');
     setImages([]);
     setImageFile(null);
     setVideoFile(null);
     setVideoUrl(null);
   }, []);
 
+  // Summarization
   const summarizeLiteMutation = useSummarizeLiteMutation();
-  const handleSummarization = async () => {
-    const formData = new FormData();
-    if (lite?.media?.type === 0) {
-      const response = await axios.get(lite?.media?.url, {
-        responseType: 'blob'
+  useEffect(() => {
+    if (summarizeLiteMutation.status === 'pending')
+      setContentSummarization({
+        content: 'Loading...',
+        isOpenSummarizeDialog: true
       });
-
-      formData.append('media', response.data);
+  }, [summarizeLiteMutation.status]);
+  const handleSummarization = async () => {
+    try {
+      const formData = new FormData();
+      if (lite?.media?.type === 0) {
+        const response = await axios.get(lite?.media?.url, {
+          responseType: 'blob'
+        });
+        formData.append('media', response.data);
+      }
+      formData.append('content', lite?.content);
+      const res = await summarizeLiteMutation.mutateAsync(formData);
+      if (res.content)
+        setContentSummarization({
+          content: res.content,
+          isOpenSummarizeDialog: true
+        });
+    } catch (error) {
+      console.log(error);
     }
-    formData.append('content', lite?.content);
-    const res = await summarizeLiteMutation.mutateAsync(formData);
   };
 
   const ActionMenu = ({ lite, isCurrentUser }: { lite: Post; isCurrentUser: boolean }) => (
@@ -222,23 +200,23 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
               <TrashIcon className='size-4' /> <span>Delete lite</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
+            {/* <DropdownMenuItem
               className='cursor-pointer gap-2 rounded-md font-medium'
-              onClick={() => setOpenEditDialog(true)}
+              onClick={() => setIsEditing(true)}
             >
               <PencilIcon className='size-4' /> <span>Edit lite</span>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator /> */}
           </>
         )}
 
         {!isVideo(lite?.media?.type) && (
           <DropdownMenuItem
             className='cursor-pointer gap-2 rounded-md font-medium'
-            onClick={() => handleSummarization()}
+            onClick={handleSummarization}
           >
             <SparkleIcon className='size-4' />
-            <span>Summarize with Relite AI</span>
+            <span>Explain with Relite AI</span>
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>
@@ -281,6 +259,13 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
     );
   };
 
+  const handleChangeOpenSummarizeDialog = () => {
+    setContentSummarization(previousState => ({
+      ...previousState,
+      isOpenSummarizeDialog: !previousState.isOpenSummarizeDialog
+    }));
+  };
+
   if (isLink)
     return (
       <>
@@ -296,8 +281,48 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
         {openDeleteDialog && (
           <DeleteLiteDialog setOpenDeleteDialog={setOpenDeleteDialog} liteId={lite?._id} />
         )}
+
+        <SummarizationDialog
+          contentSummarization={contentSummarization}
+          setContentSummarization={handleChangeOpenSummarizeDialog}
+        />
       </>
     );
+
+  const handleCommentPost = async (content: string) => {
+    const res = await createCommentMutation.mutateAsync({
+      content,
+      parentPostId: lite?._id
+    });
+
+    // const commentPostId = res.post._id;
+    // if (!commentPostId) return;
+    // const formData = new FormData();
+
+    // if (videoFile) {
+    //   formData.append('media', videoFile);
+    //   await updateVideoMutation.mutateAsync({
+    //     commentPostId,
+    //     formData
+    //   });
+    //   return;
+    // }
+
+    // if (imageFile) {
+    //   formData.append('media', imageFile);
+
+    //   const updateImage = await updatePostMutation.mutateAsync({
+    //     commentPostId,
+    //     formData
+    //   });
+    //   return;
+    // }
+    setIsOpenCommentDialog(false);
+    resetDialog();
+    queryClient.invalidateQueries({
+      queryKey: ['comments', lite?._id]
+    });
+  };
 
   const CommentDialog = ({ lite }: { lite: Post }) => (
     <Dialog open={isOpenCommentDialog} onOpenChange={handleDialogChange}>
@@ -323,6 +348,8 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
 
         <CommentForm
           user={user}
+          images={images}
+          videoUrl={videoUrl}
           fileInputRef={fileInputRef}
           textareaRef={textareaRef}
           videoFileInputRef={videoFileInputRef}
@@ -333,8 +360,6 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
           handleCommentPost={handleCommentPost}
           handleFileChange={handleFileChange}
           handleVideoChange={handleVideoChange}
-          images={images}
-          videoUrl={videoUrl}
         />
       </DialogContent>
     </Dialog>
@@ -357,13 +382,13 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
         <DeleteLiteDialog setOpenDeleteDialog={setOpenDeleteDialog} liteId={liteId} />
       )}
 
-      {openEditDialog && (
+      {/* {isEditing && (
         <EditLiteDialog
-          openEditDialog={openEditDialog}
-          setOpenEditDialog={setOpenEditDialog}
+          openEditDialog={isEditing}
+          setOpenEditDialog={setIsEditing}
           liteId={liteId}
         />
-      )}
+      )} */}
 
       {openCancelDialog && (
         <CancelDialog
@@ -388,6 +413,11 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
       {/* Display Comments */}
       <ListComment postId={lite?._id} />
       <DialogComponents liteId={lite?._id} />
+
+      <SummarizationDialog
+        contentSummarization={contentSummarization}
+        setContentSummarization={handleChangeOpenSummarizeDialog}
+      />
     </>
   );
 };

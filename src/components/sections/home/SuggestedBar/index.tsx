@@ -17,6 +17,7 @@ const SuggestedBar = async () => {
       Cookie: `access_token=${cookieStore.get('access_token')?.value}; refresh_token=${cookieStore.get('refresh_token')?.value}`
     }
   });
+
   const users = data.data;
 
   return (

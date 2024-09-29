@@ -7,6 +7,10 @@ const postApiRequest = {
       message: string;
       data: Post[];
     }>('/posts'),
+  update: ({ postId, content }: { postId: string; content: string }) =>
+    http.patch<{}>(`/posts/${postId}`, {
+      content
+    }),
   bookmark: (postId: string) =>
     http.post(`/bookmarks`, {
       postId

@@ -1,43 +1,40 @@
 'use client';
 
-import { http } from '@/lib/http';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from '@/components/ui/toast';
+import { useDeletePostMutation } from '@/hooks/queries/usePost';
+import { useQueryClient } from '@tanstack/react-query';
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 
 interface DeletePostDialogProps {
-  setOpenDeleteDialog: Dispatch<SetStateAction<boolean>>;
   liteId: string;
+  setOpenDeleteDialog: Dispatch<SetStateAction<boolean>>;
 }
 
 const DeleteLiteDialog: React.FC<DeletePostDialogProps> = ({
   setOpenDeleteDialog,
   liteId
 }: DeletePostDialogProps) => {
-  const accessToken = getCookie('access_key');
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const deleteLiteMutation = useMutation({
-    mutationFn: async (liteId: string) => {
-      const res = await fetch(`http://localhost:8000/posts/${liteId}`, {
-        method: 'DELETE'
-      });
-    }
-  });
+  const deleteLiteMutation = useDeletePostMutation();
 
   const handleDeleteLite = async () => {
-    await deleteLiteMutation.mutateAsync(liteId);
-
-    queryClient.invalidateQueries({
-      queryKey: ['posts', accessToken]
-    });
-
-    router.push('/');
-    setTimeout(() => {
-      window.location.reload();
-    }, 500);
+    try {
+      await deleteLiteMutation.mutateAsync(liteId);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      toast({
+        title: 'Deleted',
+        description: 'Your lite has been deleted'
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['posts']
+      });
+    }
   };
 
   return (

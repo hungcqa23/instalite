@@ -39,9 +39,9 @@ export default function Profile({
           <p className='text-lg font-semibold'>{user?.username}</p>
         </div>
 
-        <Avatar className='static h-20 w-20'>
-          <AvatarImage src={user?.avatar ?? 'https://github.com/shadcn.png'} alt='@shadcn' />
-          <AvatarFallback>CN</AvatarFallback>
+        <Avatar className='static size-20'>
+          <AvatarImage src={user?.avatar} alt='@shadcn' className='size-full' />
+          <AvatarFallback>IU</AvatarFallback>
         </Avatar>
       </div>
 
@@ -82,7 +82,7 @@ export default function Profile({
           <DialogTrigger asChild>
             <Button variant={'link'} className='p-0 hover:no-underline'>
               <p className='font-light'>
-                <span className='font-normal'>{user?.followingCount}</span>
+                <span className='font-normal'>{user?.followingCount} </span>
                 following
               </p>
             </Button>

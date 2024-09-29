@@ -9,31 +9,33 @@ import {
   DialogClose,
   DialogContent,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
+  toast
 } from '@/components/ui';
-import { http } from '@/lib/http';
+import CancelDialog from '@/components/ui/lite/cancel-dialog';
+import { useUpdateCommentMutation } from '@/hooks/queries/usePost';
 import { useUserStore } from '@/stores/user.stores';
 import { Post } from '@/types/schema-validations/post.schema';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MediaPlayer, MediaProvider } from '@vidstack/react';
-import {
-  DefaultVideoLayout,
-  defaultLayoutIcons
-} from '@vidstack/react/player/layouts/default';
+import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';
 import '@vidstack/react/player/styles/default/layouts/audio.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
 import '@vidstack/react/player/styles/default/theme.css';
 import { X } from 'lucide-react';
 import Image from 'next/image';
+import React from 'react';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 interface EditCommentDialogProps {
+  lite: Post;
   openEditDialog: boolean;
   setOpenEditDialog: Dispatch<SetStateAction<boolean>>;
   commentId: string;
 }
 
 const EditCommentDialog: React.FC<EditCommentDialogProps> = ({
+  lite,
   openEditDialog,
   setOpenEditDialog,
   commentId
@@ -42,7 +44,7 @@ const EditCommentDialog: React.FC<EditCommentDialogProps> = ({
   const queryClient = useQueryClient();
   const [text, setText] = useState('');
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
-  const [post, setPost] = useState<Post | null>(null);
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -53,54 +55,33 @@ const EditCommentDialog: React.FC<EditCommentDialogProps> = ({
   }, [text]);
 
   useEffect(() => {
-    if (openEditDialog) {
-      fetchContent();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openEditDialog]);
+    if (lite) setText(lite.content);
+  }, [lite]);
 
-  const getPostContentMutation = useMutation({
-    mutationFn: async () => {
-      return await http.get(`/posts/${commentId}`);
-    }
-  });
-
-  const fetchContent = async () => {
-    try {
-      const res = await getPostContentMutation.mutateAsync();
-      const { post }: { post: Post } = res;
-      console.log(post.content);
-      setText(post.content);
-      setPost(post);
-    } catch (error) {
-      console.error('Failed to fetch content:', error);
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value);
 
   const handleDialogChange = (open: boolean) => {
     if (!open) setOpenCancelDialog(true);
     else setOpenEditDialog(open);
   };
 
-  const updatePostMutation = useMutation({
-    mutationFn: async (content: string) => {
-      return await http.patch(`/posts/${commentId}`, {
-        content: content
-      });
-    }
-  });
+  const updateCommentMutation = useUpdateCommentMutation();
 
   const handleUpdatePost = async (content: string) => {
     try {
-      const res = await updatePostMutation.mutateAsync(content);
+      await updateCommentMutation.mutateAsync({
+        postId: lite?._id,
+        content
+      });
 
       setOpenEditDialog(false);
+
       queryClient.invalidateQueries({
         queryKey: ['comments']
+      });
+
+      toast({
+        description: 'Comment updated successfully!'
       });
     } catch (error) {
       console.error('Failed to update post:', error);
@@ -112,10 +93,6 @@ const EditCommentDialog: React.FC<EditCommentDialogProps> = ({
     setOpenEditDialog(false);
   };
 
-  const cancelClose = () => {
-    setOpenCancelDialog(false);
-    setOpenEditDialog(true);
-  };
   return (
     <>
       <Dialog open={openEditDialog} onOpenChange={handleDialogChange}>
@@ -134,18 +111,14 @@ const EditCommentDialog: React.FC<EditCommentDialogProps> = ({
               </Button>
             </DialogClose>
           </DialogHeader>
+
           <div className='flex flex-col overflow-hidden'>
             <div className='flex flex-row'>
               <Avatar className='h-8 w-8 cursor-pointer'>
-                <AvatarImage
-                  src={
-                    user?.avatar ||
-                    'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                  }
-                  alt='@shadcn'
-                />
+                <AvatarImage src={user?.avatar} alt='@shadcn' />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
+
               <div className='ms-2.5 flex max-w-full flex-col'>
                 <div className='text-sm font-semibold'>{user?.username}</div>
                 <textarea
@@ -157,6 +130,8 @@ const EditCommentDialog: React.FC<EditCommentDialogProps> = ({
                   autoFocus={true}
                   onChange={handleChange}
                 />
+
+                {/* 
                 {post?.media?.type == 0 && (
                   <div className='my-2'>
                     <Image
@@ -187,49 +162,26 @@ const EditCommentDialog: React.FC<EditCommentDialogProps> = ({
                       icons={defaultLayoutIcons}
                     />
                   </MediaPlayer>
-                )}
+                )} */}
               </div>
             </div>
+
             <div className='mt-2 flex flex-row items-end justify-end'>
-              <Button
-                className='rounded-3xl'
-                onClick={() => handleUpdatePost(text)}
-              >
+              <Button className='rounded-3xl' onClick={() => handleUpdatePost(text)}>
                 Update
               </Button>
             </div>
           </div>
         </DialogContent>
       </Dialog>
+
       {openCancelDialog && (
-        <Dialog open={openCancelDialog} onOpenChange={setOpenCancelDialog}>
-          <DialogContent className='select-none px-0 pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[20rem]'>
-            <DialogHeader>
-              <DialogTitle className='mb-0 flex justify-center text-sm font-bold'>
-                Close edit?
-              </DialogTitle>
-              <DialogClose asChild>
-                <div className='absolute right-0 top-0 z-10 h-8 w-16 bg-white dark:bg-zinc-950'></div>
-              </DialogClose>
-            </DialogHeader>
-
-            <div className='flex flex-row border-t-2 dark:border-gray-600'>
-              <div
-                className='w-full cursor-pointer rounded-bl-3xl border-r-2 py-4 text-center dark:border-gray-600'
-                onClick={cancelClose}
-              >
-                Cancel
-              </div>
-
-              <div
-                className='w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
-                onClick={confirmClose}
-              >
-                Close
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <CancelDialog
+          openCancelDialog={openCancelDialog}
+          setOpenCancelDialog={setOpenCancelDialog}
+          confirmClose={confirmClose}
+          cancelClose={() => setOpenCancelDialog(false)}
+        />
       )}
     </>
   );

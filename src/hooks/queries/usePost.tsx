@@ -27,7 +27,9 @@ export const useGetAllPostsQuery = () =>
 export const useSummarizeLiteMutation = () =>
   useMutation({
     mutationFn: async (formData: FormData) => {
-      return await http.post('/files/summary', formData);
+      return await http.post<{
+        content?: string;
+      }>('/files/summary', formData);
     }
   });
 
@@ -63,4 +65,23 @@ export const useUpdatePostMutation = () =>
       });
       return await res.json();
     }
+  });
+
+export const useUpdateCommentMutation = () =>
+  useMutation({
+    mutationFn: ({ postId, content }: { postId: string; content: string }) =>
+      postApiRequest.update({
+        postId,
+        content
+      })
+  });
+
+export const useDeletePostMutation = () =>
+  useMutation({
+    mutationFn: (postId: string) =>
+      http.delete(`/posts/${postId}`, {
+        headers: {
+          Cookie: `access_token=${accessToken}`
+        }
+      })
   });
