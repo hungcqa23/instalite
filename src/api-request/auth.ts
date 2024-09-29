@@ -13,12 +13,8 @@ const authApiRequest = {
       credentials: 'include'
     });
   },
-  register: (body: RegisterBodyType) =>
-    http.post<RegisterResType>('/auth/register', body),
-  logoutFromNextClientToServer: (
-    force?: boolean | undefined,
-    signal?: AbortSignal | undefined
-  ) =>
+  register: (body: RegisterBodyType) => http.post<RegisterResType>('/auth/sign-up', body),
+  logoutFromNextClientToServer: (force?: boolean | undefined, signal?: AbortSignal | undefined) =>
     http.post(
       '/api/auth/logout',
       {

@@ -14,23 +14,18 @@ import {
 import { GoogleIcon } from '@/components/ui/icons';
 import { useLoginMutation } from '@/hooks/queries/useAuth';
 import { useUserStore } from '@/stores/user.stores';
-import {
-  LoginBody,
-  LoginBodyType
-} from '@/types/schema-validations/auth.schema';
+import { LoginBody, LoginBodyType } from '@/types/schema-validations/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 
 const ForgotPassWord = () => {
   return (
     <div className='text-right'>
       <Button className='pr-0' variant={'link'} asChild>
-        <Link
-          href='forgot-password'
-          className='font-semibold hover:no-underline'
-        >
+        <Link href='forgot-password' className='font-semibold hover:no-underline'>
           Forgot password?
         </Link>
       </Button>
@@ -120,11 +115,7 @@ export default function LoginForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder='Enter your password'
-                    {...field}
-                    type='password'
-                  />
+                  <Input placeholder='Enter your password' {...field} type='password' />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -139,14 +130,12 @@ export default function LoginForm() {
           {loginMutation.isPending ? 'Loading...' : 'Sign in'}
         </Button>
 
-        <div className='relative mt-8'>
+        {/* <div className='relative mt-8'>
           <div className='absolute inset-0 flex items-center'>
             <span className='w-full border-t'></span>
           </div>
           <div className='relative flex justify-center text-xs uppercase'>
-            <span className='bg-white px-2 text-gray-400 dark:bg-black'>
-              Or continue with
-            </span>
+            <span className='bg-white px-2 text-gray-400 dark:bg-black'>Or continue with</span>
           </div>
         </div>
 
@@ -157,15 +146,11 @@ export default function LoginForm() {
         >
           <GoogleIcon />
           Sign in with Google
-        </Button>
+        </Button> */}
 
         <div className='mt-4 text-center'>
           <span className='text-md'>Don&apos;t have an account?</span>
-          <Button
-            className='text-md pl-2 pr-0 font-semibold'
-            variant={'link'}
-            asChild
-          >
+          <Button className='text-md pl-2 pr-0 font-semibold' variant={'link'} asChild>
             <Link href='register' className='hover:no-underline'>
               Sign up
             </Link>

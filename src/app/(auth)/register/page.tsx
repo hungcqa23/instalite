@@ -46,11 +46,7 @@ const formSchema = z
 const Login = () => (
   <div className='mt-4 text-center'>
     <span className='text-md'>Already have an account?</span>
-    <Button
-      className='text-md pl-2 pr-0 font-semibold'
-      variant={'link'}
-      asChild
-    >
+    <Button className='text-md pl-2 pr-0 font-semibold' variant={'link'} asChild>
       <Link href='login' className='hover:no-underline'>
         Sign in
       </Link>
@@ -64,9 +60,7 @@ const Continue = () => (
       <span className='w-full border-t' />
     </div>
     <div className='relative flex justify-center text-xs uppercase'>
-      <span className='bg-white px-2 text-gray-400 dark:bg-black'>
-        Or continue with
-      </span>
+      <span className='bg-white px-2 text-gray-400 dark:bg-black'>Or continue with</span>
     </div>
   </div>
 );
@@ -137,15 +131,14 @@ export default function Register() {
           description: 'Nice to meet you!'
         });
       }, 1000);
+      router.push('/');
     } catch (error: any) {
       handleLoginError(error);
     }
   }
   return (
     <Form {...form}>
-      <p className='mb-2 h-8 text-center text-xl font-semibold'>
-        Create an account
-      </p>
+      <p className='mb-2 h-8 text-center text-xl font-semibold'>Create an account</p>
       <form onSubmit={form.handleSubmit(onSubmit)} className='h-full w-full'>
         <FormField
           control={form.control}
@@ -154,11 +147,7 @@ export default function Register() {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input
-                  placeholder='Enter your username'
-                  {...field}
-                  type='email'
-                />
+                <Input placeholder='Enter your username' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -186,11 +175,7 @@ export default function Register() {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input
-                  placeholder='Enter your password'
-                  {...field}
-                  type='password'
-                />
+                <Input placeholder='Enter your password' {...field} type='password' />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -204,11 +189,7 @@ export default function Register() {
             <FormItem>
               <FormLabel>Confirm password</FormLabel>
               <FormControl>
-                <Input
-                  placeholder='Confirm your password'
-                  {...field}
-                  type='password'
-                />
+                <Input placeholder='Confirm your password' {...field} type='password' />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -219,15 +200,12 @@ export default function Register() {
           Create your account
         </Button>
 
-        <Continue />
+        {/* <Continue />
 
-        <Button
-          className='mt-4 flex w-full items-center gap-1 font-semibold'
-          variant={'outline'}
-        >
+        <Button className='mt-4 flex w-full items-center gap-1 font-semibold' variant={'outline'}>
           <GoogleIcon />
           Sign up with Google
-        </Button>
+        </Button> */}
 
         <Login />
       </form>

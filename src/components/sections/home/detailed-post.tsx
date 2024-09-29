@@ -1,6 +1,6 @@
 'use client';
 
-import LiteItem from '@/components/ui/LiteItem';
+import LiteItem from '@/components/ui/lite';
 import { Post } from '@/types/schema-validations/post.schema';
 
 export default function DetailedPostPage({ post }: { post: Post }) {

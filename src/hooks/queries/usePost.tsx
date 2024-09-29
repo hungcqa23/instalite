@@ -85,3 +85,11 @@ export const useDeletePostMutation = () =>
         }
       })
   });
+
+export const useCreatePostMutation = () =>
+  useMutation({
+    mutationFn: (content: string) =>
+      postApiRequest.create({
+        content
+      })
+  });

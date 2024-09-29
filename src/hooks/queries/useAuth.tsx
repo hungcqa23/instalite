@@ -7,8 +7,7 @@ export const useLoginMutation = () => {
   });
 };
 
-export const useSignUpMutation = () => {
-  return useMutation({
+export const useSignUpMutation = () =>
+  useMutation({
     mutationFn: authApiRequest.register
   });
-};

@@ -5,21 +5,18 @@ const privatePaths = ['/me', '/notification', '/search'];
 const authPaths = ['/login', '/register'];
 
 export async function middleware(request: NextRequest) {
-  const accessToken = request.cookies.get('accessToken')?.value;
-  const refreshToken = request.cookies.get('refreshToken')?.value;
-  // const { pathname } = req.nextUrl;
-  // console.log(pathname);
-  // const accessToken = req.cookies.get('access_token')?.value;
+  const accessToken = request.cookies.get('access_token')?.value;
+  console.log(accessToken);
+  const refreshToken = request.cookies.get('refresh_token')?.value;
 
-  // if (privatePaths.some(path => pathname.startsWith(path)) && !accessToken)
-  //   return NextResponse.redirect(new URL('/login', req.url));
+  const { pathname } = request.nextUrl;
+  console.log(pathname);
 
-  // if (
-  //   (authPaths.some(path => pathname.startsWith(path)) ||
-  //     pathname === 'undefined') &&
-  //   accessToken
-  // )
-  //   return NextResponse.redirect(new URL('/me', req.url));
+  if ((privatePaths.some(path => pathname.startsWith(path)) || pathname === '/') && !accessToken)
+    return NextResponse.redirect(new URL('/login', request.url));
+
+  if (authPaths.some(path => pathname.startsWith(path)) && accessToken)
+    return NextResponse.redirect(new URL('/', request.url));
 
   return NextResponse.next();
 }

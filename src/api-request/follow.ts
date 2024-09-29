@@ -10,7 +10,10 @@ const followApiRequest = {
   getAllFollowings: (username: string) =>
     http.get<{
       message: string;
-      data: User[];
+      data: {
+        followedUserId: User;
+        _id: string;
+      }[];
     }>(`/users/${username}/followings`),
   follow: (followedUserId: string) =>
     http.post<{

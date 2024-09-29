@@ -14,8 +14,11 @@ import {
   DialogTitle,
   DialogTrigger,
   ImagePreview,
-  Input
+  Input,
+  toast
 } from '@/components/ui';
+import CancelDialog from '@/components/ui/lite/cancel-dialog';
+import { useCreatePostMutation } from '@/hooks/queries/usePost';
 import { http } from '@/lib/http';
 import { cn } from '@/lib/utils';
 import { useUserStore } from '@/stores/user.stores';
@@ -40,14 +43,6 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoFileInputRef = useRef<HTMLInputElement>(null);
 
-  const createPostMutation = useMutation({
-    mutationFn: async (text: string) => {
-      return await http.post('/posts', {
-        content: text,
-        typePost: 0
-      });
-    }
-  });
   const accessToken = getCookie('access_key');
 
   const updatePostMutation = useMutation({
@@ -165,31 +160,43 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
     }
   };
 
+  const createPostMutation = useCreatePostMutation();
+
   const handleCreatePost = async (content: string) => {
-    if (content === null || content === '') content = ' ';
-    const res = await createPostMutation.mutateAsync(content);
-    // const postId = res.post._id;
-    // if (!postId) return;
-    // const formData = new FormData();
+    try {
+      if (content === null || content === '') content = ' ';
+      const res = await createPostMutation.mutateAsync(content);
+      const postId = res.data._id;
+      const formData = new FormData();
 
-    // if (videoFile) {
-    //   formData.append('media', videoFile);
-    //   await updateVideoMutation.mutateAsync({
-    //     postId,
-    //     formData
-    //   });
-    //   setText('');
-    //   return;
-    // } else if (imageFile) {
-    //   formData.append('media', imageFile);
+      if (videoFile) {
+        formData.append('media', videoFile);
+        await updateVideoMutation.mutateAsync({
+          postId,
+          formData
+        });
+      } else if (imageFile) {
+        formData.append('media', imageFile);
 
-    //   const updateImage = await updatePostMutation.mutateAsync({
-    //     postId,
-    //     formData
-    //   });
-    //   setText('');
-    //   return;
-    // } else window.location.reload();
+        await updatePostMutation.mutateAsync({
+          postId,
+          formData
+        });
+      }
+
+      setText('');
+      setIsOpen(false);
+      queryClient.invalidateQueries({
+        queryKey: ['posts']
+      });
+
+      toast({
+        title: 'Successfully',
+        description: 'Post created successfully'
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -307,34 +314,12 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
       </Dialog>
 
       {openCancelDialog && (
-        <Dialog open={openCancelDialog} onOpenChange={setOpenCancelDialog}>
-          <DialogContent className='select-none px-0 pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[20rem]'>
-            <DialogHeader>
-              <DialogTitle className='mb-0 flex justify-center text-sm font-bold'>
-                Close Lite?
-              </DialogTitle>
-              <DialogClose asChild>
-                <div className='absolute right-0 top-0 z-10 h-8 w-16 bg-white dark:bg-zinc-950'></div>
-              </DialogClose>
-            </DialogHeader>
-
-            <div className='flex flex-row border-t-2 dark:border-gray-600'>
-              <div
-                className='w-full cursor-pointer rounded-bl-3xl border-r-2 py-4 text-center dark:border-gray-600'
-                onClick={cancelClose}
-              >
-                Cancel
-              </div>
-
-              <div
-                className='w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
-                onClick={confirmClose}
-              >
-                Close
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <CancelDialog
+          cancelClose={cancelClose}
+          openCancelDialog={openCancelDialog}
+          confirmClose={confirmClose}
+          setOpenCancelDialog={setOpenCancelDialog}
+        />
       )}
     </>
   );

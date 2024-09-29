@@ -37,9 +37,7 @@ const CancelDialog = ({
   <Dialog open={openCancelDialog} onOpenChange={setOpenCancelDialog}>
     <DialogContent className='select-none px-0 pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[20rem]'>
       <DialogHeader>
-        <DialogTitle className='mb-0 flex justify-center text-sm font-bold'>
-          Close comment?
-        </DialogTitle>
+        <DialogTitle className='mb-0 flex justify-center text-sm font-bold'>Close ?</DialogTitle>
         <DialogClose asChild>
           <div className='absolute right-0 top-0 z-10 h-8 w-16 bg-white dark:bg-zinc-950' />
         </DialogClose>

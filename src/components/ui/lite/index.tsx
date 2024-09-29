@@ -8,8 +8,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -17,9 +15,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  Input,
-  Label
+  DropdownMenuTrigger
 } from '@/components/ui';
 import {
   EllipsisIcon,
@@ -158,6 +154,7 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
         isOpenSummarizeDialog: true
       });
   }, [summarizeLiteMutation.status]);
+
   const handleSummarization = async () => {
     try {
       const formData = new FormData();
@@ -231,7 +228,9 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <div className='ms-2.5 flex flex-col justify-end'>
-          <span className='text-[13px] font-semibold'>{lite?.userId?.username}</span>
+          <Link href={`/username/${lite?.userId?.username}`}>
+            <span className='text-[13px] font-semibold'>{lite?.userId?.username}</span>
+          </Link>
           <span className='text-xs font-normal text-gray-500'>
             {calculateTimeAgo(lite?.createdAt)}
           </span>
@@ -248,9 +247,9 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
       <div className='mt-3 flex flex-row justify-between'>
         <div className='ms-0.5 flex flex-row gap-3'>
           <ButtonLike liteId={lite._id} />
-          <Link href={`/posts/${lite._id}`}>
+          {/* <Link href={`/posts/${lite._id}`}>
             <MessageCircle className='size-5 cursor-pointer' />
-          </Link>
+          </Link> */}
           <ButtonSend />
         </div>
 

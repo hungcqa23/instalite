@@ -51,7 +51,7 @@ export default function Profile({
             <span className='font-normal'>{user?.postsCount}</span> posts
           </p>
         </Button>
-
+        {/* Followers */}
         <Dialog>
           <DialogTrigger asChild>
             <Button variant={'link'} className='p-0 hover:no-underline'>
@@ -78,6 +78,7 @@ export default function Profile({
           </DialogContent>
         </Dialog>
 
+        {/* Following */}
         <Dialog>
           <DialogTrigger asChild>
             <Button variant={'link'} className='p-0 hover:no-underline'>
@@ -95,9 +96,11 @@ export default function Profile({
             <div className='h-[30rem] max-h-[30rem]'>
               {following &&
                 following.length > 0 &&
-                List<User>({
+                List({
                   listItems: following,
-                  mapFn: user => <FollowUserItem key={user._id} user={user} />,
+                  mapFn: followingUser => (
+                    <FollowUserItem key={followingUser._id} user={followingUser.followedUserId} />
+                  ),
                   as: 'ul'
                 })}
             </div>

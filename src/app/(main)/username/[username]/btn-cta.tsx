@@ -67,7 +67,20 @@ export default function BtnCta({ user, isFollowing }: { user: User; isFollowing:
   const handleUploadAvatarClick = () => {
     if (avatarInputRef.current) avatarInputRef.current.click();
   };
+  const handleUploadAvatar = async (file: File) => {
+    try {
+      const formData = new FormData();
+      formData.append('avatar', file);
+      const { data } = await uploadAvatarMutation.mutateAsync(formData);
 
+      setAvatar(undefined);
+      setFile(null);
+      setUser(data);
+      queryClient.invalidateQueries({
+        queryKey: ['posts']
+      });
+    } catch (error: any) {}
+  };
   const handleUploadInformation = async (data: {
     fullName?: string;
     username?: string;
@@ -84,21 +97,6 @@ export default function BtnCta({ user, isFollowing }: { user: User; isFollowing:
         description: 'Something went wrong'
       });
     }
-  };
-
-  const handleUploadAvatar = async (file: File) => {
-    try {
-      const formData = new FormData();
-      formData.append('avatar', file);
-      const { data } = await uploadAvatarMutation.mutateAsync(formData);
-
-      setAvatar(undefined);
-      setFile(null);
-      setUser(data);
-      queryClient.invalidateQueries({
-        queryKey: ['posts']
-      });
-    } catch (error: any) {}
   };
 
   const updateUserMutation = useUpdateUserMutation();
