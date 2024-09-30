@@ -1,6 +1,6 @@
 import { bookmarkApiRequest } from '@/api-request/bookmark';
 import { http } from '@/lib/http';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useGetBookmarkByPostIdQuery = (postId: string) =>
   useQuery({
@@ -12,12 +12,30 @@ export const useGetBookmarkByPostIdQuery = (postId: string) =>
       }>(`/bookmarks/${postId}/check`)
   });
 
-export const useBookmarkMutation = () =>
-  useMutation({
-    mutationFn: (postId: string) => bookmarkApiRequest.bookmark(postId)
-  });
+export const useBookmarkMutation = () => {
+  const queryClient = useQueryClient();
 
-export const useUnBookmarkMutation = () =>
-  useMutation({
-    mutationFn: (postId: string) => bookmarkApiRequest.unBookmark(postId)
+  return useMutation({
+    mutationFn: (postId: string) => bookmarkApiRequest.bookmark(postId),
+    onSuccess: () => {
+      // TODO: refresh bookmarks
+      queryClient.invalidateQueries({
+        queryKey: ['saved']
+      });
+    }
   });
+};
+
+export const useUnBookmarkMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (postId: string) => bookmarkApiRequest.unBookmark(postId),
+    onSuccess: () => {
+      // TODO: refresh bookmarks
+      queryClient.invalidateQueries({
+        queryKey: ['saved']
+      });
+    }
+  });
+};

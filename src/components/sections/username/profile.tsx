@@ -12,6 +12,7 @@ import {
   List
 } from '@/components/ui';
 import { useGetAllFollowersQuery, useGetAllFollowingsQuery } from '@/hooks/queries/useFollow';
+import { useUserStore } from '@/stores/user.stores';
 import { User } from '@/types/schema-validations/account.schema';
 import React from 'react';
 
@@ -22,6 +23,8 @@ export default function Profile({ user, username }: { username: string; user?: U
   const { data: followingData } = useGetAllFollowingsQuery(username);
   const following = followingData?.data;
 
+  const { user: currentUser } = useUserStore();
+
   return (
     <div className='flex flex-col'>
       <div className='flex h-20 justify-between'>
@@ -30,7 +33,7 @@ export default function Profile({ user, username }: { username: string; user?: U
           <p className='text-lg font-semibold'>{user?.username}</p>
         </div>
 
-        <AvatarUser src={user?.avatar} className='static size-20' />
+        <AvatarUser src={currentUser?.avatar} className='static size-20' />
       </div>
 
       <div className='mt-4 flex justify-between text-sm'>

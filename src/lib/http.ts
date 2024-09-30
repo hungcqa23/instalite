@@ -67,9 +67,17 @@ const request = async <Response>(
   } = await response.json();
 
   if (!response.ok) {
-    if (result.message) {
-      throw Error(JSON.stringify(result?.message));
+    if (response.status === 401 && isClient) {
+      const res = await fetch(`${baseUrl}/auth/refresh-token`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+
+      if (res.status === 201) window.location.reload();
+      else window.location.href = '/login';
     }
+
+    // throw Error(JSON.stringify(result?.message));
   }
 
   return result;

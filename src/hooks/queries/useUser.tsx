@@ -1,5 +1,5 @@
 import { accountApiRequest } from '@/api-request/account';
-import { useMutation } from '@tanstack/react-query';
+import { QueryClient, useMutation } from '@tanstack/react-query';
 
 export const useUpdateUserMutation = () => {
   return useMutation({
@@ -8,7 +8,10 @@ export const useUpdateUserMutation = () => {
 };
 
 export const useUploadAvatarMutation = () => {
+  const queryClient = new QueryClient();
+
   return useMutation({
-    mutationFn: accountApiRequest.uploadAvatar
+    mutationFn: accountApiRequest.uploadAvatar,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['user'] })
   });
 };

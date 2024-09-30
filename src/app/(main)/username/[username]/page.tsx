@@ -1,5 +1,6 @@
 import BtnCta from '@/app/(main)/username/[username]/btn-cta';
 import Profile from '@/components/sections/username/profile';
+import Tab from '@/components/sections/username/tab';
 import { http } from '@/lib/http';
 import { User } from '@/types/schema-validations/account.schema';
 import { cookies } from 'next/headers';
@@ -34,7 +35,7 @@ export default async function MeProfile({ params }: { params: { username: string
         <Profile user={user} username={params.username} />
         <BtnCta user={user} />
 
-        {/* <Tab user={user} /> */}
+        <Tab user={user} />
       </div>
     </>
   );
