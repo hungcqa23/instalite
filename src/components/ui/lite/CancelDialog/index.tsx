@@ -1,4 +1,5 @@
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from '@/components/ui';
+import { Description } from '@radix-ui/react-toast';
 
 const CancelDialogActions = ({
   cancelClose,
@@ -36,6 +37,7 @@ const CancelDialog = ({
 }) => (
   <Dialog open={openCancelDialog} onOpenChange={setOpenCancelDialog}>
     <DialogContent className='select-none px-0 pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[20rem]'>
+      <Description />
       <DialogHeader>
         <DialogTitle className='text-md mb-0 flex justify-center font-semibold'>
           Do you want to cancel?

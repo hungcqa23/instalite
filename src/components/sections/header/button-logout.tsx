@@ -1,5 +1,3 @@
-'use client';
-
 import { authApiRequest } from '@/api-request/auth';
 import { DropdownMenuItem } from '@/components/ui';
 import { LogOut } from '@/components/ui/icons';

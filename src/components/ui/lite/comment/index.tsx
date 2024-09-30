@@ -1,9 +1,7 @@
 'use client';
 
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
+  AvatarUser,
   Button,
   DropdownMenu,
   DropdownMenuContent,
@@ -82,10 +80,12 @@ export default function CommentItem({ comment }: { comment: Post }) {
     <>
       <div className='my-3 w-full border-b-[1px] border-gray-200 p-0'>
         <div className='mb-2 flex flex-row'>
-          <Avatar className='z-[-1] mt-0.5 h-8 w-8'>
-            <AvatarImage src={comment?.userId?.avatar} alt='@shadcn' />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          <AvatarUser
+            className='z-[-1] mt-0.5 size-8'
+            src={comment?.userId?.avatar}
+            alt={comment?.userId?.username}
+            fallback='IU'
+          />
 
           <div className='ms-2.5 flex w-full flex-col justify-start'>
             <div className='flex flex-row items-center justify-between'>
@@ -99,7 +99,7 @@ export default function CommentItem({ comment }: { comment: Post }) {
               {isCurrentUser && (
                 <DropdownMenu modal={false}>
                   <DropdownMenuTrigger asChild>
-                    <Button variant={'link'} className='me-1 h-5 w-5 px-0'>
+                    <Button variant={'link'} className='me-1 size-5 px-0'>
                       <EllipsisIcon />
                     </Button>
                   </DropdownMenuTrigger>
@@ -111,7 +111,7 @@ export default function CommentItem({ comment }: { comment: Post }) {
                       className='cursor-pointer gap-2 rounded-md font-medium'
                       onClick={() => setOpenDeleteDialog(true)}
                     >
-                      <Trash className='mb-0 h-4 w-4' />
+                      <Trash className='mb-0 size-4' />
                       <span>Delete</span>
                     </DropdownMenuItem>
                     {/* <DropdownMenuSeparator /> */}
@@ -119,7 +119,7 @@ export default function CommentItem({ comment }: { comment: Post }) {
                       className='cursor-pointer gap-2 rounded-md font-medium'
                       onClick={() => setIsEditing(true)}
                     >
-                      <Pencil className='mb-0 h-4 w-4' />
+                      <Pencil className='mb-0 size-4' />
                       <span className=''>Edit</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>

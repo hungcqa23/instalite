@@ -1,9 +1,7 @@
 'use client';
 
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
+  AvatarUser,
   Button,
   Dialog,
   DialogClose,
@@ -15,7 +13,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
+  toast
 } from '@/components/ui';
 import {
   EllipsisIcon,
@@ -40,6 +39,7 @@ import { isVideo } from '@/lib/check';
 import { calculateTimeAgo } from '@/lib/helper';
 import { useUserStore } from '@/stores/user.stores';
 import { Post } from '@/types/schema-validations/post.schema';
+import { Description } from '@radix-ui/react-dialog';
 import { useQueryClient } from '@tanstack/react-query';
 import '@vidstack/react/player/styles/default/layouts/audio.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
@@ -164,8 +164,10 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
         });
         formData.append('media', response.data);
       }
+
       formData.append('content', lite?.content);
       const res = await summarizeLiteMutation.mutateAsync(formData);
+
       if (res.content)
         setContentSummarization({
           content: res.content,
@@ -223,10 +225,11 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
   const HeaderSection = ({ lite, isCurrentUser }: { lite: Post; isCurrentUser: boolean }) => (
     <div className='mb-2 flex flex-row items-center justify-between'>
       <div className='flex flex-row items-end'>
-        <Avatar className='z-[-1] h-9 w-9'>
-          <AvatarImage src={lite?.userId?.avatar} alt={lite?.userId?.username} />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+        <AvatarUser
+          className='z-[-1] size-9'
+          src={lite?.userId?.avatar}
+          alt={lite?.userId?.username}
+        />
         <div className='ms-2.5 flex flex-col justify-end'>
           <Link href={`/username/${lite?.userId?.username}`}>
             <span className='text-[13px] font-semibold'>{lite?.userId?.username}</span>
@@ -236,6 +239,7 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
           </span>
         </div>
       </div>
+
       <ActionMenu lite={lite} isCurrentUser={isCurrentUser} />
     </div>
   );
@@ -316,11 +320,16 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
     //   });
     //   return;
     // }
+
+    toast({
+      title: 'Replied',
+      description: 'Your reply has been posted'
+    });
     setIsOpenCommentDialog(false);
-    resetDialog();
     queryClient.invalidateQueries({
       queryKey: ['comments', lite?._id]
     });
+    resetDialog();
   };
 
   const CommentDialog = ({ lite }: { lite: Post }) => (
@@ -331,6 +340,7 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
 
       <DialogContent className='select-none dark:bg-zinc-950 sm:max-w-[34rem]'>
         <DialogHeader>
+          <Description />
           <DialogTitle className='flex justify-center text-sm font-bold'>
             Reply to {lite?.userId?.username}
           </DialogTitle>

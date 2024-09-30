@@ -7,7 +7,6 @@ export async function POST(request: Request) {
   const body = (await request.json()) as LoginBodyType;
   try {
     const res = await authApiRequest.serverLogin(body);
-    console.log(cookieStorage.getAll());
 
     return Response.json(
       {

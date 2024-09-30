@@ -31,7 +31,6 @@ export default function ForgotPassword() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
-    console.log('Hello World!');
   }
 
   return (
@@ -39,8 +38,7 @@ export default function ForgotPassword() {
       <form onSubmit={form.handleSubmit(onSubmit)} className='h-full w-full'>
         <p className='h-8 text-center text-xl font-semibold'>Forgot Password</p>
         <p className='py-2 pb-4'>
-          Please enter the email address you&apos;d like your password reset
-          information sent to{' '}
+          Please enter the email address you&apos;d like your password reset information sent to{' '}
         </p>
         <FormField
           control={form.control}

@@ -63,7 +63,7 @@ const request = async <Response>(
   if (method === 'POST' && response.status === 204) return response as Response;
 
   const result: Response & {
-    message?: string;
+    message: string;
   } = await response.json();
 
   if (!response.ok) {

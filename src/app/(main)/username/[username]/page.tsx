@@ -1,4 +1,4 @@
-import BtnCta from '@/app/(main)/username/[username]/btn-cta';
+import BtnCta from '@/components/sections/username/btn-cta';
 import Profile from '@/components/sections/username/profile';
 import Tab from '@/components/sections/username/tab';
 import { http } from '@/lib/http';

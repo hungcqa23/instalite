@@ -5,12 +5,14 @@ const AvatarUser = ({
   src,
   className,
   classNameImage,
-  fallback = 'IU'
+  fallback = 'IU',
+  alt = 'User avatar'
 }: {
   src?: string;
   className?: string;
   classNameImage?: string;
   fallback?: string;
+  alt?: string;
 }) => {
   return (
     <Avatar className={cn('size-8 cursor-pointer', className)}>

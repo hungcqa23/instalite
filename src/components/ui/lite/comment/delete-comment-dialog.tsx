@@ -1,8 +1,8 @@
 'use client';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { getCookie } from 'cookies-next';
-import { useRouter } from 'next/navigation';
+import { toast } from '@/components/ui/toast';
+import { useDeletePostMutation } from '@/hooks/queries/usePost';
+import { useQueryClient } from '@tanstack/react-query';
 import { Dispatch, SetStateAction } from 'react';
 
 interface DeleteCommentDialogProps {
@@ -14,27 +14,24 @@ const DeleteCommentDialog: React.FC<DeleteCommentDialogProps> = ({
   setOpenDeleteDialog,
   commentId
 }: DeleteCommentDialogProps) => {
-  const accessToken = getCookie('access_key');
-  const router = useRouter();
   const queryClient = useQueryClient();
 
-  const deleteCommentMutation = useMutation({
-    mutationFn: async (commentId: string) => {
-      const res = await fetch(`http://localhost:8000/posts/${commentId}`, {
-        method: 'DELETE',
-        headers: {
-          Cookie: `access_token=${accessToken}`
-        },
-        credentials: 'include'
-      });
-    }
-  });
+  const deleteCommentMutation = useDeletePostMutation();
 
   const handleDeleteComment = async () => {
-    await deleteCommentMutation.mutateAsync(commentId);
-    queryClient.invalidateQueries({
-      queryKey: ['comments']
-    });
+    try {
+      await deleteCommentMutation.mutateAsync(commentId);
+    } catch (err) {
+      // console.log(err);
+    } finally {
+      toast({
+        title: 'Deleted',
+        description: 'Your comment has been deleted'
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['comments']
+      });
+    }
   };
 
   return (

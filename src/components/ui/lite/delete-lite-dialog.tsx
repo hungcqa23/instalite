@@ -3,8 +3,6 @@
 import { toast } from '@/components/ui/toast';
 import { useDeletePostMutation } from '@/hooks/queries/usePost';
 import { useQueryClient } from '@tanstack/react-query';
-import { getCookie } from 'cookies-next';
-import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 
 interface DeletePostDialogProps {
@@ -16,7 +14,6 @@ const DeleteLiteDialog: React.FC<DeletePostDialogProps> = ({
   setOpenDeleteDialog,
   liteId
 }: DeletePostDialogProps) => {
-  const router = useRouter();
   const queryClient = useQueryClient();
 
   const deleteLiteMutation = useDeletePostMutation();

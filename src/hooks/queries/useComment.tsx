@@ -1,10 +1,10 @@
 import commentApiRequest from '@/api-request/comment';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-export const useCommentQuery = () =>
+export const useGetAllCommentByPostIdQuery = (postId: string) =>
   useQuery({
-    queryKey: ['comments'],
-    queryFn: commentApiRequest.getAll
+    queryKey: ['comments', postId],
+    queryFn: () => commentApiRequest.getCommentsByPostId(postId)
   });
 
 // export const useUpdateCommentMutation = () =>

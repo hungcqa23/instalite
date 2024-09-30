@@ -7,12 +7,11 @@ import { Post } from '@/types/schema-validations/post.schema';
 
 const ListPost = () => {
   const { data, isLoading } = useGetAllPostsQuery();
-  const posts = data?.data;
+  const posts = data?.data || [];
 
   return (
     <div className='-ms-10 h-full w-full'>
-      {posts &&
-        posts.length > 0 &&
+      {posts.length > 0 &&
         List<Post>({
           listItems: posts,
           mapFn: (post: Post) => (

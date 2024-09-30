@@ -4,7 +4,7 @@ import { Post } from '@/types/schema-validations/post.schema';
 import { cookies } from 'next/headers';
 
 export const metadata = {
-  title: 'Detail post'
+  title: 'Detailed post'
 };
 
 export default async function DetailPostPage(param: { params: { postId: string } }) {

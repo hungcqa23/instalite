@@ -1,7 +1,6 @@
 'use client';
 
 import { CreateLiteDialog } from '@/components/sections/home/CreatedLiteDialog';
-import { ButtonLogout } from '@/components/sections/home/button-logout';
 import {
   Button,
   DropdownMenu,
@@ -25,6 +24,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+
+import { ButtonLogout } from './button-logout';
 
 export default function Header() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -129,8 +130,8 @@ export default function Header() {
             className={`${cn(
               'duration-400 flex h-16 w-24 items-center justify-center rounded-lg bg-white transition-colors hover:bg-gray-200 hover:text-black dark:bg-zinc-950 dark:hover:bg-gray-700/40 dark:hover:text-white',
               {
-                'text-black dark:text-zinc-50': activeTab === 'me',
-                'text-zinc-400 dark:text-zinc-700': activeTab !== 'me'
+                'text-black dark:text-zinc-50': pathname === `/username/${user?.username}`,
+                'text-zinc-400 dark:text-zinc-700': pathname !== `/username/${user?.username}`
               }
             )}`}
           >
@@ -180,11 +181,11 @@ export default function Header() {
           </DropdownMenuSub>
           <DropdownMenuSeparator />
 
-          <Link href='/me/saved'>
+          {/* <Link href={`/username/${user?.username}/saved`}>
             <DropdownMenuItem className='flex h-6 w-56 gap-2 rounded-md py-4 pl-3 text-base font-medium'>
               <Bookmark size={22} /> Saved
             </DropdownMenuItem>
-          </Link>
+          </Link> */}
 
           <DropdownMenuSeparator />
           <ButtonLogout />
