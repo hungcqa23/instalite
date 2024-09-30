@@ -1,9 +1,7 @@
 'use client';
 
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
+  AvatarUser,
   Button,
   Dialog,
   DialogContent,
@@ -32,10 +30,7 @@ export default function Profile({ user, username }: { username: string; user?: U
           <p className='text-lg font-semibold'>{user?.username}</p>
         </div>
 
-        <Avatar className='static size-20'>
-          <AvatarImage src={user?.avatar} alt='@shadcn' className='size-full' />
-          <AvatarFallback>IU</AvatarFallback>
-        </Avatar>
+        <AvatarUser src={user?.avatar} className='static size-20' />
       </div>
 
       <div className='mt-4 flex justify-between text-sm'>

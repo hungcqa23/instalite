@@ -25,8 +25,8 @@ export async function POST(request: Request) {
           : ''
       }
     });
-    const { postId }: { postId: string } = res;
-    console.log(postId);
+    // const { postId }: { postId: string } = res;
+    // console.log(postId);
 
     return NextResponse.json({ message: 'Create post successfully' });
   } catch (error: any) {

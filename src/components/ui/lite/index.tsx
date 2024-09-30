@@ -25,7 +25,7 @@ import {
   TrashIcon,
   XIcon
 } from '@/components/ui/icons';
-import CancelDialog from '@/components/ui/lite/cancel-dialog';
+import CancelDialog from '@/components/ui/lite/CancelDialog';
 import CommentForm from '@/components/ui/lite/comment/comment-form';
 import ListComment from '@/components/ui/lite/comment/list-comment';
 import MediaSection from '@/components/ui/lite/media-section';

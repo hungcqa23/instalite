@@ -1,5 +1,5 @@
 import BtnCta from '@/app/(main)/username/[username]/btn-cta';
-import Profile from '@/app/(main)/username/[username]/profile';
+import Profile from '@/components/sections/username/profile';
 import { http } from '@/lib/http';
 import { User } from '@/types/schema-validations/account.schema';
 import { cookies } from 'next/headers';
@@ -16,7 +16,6 @@ export default async function MeProfile({ params }: { params: { username: string
   const data = await http.get<{
     data: {
       user: User;
-      isFollowing: boolean;
     };
   }>(`/users/${params.username}`, {
     headers: {
@@ -28,12 +27,12 @@ export default async function MeProfile({ params }: { params: { username: string
     cache: 'no-store'
   });
 
-  const { user, isFollowing } = data.data;
+  const { user } = data.data;
   return (
     <>
       <div className='mt-4 w-full max-w-[34.9375rem] items-start justify-center'>
-        <Profile user={user} isFollowing={isFollowing} username={params.username} />
-        <BtnCta user={user} isFollowing={isFollowing} />
+        <Profile user={user} username={params.username} />
+        <BtnCta user={user} />
 
         {/* <Tab user={user} /> */}
       </div>

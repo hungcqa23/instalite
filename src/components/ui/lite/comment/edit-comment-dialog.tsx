@@ -12,7 +12,7 @@ import {
   DialogTitle,
   toast
 } from '@/components/ui';
-import CancelDialog from '@/components/ui/lite/cancel-dialog';
+import CancelDialog from '@/components/ui/lite/CancelDialog';
 import { useUpdateCommentMutation } from '@/hooks/queries/usePost';
 import { useUserStore } from '@/stores/user.stores';
 import { Post } from '@/types/schema-validations/post.schema';

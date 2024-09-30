@@ -4,12 +4,12 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useGetBookmarkByPostIdQuery = (postId: string) =>
   useQuery({
-    queryKey: ['likes', postId],
+    queryKey: ['bookmarks', postId],
     queryFn: () =>
       http.get<{
         message: string;
-        result: boolean;
-      }>(`/likes/${postId}`)
+        data: boolean;
+      }>(`/bookmarks/${postId}/check`)
   });
 
 export const useBookmarkMutation = () =>

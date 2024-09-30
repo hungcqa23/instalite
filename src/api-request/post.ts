@@ -25,7 +25,8 @@ const postApiRequest = {
       message: string;
       data: Post;
     }>('/posts', {
-      content
+      content,
+      typePost: 0
     })
 };
 export { postApiRequest };

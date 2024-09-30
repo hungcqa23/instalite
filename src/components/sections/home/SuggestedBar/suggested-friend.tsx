@@ -33,7 +33,7 @@ export default function SuggestedFriend({ user }: Props) {
         </Avatar>
       </div>
       <div className='flex flex-col'>
-        <Link href='/' className='text-sm font-semibold'>
+        <Link href={`/username/${user.username}`} className='text-sm font-semibold'>
           {user.username}
         </Link>
         <p className='text-xs text-gray-400'>Recommend to you</p>

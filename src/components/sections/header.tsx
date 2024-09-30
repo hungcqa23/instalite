@@ -1,7 +1,7 @@
 'use client';
 
+import { CreateLiteDialog } from '@/components/sections/home/CreatedLiteDialog';
 import { ButtonLogout } from '@/components/sections/home/button-logout';
-import { CreateLiteDialog } from '@/components/sections/home/create-lite-dialog';
 import {
   Button,
   DropdownMenu,

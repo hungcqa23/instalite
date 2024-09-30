@@ -1,15 +1,17 @@
 'use client';
 
+import BtnClose from '@/components/sections/home/CreatedLiteDialog/btn-close';
+import BtnCreatePost from '@/components/sections/home/CreatedLiteDialog/btn-create-lite';
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
+  AvatarUser,
   Button,
   Carousel,
   CarouselContent,
   CarouselItem,
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -17,73 +19,37 @@ import {
   Input,
   toast
 } from '@/components/ui';
-import CancelDialog from '@/components/ui/lite/cancel-dialog';
-import { useCreatePostMutation } from '@/hooks/queries/usePost';
-import { http } from '@/lib/http';
+import CancelDialog from '@/components/ui/lite/CancelDialog';
+import {
+  useCreatePostMutation,
+  useUpdatePostMutation,
+  useUpdateVideoMutation
+} from '@/hooks/queries/usePost';
 import { cn } from '@/lib/utils';
 import { useUserStore } from '@/stores/user.stores';
-import { DialogClose } from '@radix-ui/react-dialog';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { getCookie } from 'cookies-next';
+import { useQueryClient } from '@tanstack/react-query';
 import { Clapperboard, ImageIcon, X } from 'lucide-react';
 import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 
 const CreateLiteDialog = ({ children, className }: { children: ReactNode; className?: string }) => {
   const queryClient = useQueryClient();
   const { user } = useUserStore();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [text, setText] = useState('');
   const [images, setImages] = useState<string[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoFileInputRef = useRef<HTMLInputElement>(null);
 
-  const accessToken = getCookie('access_key');
-
-  const updatePostMutation = useMutation({
-    mutationFn: async ({ postId, formData }: { postId: string; formData: FormData }) => {
-      const res = await fetch(`http://localhost:8000/posts/${postId}`, {
-        method: 'PUT',
-        body: formData,
-        credentials: 'include'
-      });
-      return await res.json();
-    },
-
-    onSuccess: () => {
-      setIsOpen(false);
-      queryClient.invalidateQueries({
-        queryKey: ['posts']
-      });
-      window.location.reload();
-    }
-  });
-
-  const updateVideoMutation = useMutation({
-    mutationFn: async ({ postId, formData }: { postId: string; formData: FormData }) => {
-      const res = await fetch(`http://localhost:8000/posts/${postId}/upload-hls`, {
-        method: 'PUT',
-        body: formData,
-        headers: {
-          Cookie: `access_token=${accessToken}`
-        },
-        credentials: 'include'
-      });
-      return await res.json();
-    },
-    onSuccess: () => {
-      setIsOpen(false);
-      queryClient.invalidateQueries({
-        queryKey: ['posts']
-      });
-      // window.location.reload();
-    }
-  });
+  const createPostMutation = useCreatePostMutation();
+  const updatePostMutation = useUpdatePostMutation();
+  const updateVideoMutation = useUpdateVideoMutation();
 
   const resetDialog = useCallback(() => {
     setText('');
@@ -102,13 +68,13 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
 
   const confirmClose = () => {
     setOpenCancelDialog(false);
-    setIsOpen(false);
+    setIsOpenDialog(false);
     resetDialog();
   };
 
   const cancelClose = () => {
     setOpenCancelDialog(false);
-    setIsOpen(true);
+    setIsOpenDialog(true);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -152,20 +118,24 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
   };
 
   const handleDialogChange = (open: boolean) => {
-    if (!open && (text || images.length > 0 || videoUrl)) {
-      setOpenCancelDialog(true);
-    } else {
-      setIsOpen(open);
+    if (!open && (text || images.length > 0 || videoUrl)) setOpenCancelDialog(true);
+    else {
+      setIsOpenDialog(open);
       if (!open) resetDialog();
     }
   };
 
-  const createPostMutation = useCreatePostMutation();
+  useEffect(() => {
+    if (updatePostMutation.status === 'pending' || updateVideoMutation.status === 'pending')
+      setIsSubmitting(true);
+    else setIsSubmitting(false);
+  }, [updatePostMutation.status, updateVideoMutation.status]);
 
   const handleCreatePost = async (content: string) => {
     try {
       if (content === null || content === '') content = ' ';
       const res = await createPostMutation.mutateAsync(content);
+
       const postId = res.data._id;
       const formData = new FormData();
 
@@ -184,46 +154,48 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
         });
       }
 
-      setText('');
-      setIsOpen(false);
-      queryClient.invalidateQueries({
-        queryKey: ['posts']
-      });
+      // setText('');
+      // setIsOpenDialog(false);
+      // queryClient.invalidateQueries({
+      //   queryKey: ['posts']
+      // });
 
       toast({
         title: 'Successfully',
         description: 'Post created successfully'
       });
     } catch (error) {
-      console.log(error);
+      toast({
+        title: 'Error',
+        description: 'Something went wrong'
+      });
     }
   };
 
+  const isDisabledButton =
+    isSubmitting || (text.length == 0 && imageFile == null && videoFile == null);
+  const isDisplayButtonsMedia = images.length == 0 && videoUrl == null;
+
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={handleDialogChange}>
+      <Dialog open={isOpenDialog} onOpenChange={handleDialogChange}>
         <DialogTrigger className={cn(className)}>{children}</DialogTrigger>
         <DialogContent className='select-none dark:bg-zinc-950 sm:max-w-[34rem]'>
           <DialogHeader>
+            <DialogDescription />
             <DialogTitle className='flex justify-center text-sm font-bold'>New Lite</DialogTitle>
+
             <DialogClose asChild>
-              <Button
-                className='absolute right-0 top-0 z-10 hover:bg-transparent dark:hover:bg-transparent'
-                variant='ghost'
-                onClick={() => handleDialogChange(false)}
-              >
-                <X size={16} />
-              </Button>
+              <BtnClose onClick={() => handleDialogChange(false)} />
             </DialogClose>
           </DialogHeader>
+
           <div className='flex flex-col overflow-hidden'>
             <div className='flex flex-row'>
-              <Avatar className='h-8 w-8 cursor-pointer'>
-                <AvatarImage src={user?.avatar} alt='@shadcn' />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
+              <AvatarUser src={user?.avatar} />
               <div className='ms-2.5 flex max-w-full flex-col'>
                 <div className='text-sm font-semibold'>{user?.username}</div>
+
                 <textarea
                   ref={textareaRef}
                   placeholder='Write something...'
@@ -234,7 +206,7 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
                   onChange={handleChange}
                 />
 
-                {images.length == 0 && videoUrl == null && (
+                {isDisplayButtonsMedia && (
                   <div className='flex flex-row gap-2'>
                     <Button
                       className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
@@ -252,21 +224,7 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
                     </Button>
                   </div>
                 )}
-                <Input
-                  type='file'
-                  ref={fileInputRef}
-                  multiple={true}
-                  accept='image/*'
-                  className='hidden'
-                  onChange={handleFileChange}
-                />
-                <Input
-                  type='file'
-                  ref={videoFileInputRef}
-                  accept='video/*'
-                  className='hidden'
-                  onChange={handleVideoChange}
-                />
+
                 {images.length > 0 && (
                   <Carousel
                     opts={{
@@ -283,31 +241,42 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
                     </CarouselContent>
                   </Carousel>
                 )}
+
                 {videoUrl && (
                   <div className='relative my-3 max-h-[20rem] w-fit'>
                     <video controls className='h-auto max-h-[20rem] w-auto rounded' autoPlay>
                       <source src={videoUrl} type='video/mp4' />
                       Your browser does not support the video tag.
                     </video>
-                    <Button
-                      className='absolute right-2 top-2 rounded-full bg-opacity-75'
-                      variant='ghost'
+                    <BtnClose
+                      className='absolute right-2 top-2 size-8 rounded-full bg-opacity-75 p-0 hover:bg-white'
                       onClick={handleDeleteVideo}
-                    >
-                      <X size={16} />
-                    </Button>
+                    />
                   </div>
                 )}
+
+                <>
+                  <Input
+                    type='file'
+                    ref={fileInputRef}
+                    multiple={true}
+                    accept='image/*'
+                    className='hidden'
+                    onChange={handleFileChange}
+                  />
+                  <Input
+                    type='file'
+                    ref={videoFileInputRef}
+                    accept='video/*'
+                    className='hidden'
+                    onChange={handleVideoChange}
+                  />
+                </>
               </div>
             </div>
+
             <div className='mt-2 flex flex-row items-end justify-end'>
-              <Button
-                className='rounded-3xl'
-                disabled={text.length != 0 || imageFile || videoFile ? false : true}
-                onClick={() => handleCreatePost(text)}
-              >
-                Post
-              </Button>
+              <BtnCreatePost onClick={() => handleCreatePost(text)} disabled={isDisabledButton} />
             </div>
           </div>
         </DialogContent>

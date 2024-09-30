@@ -123,7 +123,7 @@ export default function BtnCta({ user }: { user: User }) {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'Something went wrong'
+        description: 'Upload user failed'
       });
     }
   };

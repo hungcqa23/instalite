@@ -35,36 +35,19 @@ export const useSummarizeLiteMutation = () =>
 
 export const useUpdateVideoMutation = () =>
   useMutation({
-    mutationFn: async ({
-      commentPostId,
-      formData
-    }: {
-      commentPostId: string;
-      formData: FormData;
-    }) => {
-      const res = await fetch(`http://localhost:8000/posts/${commentPostId}/upload-hls`, {
-        method: 'PUT',
-        body: formData
-      });
-      return await res.json();
-    }
+    mutationFn: async ({ postId, formData }: { postId: string; formData: FormData }) =>
+      http.put(`/posts/${postId}/upload-hls`, formData)
+    // const res = await fetch(`http://localhost:8000/posts/${postId}/upload-hls`, {
+    //   method: 'PUT',
+    //   body: formData
+    // });
+    // return await res.json();
   });
 
 export const useUpdatePostMutation = () =>
   useMutation({
-    mutationFn: async ({
-      commentPostId,
-      formData
-    }: {
-      commentPostId: string;
-      formData: FormData;
-    }) => {
-      const res = await fetch(`http://localhost:8000/posts/${commentPostId}`, {
-        method: 'PUT',
-        body: formData
-      });
-      return await res.json();
-    }
+    mutationFn: async ({ postId, formData }: { postId: string; formData: FormData }) =>
+      http.put(`/posts/${postId}`, formData)
   });
 
 export const useUpdateCommentMutation = () =>

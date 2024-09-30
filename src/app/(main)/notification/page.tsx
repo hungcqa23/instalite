@@ -8,16 +8,17 @@ export const metadata = {
 };
 
 export default async function NotificationPage() {
-  const { result: notifications } = (await notificationRequest.getList()) as NotificationResType;
+  // const { result: notifications } = (await notificationRequest.getList()) as NotificationResType;
+
   return (
     <div className='h-fit w-[32rem] items-start justify-center'>
-      {List<Notification>({
+      {/* {List<Notification>({
         listItems: notifications,
         mapFn: notification => (
           <NotificationItem key={notification._id} notification={notification} />
         ),
         as: 'ul'
-      })}
+      })} */}
     </div>
   );
 }
