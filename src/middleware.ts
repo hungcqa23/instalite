@@ -6,16 +6,15 @@ const authPaths = ['/login', '/register'];
 
 export async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get('access_token')?.value;
-  console.log(accessToken);
+
   const refreshToken = request.cookies.get('refresh_token')?.value;
-
+  const hasAccessToken = accessToken && accessToken !== 'j:null';
   const { pathname } = request.nextUrl;
-  console.log(pathname);
 
-  if ((privatePaths.some(path => pathname.startsWith(path)) || pathname === '/') && !accessToken)
+  if ((privatePaths.some(path => pathname.startsWith(path)) || pathname === '/') && !hasAccessToken)
     return NextResponse.redirect(new URL('/login', request.url));
 
-  if (authPaths.some(path => pathname.startsWith(path)) && accessToken)
+  if (authPaths.some(path => pathname.startsWith(path)) && hasAccessToken)
     return NextResponse.redirect(new URL('/', request.url));
 
   return NextResponse.next();

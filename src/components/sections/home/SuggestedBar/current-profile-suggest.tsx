@@ -3,7 +3,7 @@
 import { UserAvatar } from '@/components/sections/home/user-avatar';
 import { useUserStore } from '@/stores/user.stores';
 import Link from 'next/link';
-import React, { use } from 'react';
+import React from 'react';
 
 export default function CurrentProfileSuggest() {
   const { user } = useUserStore();

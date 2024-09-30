@@ -16,7 +16,7 @@ const authApiRequest = {
   register: (body: RegisterBodyType) => http.post<RegisterResType>('/auth/sign-up', body),
   logoutFromNextClientToServer: (force?: boolean | undefined, signal?: AbortSignal | undefined) =>
     http.post(
-      '/api/auth/logout',
+      '/auth/logout',
       {
         force,
         postId: 'helloworld'
