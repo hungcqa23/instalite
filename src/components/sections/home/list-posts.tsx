@@ -1,5 +1,6 @@
 'use client';
 
+import PostsSkeleton from '@/components/sections/home/posts-skeleton';
 import { List } from '@/components/ui';
 import LiteItem from '@/components/ui/lite';
 import { useGetAllPostsQuery } from '@/hooks/queries/usePost';
@@ -42,21 +43,24 @@ const ListPost = () => {
 
   return (
     <div className='-ms-10 h-full w-full'>
-      {posts.length > 0 &&
-        List<Post>({
-          listItems: posts,
-          mapFn: (post: Post) => (
-            <div
-              className='mt-2 flex w-full max-w-[30rem] flex-col xl:ml-[calc((100%-30rem)/2)] xl:mr-20'
-              key={post._id}
-            >
-              <div className='flex flex-col items-center'>
-                <LiteItem key={post._id} lite={post} isLink />
+      <div className='flex w-full flex-col items-center xl:block'>
+        {isLoading && <PostsSkeleton />}
+
+        {posts.length > 0 &&
+          List<Post>({
+            listItems: posts,
+            mapFn: (post: Post) => (
+              <div
+                className='mt-2 flex w-full max-w-[30rem] flex-col xl:ml-[calc((100%-30rem)/2)] xl:mr-20'
+                key={post._id}
+              >
+                <div className='flex flex-col items-center'>
+                  <LiteItem key={post._id} lite={post} isLink />
+                </div>
               </div>
-            </div>
-          ),
-          className: 'w-full xl:block flex flex-col items-center'
-        })}
+            )
+          })}
+      </div>
     </div>
   );
 };
