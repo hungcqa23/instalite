@@ -4,25 +4,26 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
 import { useFollowMutation, useUnFollowMutation } from '@/hooks/queries/useFollow';
 import { User } from '@/types/schema-validations/account.schema';
 import Link from 'next/link';
-import { useState } from 'react';
 
 interface Props {
   user: User;
 }
+
 export default function SuggestedFriend({ user }: Props) {
-  const [isFollowed, setIsFollowed] = useState(false);
+  console.log(user);
+  // const [isFollowed, setIsFollowed] = useState(false);
   const followMutation = useFollowMutation();
   const unFollowMutation = useUnFollowMutation();
 
-  const handleClick = () => {
-    if (!isFollowed) {
-      followMutation.mutate(user._id);
-      setIsFollowed(true);
-    } else {
-      unFollowMutation.mutate(user._id);
-      setIsFollowed(false);
-    }
-  };
+  // const handleClick = () => {
+  //   if (!isFollowed) {
+  //     followMutation.mutate(user._id);
+  //     setIsFollowed(true);
+  //   } else {
+  //     unFollowMutation.mutate(user._id);
+  //     setIsFollowed(false);
+  //   }
+  // };
 
   return (
     <div className='flex items-center px-4 py-2'>

@@ -36,9 +36,6 @@ export const usePostSaved = (postId: string) => {
     queryFn: async () => {
       const res = await fetch(`http://localhost:8000/bookmarks/${postId}/check`, {
         method: 'GET',
-        headers: {
-          Cookie: `access_token=${accessToken}`
-        },
         credentials: 'include'
       });
 

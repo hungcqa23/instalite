@@ -198,7 +198,7 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
             >
               <TrashIcon className='size-4' /> <span>Delete lite</span>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
+
             {/* <DropdownMenuItem
               className='cursor-pointer gap-2 rounded-md font-medium'
               onClick={() => setIsEditing(true)}
@@ -210,13 +210,16 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
         )}
 
         {!isVideo(lite?.media?.type) && (
-          <DropdownMenuItem
-            className='cursor-pointer gap-2 rounded-md font-medium'
-            onClick={handleSummarization}
-          >
-            <SparkleIcon className='size-4' />
-            <span>Explain with Relite AI</span>
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className='cursor-pointer gap-2 rounded-md font-medium'
+              onClick={handleSummarization}
+            >
+              <SparkleIcon className='size-4' />
+              <span>Explain with Relite AI</span>
+            </DropdownMenuItem>
+          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>

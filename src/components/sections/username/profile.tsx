@@ -12,18 +12,20 @@ import {
   List
 } from '@/components/ui';
 import { useGetAllFollowersQuery, useGetAllFollowingsQuery } from '@/hooks/queries/useFollow';
-import { useUserStore } from '@/stores/user.stores';
+import { useGetUserByUsernameQuery } from '@/hooks/queries/useUser';
 import { User } from '@/types/schema-validations/account.schema';
 import React from 'react';
 
 export default function Profile({ user, username }: { username: string; user?: User }) {
   const { data: followersData } = useGetAllFollowersQuery(username);
-  const followers = followersData?.data;
+  const followers = followersData?.data || [];
 
   const { data: followingData } = useGetAllFollowingsQuery(username);
-  const following = followingData?.data;
+  const following = followingData?.data || [];
 
-  const { user: currentUser } = useUserStore();
+  const { data } = useGetUserByUsernameQuery(username);
+
+  const userData = data?.data?.user;
 
   return (
     <div className='flex flex-col'>
@@ -33,7 +35,7 @@ export default function Profile({ user, username }: { username: string; user?: U
           <p className='text-lg font-semibold'>{user?.username}</p>
         </div>
 
-        <AvatarUser src={currentUser?.avatar} className='static size-20' />
+        <AvatarUser src={userData?.avatar} className='static size-20' />
       </div>
 
       <div className='mt-4 flex justify-between text-sm'>
@@ -48,7 +50,7 @@ export default function Profile({ user, username }: { username: string; user?: U
           <DialogTrigger asChild>
             <Button variant={'link'} className='p-0 hover:no-underline'>
               <p className='font-light'>
-                <span className='font-normal'>{followersData?.data?.length || 0}</span> followers
+                <span className='font-normal'>{followers.length}</span> followers
               </p>
             </Button>
           </DialogTrigger>
@@ -59,8 +61,7 @@ export default function Profile({ user, username }: { username: string; user?: U
             </DialogHeader>
 
             <div className='h-[30rem] max-h-[30rem]'>
-              {followers &&
-                followers.length > 0 &&
+              {followers.length > 0 &&
                 List({
                   listItems: followers,
                   mapFn: followers => (
@@ -77,7 +78,7 @@ export default function Profile({ user, username }: { username: string; user?: U
           <DialogTrigger asChild>
             <Button variant={'link'} className='p-0 hover:no-underline'>
               <p className='font-light'>
-                <span className='font-normal'>{followingData?.data?.length || 0} </span>
+                <span className='font-normal'>{following.length} </span>
                 following
               </p>
             </Button>
@@ -88,8 +89,7 @@ export default function Profile({ user, username }: { username: string; user?: U
             </DialogHeader>
 
             <div className='h-[30rem] max-h-[30rem]'>
-              {following &&
-                following.length > 0 &&
+              {following.length > 0 &&
                 List({
                   listItems: following,
                   mapFn: followingUser => (

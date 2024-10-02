@@ -57,6 +57,7 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
     setImageFile(null);
     setVideoFile(null);
     setVideoUrl(null);
+    setIsOpenDialog(false);
   }, []);
 
   useEffect(() => {
@@ -154,11 +155,10 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
         });
       }
 
-      // setText('');
-      // setIsOpenDialog(false);
-      // queryClient.invalidateQueries({
-      //   queryKey: ['posts']
-      // });
+      resetDialog();
+      queryClient.invalidateQueries({
+        queryKey: ['posts']
+      });
 
       toast({
         title: 'Successfully',
@@ -186,7 +186,7 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
             <DialogTitle className='flex justify-center text-sm font-bold'>New Lite</DialogTitle>
 
             <DialogClose asChild>
-              <BtnClose onClick={() => handleDialogChange(false)} />
+              {!isSubmitting && <BtnClose onClick={() => handleDialogChange(false)} />}
             </DialogClose>
           </DialogHeader>
 
@@ -204,6 +204,7 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
                   value={text}
                   autoFocus
                   onChange={handleChange}
+                  disabled={isSubmitting}
                 />
 
                 {isDisplayButtonsMedia && (
@@ -251,6 +252,7 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
                     <BtnClose
                       className='absolute right-2 top-2 size-8 rounded-full bg-opacity-75 p-0 hover:bg-white'
                       onClick={handleDeleteVideo}
+                      disabled={isSubmitting}
                     />
                   </div>
                 )}

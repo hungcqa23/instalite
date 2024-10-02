@@ -64,6 +64,7 @@ export default function BtnCta({ user }: { user: User }) {
 
     return avatar;
   }, [avatar, file]);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {

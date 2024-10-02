@@ -15,9 +15,7 @@ export default async function MeProfile({ params }: { params: { username: string
   const refreshToken = cookieStore.get('refresh_token');
 
   const data = await http.get<{
-    data: {
-      user: User;
-    };
+    data: User;
   }>(`/users/${params.username}`, {
     headers: {
       Cookie: accessToken
@@ -28,7 +26,7 @@ export default async function MeProfile({ params }: { params: { username: string
     cache: 'no-store'
   });
 
-  const { user } = data.data;
+  const user = data.data;
   return (
     <>
       <div className='mt-4 w-full max-w-[34.9375rem] items-start justify-center'>
