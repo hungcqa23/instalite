@@ -38,7 +38,7 @@ const ListPost = () => {
   //   }
   // }, [inView, hasNextPage, fetchNextPage]);
   const { data, isLoading } = useGetAllPostsQuery();
-  const posts = data?.data || [];
+  const posts = data?.data.data || [];
 
   return (
     <div className='-ms-10 h-full w-full'>

@@ -6,7 +6,17 @@ const postApiRequest = {
   getAll: () =>
     http.get<{
       message: string;
-      data: Post[];
+      data: {
+        data: Post[];
+        meta: {
+          page: number;
+          take: number;
+          itemCount: number;
+          pageCount: number;
+          hasPreviousPage: boolean;
+          hasNextPage: boolean;
+        };
+      };
     }>('/posts'),
   update: ({ postId, content }: { postId: string; content: string }) =>
     http.patch<{}>(`/posts/${postId}`, {
