@@ -1,37 +1,36 @@
 'use client';
 
+import { postApiRequest } from '@/api-request/post';
 import PostsSkeleton from '@/components/sections/home/posts-skeleton';
 import { List } from '@/components/ui';
 import LiteItem from '@/components/ui/lite';
 import { useGetAllPostsQuery } from '@/hooks/queries/usePost';
 import { Post } from '@/types/schema-validations/post.schema';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
 const ListPost = () => {
-  const { ref, inView } = useInView({
-    threshold: 0.75
-  });
+  // const { ref, inView } = useInView({
+  //   threshold: 0.75
+  // });
 
-  // const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
-  //   useInfiniteQuery({
-  //     queryKey: ['posts'],
-  //     queryFn: ({ pageParam }) => postApi.getAllPosts({ pageParam }),
-  //     initialPageParam: 1,
-  //     getNextPageParam: (
-  //       lastPage: GetAllPosts,
-  //       allPages: GetAllPosts[],
-  //       lastPageParam: number
-  //     ) => {
-  //       // Total length of allPages
-  //       const totalPages = allPages.reduce(
-  //         (acc, page) => acc + page.posts.length,
-  //         0
-  //       );
-  //       const nextPage =
-  //         totalPages < lastPage.totalPosts ? lastPageParam + 1 : undefined;
-  //       return nextPage;
-  //     }
-  //   });
+  // const {
+  //   data: allPosts,
+  //   isLoading: isPostsLoading,
+  //   isFetchingNextPage,
+  //   hasNextPage,
+  //   fetchNextPage
+  // } = useInfiniteQuery({
+  //   queryKey: ['posts'],
+  //   queryFn: ({ pageParam }) => postApiRequest.getAllPosts({ pageParam }),
+  //   initialPageParam: 1,
+  //   getNextPageParam: (lastPage: GetAllPosts, allPages: GetAllPosts[], lastPageParam: number) => {
+  //     // Total length of allPages
+  //     const totalPages = allPages.reduce((acc, page) => acc + page.posts.length, 0);
+  //     const nextPage = totalPages < lastPage.totalPosts ? lastPageParam + 1 : undefined;
+  //     return nextPage;
+  //   }
+  // });
 
   // useEffect(() => {
   //   if (inView && hasNextPage) {
@@ -46,7 +45,8 @@ const ListPost = () => {
       <div className='flex w-full flex-col items-center xl:block'>
         {isLoading && <PostsSkeleton />}
 
-        {posts.length > 0 &&
+        {!isLoading &&
+          posts.length > 0 &&
           List<Post>({
             listItems: posts,
             mapFn: (post: Post) => (

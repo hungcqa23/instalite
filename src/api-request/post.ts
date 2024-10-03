@@ -1,6 +1,5 @@
 import { http } from '@/lib/http';
 import { Post } from '@/types/schema-validations/post.schema';
-import { create } from 'domain';
 
 const postApiRequest = {
   getAll: () =>
