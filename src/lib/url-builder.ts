@@ -2,13 +2,15 @@ export class Url {
   private hash: string = '';
   private search: string = '';
   private page: number = 1;
-  private limit: number = 10;
+  private take: number = 10;
   private isQuery: boolean = true;
+  private pathname: string = '';
 
-  constructor(search: string, page: number, limit: number, hash: string) {
+  constructor(pathname: string, search: string, page: number, limit: number, hash: string) {
+    this.pathname = pathname;
     this.search = search;
     this.page = page;
-    this.limit = limit;
+    this.take = limit;
     this.hash = hash;
     // this.validate();
   }
@@ -21,6 +23,9 @@ export class Url {
 
   toString() {
     let url = '';
+    if (this.pathname) {
+      url += `${this.pathname}`;
+    }
     if (this.isQuery) {
       url += '?';
     }
@@ -30,8 +35,8 @@ export class Url {
     if (this.page) {
       url += `page=${this.page}`;
     }
-    if (this.limit) {
-      url += `limit=${this.limit}`;
+    if (this.take) {
+      url += `&take=${this.take}`;
     }
     if (this.hash) {
       url += `hash=${this.hash}`;
@@ -39,15 +44,17 @@ export class Url {
     if (this.hash !== '') {
       url += `#${this.hash}`;
     }
+
     return url;
   }
 }
 
 export class QueryBuilder {
-  private hash: string = '';
-  private search: string = '';
+  private pathname: string = '';
   private page: number = 1;
-  private limit: number = 10;
+  private take: number = 10;
+  private search: string = '';
+  private hash: string = '';
 
   constructor() {}
   setSearch(search: string) {
@@ -61,13 +68,20 @@ export class QueryBuilder {
 
   setPage(page: number) {
     this.page = page;
+    return this;
   }
 
   setLimit(limit: number) {
-    this.limit = limit;
+    this.take = limit;
+    return this;
+  }
+
+  setPathname(pathname: string) {
+    this.pathname = pathname;
+    return this;
   }
 
   build() {
-    return new Url(this.search, this.page, this.limit, this.hash);
+    return new Url(this.pathname, this.search, this.page, this.take, this.hash);
   }
 }

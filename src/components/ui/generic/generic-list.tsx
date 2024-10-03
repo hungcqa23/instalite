@@ -6,12 +6,7 @@ interface ListProps<T> {
   className?: string;
   as?: ElementType;
 }
-const List = <T,>({
-  listItems,
-  mapFn,
-  className,
-  as: Element = 'div'
-}: ListProps<T>) => {
+const List = <T,>({ listItems, mapFn, className, as: Element = 'div' }: ListProps<T>) => {
   if (!listItems) return null;
 
   return <Element className={className}>{listItems.map(mapFn)}</Element>;

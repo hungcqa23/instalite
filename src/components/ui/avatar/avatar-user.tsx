@@ -16,7 +16,7 @@ const AvatarUser = ({
 }) => {
   return (
     <Avatar className={cn('size-8 cursor-pointer', className)}>
-      <AvatarImage src={src} className={classNameImage} alt='@shadcn' />
+      <AvatarImage src={src} className={classNameImage} alt={alt} />
       <AvatarFallback>{fallback}</AvatarFallback>
     </Avatar>
   );

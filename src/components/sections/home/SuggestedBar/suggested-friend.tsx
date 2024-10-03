@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function SuggestedFriend({ user }: Props) {
-  console.log(user);
+  // console.log(user);
   // const [isFollowed, setIsFollowed] = useState(false);
   const followMutation = useFollowMutation();
   const unFollowMutation = useUnFollowMutation();

@@ -35,7 +35,17 @@ export type Post = z.infer<typeof PostBody>;
 
 export const PostRes = z.object({
   message: z.string(),
-  data: z.array(PostBody)
+  data: z.object({
+    data: z.array(PostBody),
+    meta: z.object({
+      page: z.number(),
+      take: z.number(),
+      itemCount: z.number(),
+      pageCount: z.number(),
+      hasPreviousPage: z.boolean(),
+      hasNextPage: z.boolean()
+    })
+  })
 });
 
 export type PostResType = z.infer<typeof PostRes>;

@@ -1,22 +1,18 @@
 import { http } from '@/lib/http';
-import { Post } from '@/types/schema-validations/post.schema';
+import { QueryBuilder } from '@/lib/url-builder';
+import { Post, PostResType } from '@/types/schema-validations/post.schema';
 
 const postApiRequest = {
-  getAll: () =>
-    http.get<{
-      message: string;
-      data: {
-        data: Post[];
-        meta: {
-          page: number;
-          take: number;
-          itemCount: number;
-          pageCount: number;
-          hasPreviousPage: boolean;
-          hasNextPage: boolean;
-        };
-      };
-    }>('/posts'),
+  getAll: ({ page = 1, take = 7 }: { page?: number; take?: number }) => {
+    const url = new QueryBuilder()
+      .setPathname('/posts')
+      .setPage(page)
+      .setLimit(take)
+      .build()
+      .toString();
+
+    return http.get<PostResType>(url);
+  },
   update: ({ postId, content }: { postId: string; content: string }) =>
     http.patch<{}>(`/posts/${postId}`, {
       content

@@ -25,6 +25,7 @@ import {
   XIcon
 } from '@/components/ui/icons';
 import CancelDialog from '@/components/ui/lite/CancelDialog';
+import FooterLinkSection from '@/components/ui/lite/LiteLink/footer-link-section';
 import CommentForm from '@/components/ui/lite/comment/comment-form';
 import ListComment from '@/components/ui/lite/comment/list-comment';
 import MediaSection from '@/components/ui/lite/media-section';
@@ -55,7 +56,12 @@ import ButtonSend from './button-send';
 import DeleteLiteDialog from './delete-lite-dialog';
 import EditLiteDialog from './edit-lite-dialog';
 
-const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
+interface LiteProps {
+  lite: Post;
+  isLink?: boolean;
+  innerRef?: React.Ref<HTMLParagraphElement>;
+}
+const LiteItem = ({ lite, isLink, innerRef }: LiteProps) => {
   const { user } = useUserStore();
   const queryClient = useQueryClient();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -249,22 +255,6 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
 
   const isCurrentUser = user?._id === lite?.userId._id;
 
-  const FooterLinkSection = () => {
-    return (
-      <div className='mt-3 flex flex-row justify-between'>
-        <div className='ms-0.5 flex flex-row gap-3'>
-          <ButtonLike liteId={lite._id} />
-          {/* <Link href={`/posts/${lite._id}`}>
-            <MessageCircle className='size-5 cursor-pointer' />
-          </Link> */}
-          <ButtonSend />
-        </div>
-
-        <ButtonBookMark liteId={lite._id} />
-      </div>
-    );
-  };
-
   const handleChangeOpenSummarizeDialog = () => {
     setContentSummarization(previousState => ({
       ...previousState,
@@ -275,13 +265,13 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
   if (isLink)
     return (
       <>
-        <div className='mb-2 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
+        <div className='mb-2 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5' ref={innerRef}>
           <HeaderSection lite={lite} isCurrentUser={isCurrentUser} />
           <Link href={`/posts/${lite._id}`} className='w-full'>
             <p className='text-[0.8125rem]'>{lite?.content}</p>
           </Link>
           <MediaSection lite={lite} />
-          <FooterLinkSection />
+          <FooterLinkSection liteId={lite?._id || ''} />
         </div>
 
         {openDeleteDialog && (
@@ -415,7 +405,7 @@ const LiteItem = ({ lite, isLink }: { lite: Post; isLink?: boolean }) => {
 
   return (
     <>
-      <div className='mb-0 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5'>
+      <div className='mb-0 w-full border-b-[1px] border-gray-200 p-0 sm:pb-5' ref={innerRef}>
         <HeaderSection lite={lite} isCurrentUser={isCurrentUser} />
         <p className='text-[0.8125rem]'>{lite?.content}</p>
         <MediaSection lite={lite} />

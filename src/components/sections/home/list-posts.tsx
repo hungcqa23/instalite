@@ -1,65 +1,65 @@
 'use client';
 
-import { postApiRequest } from '@/api-request/post';
 import PostsSkeleton from '@/components/sections/home/posts-skeleton';
 import { List } from '@/components/ui';
 import LiteItem from '@/components/ui/lite';
-import { useGetAllPostsQuery } from '@/hooks/queries/usePost';
-import { Post } from '@/types/schema-validations/post.schema';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { LoadingSpinner } from '@/components/ui/spinner';
+import { useGetAllPostInfiniteQuery } from '@/hooks/queries/usePost';
+import { Post, PostResType } from '@/types/schema-validations/post.schema';
+import { Fragment, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 const ListPost = () => {
-  // const { ref, inView } = useInView({
-  //   threshold: 0.75
-  // });
+  const { ref, inView } = useInView({
+    threshold: 0.75
+  });
 
-  // const {
-  //   data: allPosts,
-  //   isLoading: isPostsLoading,
-  //   isFetchingNextPage,
-  //   hasNextPage,
-  //   fetchNextPage
-  // } = useInfiniteQuery({
-  //   queryKey: ['posts'],
-  //   queryFn: ({ pageParam }) => postApiRequest.getAllPosts({ pageParam }),
-  //   initialPageParam: 1,
-  //   getNextPageParam: (lastPage: GetAllPosts, allPages: GetAllPosts[], lastPageParam: number) => {
-  //     // Total length of allPages
-  //     const totalPages = allPages.reduce((acc, page) => acc + page.posts.length, 0);
-  //     const nextPage = totalPages < lastPage.totalPosts ? lastPageParam + 1 : undefined;
-  //     return nextPage;
-  //   }
-  // });
+  const {
+    data: allPostsData,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage
+  } = useGetAllPostInfiniteQuery();
 
-  // useEffect(() => {
-  //   if (inView && hasNextPage) {
-  //     fetchNextPage();
-  //   }
-  // }, [inView, hasNextPage, fetchNextPage]);
-  const { data, isLoading } = useGetAllPostsQuery();
-  const posts = data?.data.data || [];
+  const allPosts = allPostsData?.pages || [];
+
+  useEffect(() => {
+    if (inView && hasNextPage) fetchNextPage();
+  }, [inView, hasNextPage, fetchNextPage]);
 
   return (
     <div className='-ms-10 h-full w-full'>
-      <div className='flex w-full flex-col items-center xl:block'>
+      <div className='flex w-full flex-col items-center justify-center'>
         {isLoading && <PostsSkeleton />}
 
-        {!isLoading &&
-          posts.length > 0 &&
-          List<Post>({
-            listItems: posts,
-            mapFn: (post: Post) => (
-              <div
-                className='mt-2 flex w-full max-w-[30rem] flex-col xl:ml-[calc((100%-30rem)/2)] xl:mr-20'
-                key={post._id}
-              >
-                <div className='flex flex-col items-center'>
-                  <LiteItem key={post._id} lite={post} isLink />
-                </div>
-              </div>
-            )
-          })}
+        {allPosts.length > 0 &&
+          allPosts.map((allPost: PostResType, index) => (
+            <Fragment key={index}>
+              {List({
+                listItems: allPost.data.data,
+                mapFn: (post: Post, index: number) => (
+                  <div
+                    className='mt-2 flex w-full max-w-[30rem] flex-col xl:ml-[calc((100%-30rem)/2)] xl:mr-20'
+                    key={post._id}
+                  >
+                    <div className='flex flex-col items-center'>
+                      <LiteItem
+                        key={post._id}
+                        lite={post}
+                        isLink
+                        innerRef={allPost.data.data.length - 1 === index ? ref : undefined}
+                      />
+                    </div>
+                  </div>
+                ),
+                as: 'ul',
+                className: 'w-full'
+              })}
+            </Fragment>
+          ))}
+
+        {isFetchingNextPage && <LoadingSpinner />}
       </div>
     </div>
   );

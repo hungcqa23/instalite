@@ -1,7 +1,7 @@
 import { postApiRequest } from '@/api-request/post';
 import { http } from '@/lib/http';
-import { Post } from '@/types/schema-validations/post.schema';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { Post, PostResType } from '@/types/schema-validations/post.schema';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { getCookie } from 'cookies-next';
 
 const accessToken = getCookie('access_key');
@@ -19,7 +19,7 @@ export const usePostByUsername = (username: string) => {
 export const useGetAllPostsQuery = () =>
   useQuery({
     queryKey: ['posts'],
-    queryFn: postApiRequest.getAll
+    queryFn: () => postApiRequest.getAll({})
   });
 
 export const useSummarizeLiteMutation = () =>
@@ -73,4 +73,20 @@ export const useCreatePostMutation = () =>
       postApiRequest.create({
         content
       })
+  });
+
+export const useGetAllPostInfiniteQuery = () =>
+  useInfiniteQuery({
+    queryKey: ['posts'],
+    queryFn: ({ pageParam }) =>
+      postApiRequest.getAll({
+        page: pageParam
+      }),
+
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: PostResType, allPages: PostResType[], lastPageParam: number) => {
+      if (lastPage.data.meta.hasNextPage) return lastPageParam + 1;
+
+      return undefined;
+    }
   });
