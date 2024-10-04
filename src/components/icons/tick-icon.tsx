@@ -1,13 +1,9 @@
-import { cn } from '@/lib/utils';
 import { SVGProps } from 'react';
 
 export default function TickIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      // className={cn('duration-400 absolute transition-opacity', {
-      //   'opacity-0': !isCopying,
-      //   'opacity-100': isCopying
-      // })}
+      {...props}
       fill='none'
       height={24}
       shapeRendering='geometricPrecision'

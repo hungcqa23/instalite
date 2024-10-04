@@ -1,6 +1,6 @@
+import ButtonSend from '@/components/ui/lite/LiteLink/button-send';
 import ButtonBookMark from '@/components/ui/lite/button-bookmark';
 import ButtonLike from '@/components/ui/lite/button-like';
-import ButtonSend from '@/components/ui/lite/button-send';
 
 const FooterLinkSection = ({ liteId }: { liteId: string }) => {
   return (
