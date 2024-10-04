@@ -1,5 +1,6 @@
 'use client';
 
+import { GoogleIcon } from '@/components/icons';
 import {
   Button,
   Form,
@@ -11,7 +12,6 @@ import {
   Input,
   useToast
 } from '@/components/ui';
-import { GoogleIcon } from '@/components/ui/icons';
 import { useSignUpMutation } from '@/hooks/queries/useAuth';
 import { useUserStore } from '@/stores/user.stores';
 import { RegisterBodyType } from '@/types/schema-validations/auth.schema';

@@ -1,7 +1,7 @@
 'use client';
 
+import { Search } from '@/components/icons';
 import { Input, SkeletonContainer, UserItem } from '@/components/ui';
-import { Search } from '@/components/ui/icons';
 import { useSearch } from '@/hooks/queries/useSearch';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useState } from 'react';

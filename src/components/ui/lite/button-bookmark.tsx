@@ -1,6 +1,6 @@
 'use client';
 
-import { Bookmark } from '@/components/ui/icons';
+import { Bookmark } from '@/components/icons';
 import {
   useBookmarkMutation,
   useGetBookmarkByPostIdQuery,

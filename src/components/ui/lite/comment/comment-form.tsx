@@ -1,3 +1,4 @@
+import { Clapperboard, ImageIcon, X } from '@/components/icons';
 import {
   Avatar,
   AvatarFallback,
@@ -9,7 +10,6 @@ import {
   ImagePreview,
   Input
 } from '@/components/ui';
-import { Clapperboard, ImageIcon, X } from '@/components/ui/icons';
 import { User } from '@/types/schema-validations/account.schema';
 import { MutableRefObject, useState } from 'react';
 

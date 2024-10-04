@@ -1,6 +1,6 @@
 'use client';
 
-import { Heart } from '@/components/ui/icons';
+import { Heart } from '@/components/icons';
 import {
   useGetLikeByPostIdQuery,
   useLikeMutation,

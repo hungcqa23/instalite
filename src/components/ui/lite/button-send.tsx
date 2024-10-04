@@ -1,6 +1,6 @@
 'use client';
 
-import { Send } from '@/components/ui/icons';
+import { Send } from '@/components/icons';
 import { toast } from '@/components/ui/toast/useToast';
 import { useState } from 'react';
 

@@ -1,6 +1,6 @@
 import { authApiRequest } from '@/api-request/auth';
+import { LogOut } from '@/components/icons';
 import { DropdownMenuItem } from '@/components/ui';
-import { LogOut } from '@/components/ui/icons';
 import { useRouter } from 'next/navigation';
 
 const ButtonLogout = () => {

@@ -1,5 +1,5 @@
+import { X } from '@/components/icons';
 import { Button } from '@/components/ui';
-import { X } from '@/components/ui/icons';
 import { cn } from '@/lib/utils';
 import React from 'react';
 

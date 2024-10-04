@@ -1,5 +1,6 @@
 'use client';
 
+import { EllipsisIcon } from '@/components/icons';
 import {
   AvatarUser,
   Button,
@@ -8,7 +9,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui';
-import { EllipsisIcon } from '@/components/ui/icons';
 import { calculateTimeAgo } from '@/lib/helper';
 import { useUserStore } from '@/stores/user.stores';
 import { Post } from '@/types/schema-validations/post.schema';
