@@ -4,7 +4,6 @@ import Link from 'next/link';
 import React from 'react';
 
 const FollowUserItem = ({ user }: { user: User }) => {
-  console.log(user.username);
   return (
     <Link
       href={`/username/${user.username}`}

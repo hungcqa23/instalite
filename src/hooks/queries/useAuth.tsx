@@ -11,3 +11,8 @@ export const useSignUpMutation = () =>
   useMutation({
     mutationFn: authApiRequest.register
   });
+
+export const useLogoutMutation = () =>
+  useMutation({
+    mutationFn: authApiRequest.logoutFromNextClientToNextServer
+  });

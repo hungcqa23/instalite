@@ -1,7 +1,7 @@
 'use client';
 
 import PostsSkeleton from '@/components/sections/home/posts-skeleton';
-import { List } from '@/components/ui';
+import { Label, List } from '@/components/ui';
 import LiteItem from '@/components/ui/lite';
 import { LoadingSpinner } from '@/components/ui/spinner';
 import { useGetAllPostInfiniteQuery } from '@/hooks/queries/usePost';
@@ -29,7 +29,7 @@ const ListPost = () => {
   }, [inView, hasNextPage, fetchNextPage]);
 
   return (
-    <div className='-ms-10 h-full w-full'>
+    <div className='size-full xl:-ms-10'>
       <div className='flex w-full flex-col items-center justify-center'>
         {isLoading && <PostsSkeleton />}
 
@@ -60,6 +60,12 @@ const ListPost = () => {
           ))}
 
         {isFetchingNextPage && <LoadingSpinner />}
+
+        {!hasNextPage && !isLoading && (
+          <div className='flex h-20 items-center'>
+            <Label className='text-lg font-semibold'>You&apos;re all caught up</Label>
+          </div>
+        )}
       </div>
     </div>
   );

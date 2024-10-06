@@ -7,16 +7,17 @@ import {
 } from '@/components/ui';
 import React from 'react';
 
-export default function SummarizationDialog({
-  contentSummarization,
-  setContentSummarization
-}: {
+interface SummarizationDialogProps {
   contentSummarization: {
     content: string;
     isOpenSummarizeDialog: boolean;
   };
   setContentSummarization: () => void;
-}) {
+}
+export default function SummarizationDialog({
+  contentSummarization,
+  setContentSummarization
+}: SummarizationDialogProps) {
   return (
     <Dialog
       open={contentSummarization.isOpenSummarizeDialog}
@@ -26,7 +27,9 @@ export default function SummarizationDialog({
     >
       <DialogContent className='sm:max-w-md'>
         <DialogHeader>
-          <DialogTitle>Content Explain</DialogTitle>
+          <DialogTitle className='flex items-center justify-center'>
+            Gemini&apos;s AI Explanation
+          </DialogTitle>
           <DialogDescription>{contentSummarization.content}</DialogDescription>
         </DialogHeader>
       </DialogContent>

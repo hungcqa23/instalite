@@ -1,8 +1,6 @@
 import { Clapperboard, ImageIcon, X } from '@/components/icons';
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
+  AvatarUser,
   Button,
   Carousel,
   CarouselContent,
@@ -11,14 +9,14 @@ import {
   Input
 } from '@/components/ui';
 import { User } from '@/types/schema-validations/account.schema';
-import { MutableRefObject, useState } from 'react';
+import React from 'react';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 
 interface CommentFormProps {
   user: User | null;
   images: string[];
   videoUrl: string | null;
   fileInputRef: MutableRefObject<HTMLInputElement | null>;
-  textareaRef: MutableRefObject<HTMLTextAreaElement | null>;
   videoFileInputRef: MutableRefObject<HTMLInputElement | null>;
   handleImageClick: () => void;
   handleVideoClick: () => void;
@@ -32,7 +30,6 @@ interface CommentFormProps {
 const CommentForm = ({
   user,
   fileInputRef,
-  textareaRef,
   videoFileInputRef,
   handleDeleteVideo,
   handleDeleteImage,
@@ -46,15 +43,22 @@ const CommentForm = ({
 }: CommentFormProps) => {
   const [text, setText] = useState('');
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [text]);
+
   return (
     <div className='flex flex-col overflow-hidden'>
       <div className='flex flex-row'>
-        <Avatar className='h-8 w-8 cursor-pointer'>
-          <AvatarImage src={user?.avatar} alt='@shadcn' />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+        <AvatarUser src={user?.avatar} alt={user?.username} />
         <div className='ms-2.5 flex max-w-full flex-col'>
           <div className='text-sm font-semibold'>{user?.username}</div>
+
           <textarea
             ref={textareaRef}
             placeholder='Write something...'
@@ -83,22 +87,6 @@ const CommentForm = ({
               </Button>
             </div>
           )}
-
-          <Input
-            type='file'
-            ref={fileInputRef}
-            multiple={true}
-            accept='image/*'
-            className='hidden'
-            onChange={handleFileChange}
-          />
-          <Input
-            type='file'
-            ref={videoFileInputRef}
-            accept='video/*'
-            className='hidden'
-            onChange={handleVideoChange}
-          />
 
           {images.length > 0 && (
             <Carousel
@@ -132,6 +120,25 @@ const CommentForm = ({
               </Button>
             </div>
           )}
+
+          <>
+            <Input
+              type='file'
+              ref={fileInputRef}
+              multiple={true}
+              accept='image/*'
+              className='hidden'
+              onChange={handleFileChange}
+            />
+
+            <Input
+              type='file'
+              ref={videoFileInputRef}
+              accept='video/*'
+              className='hidden'
+              onChange={handleVideoChange}
+            />
+          </>
         </div>
       </div>
 

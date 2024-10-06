@@ -20,9 +20,7 @@ const accountApiRequest = {
   uploadAvatar: (formData: FormData) => http.patch<UploadUserType>('users/avatar', formData),
   getUserByUsername: (username: string) =>
     http.get<{
-      data: {
-        user: User;
-      };
+      data: User;
     }>(`/users/${username}`)
 };
 

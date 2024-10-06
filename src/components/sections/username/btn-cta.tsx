@@ -1,16 +1,10 @@
 'use client';
 
+import { CustomDialog } from '@/components/customs';
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
+  AvatarUser,
   Button,
-  Dialog,
-  DialogContent,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -49,6 +43,7 @@ export default function BtnCta({ user }: { user: User }) {
 
   const isFollowing = isFollowingData?.data || false;
   const isCurrentUser = user?.username === currentUser?.username;
+
   useEffect(() => {
     if (currentUser) {
       setName(currentUser?.fullName);
@@ -61,10 +56,10 @@ export default function BtnCta({ user }: { user: User }) {
   //  Avatar upload mutation
   const previewAvatar = useMemo(() => {
     if (file) return URL.createObjectURL(file);
-
     return avatar;
   }, [avatar, file]);
 
+  const uploadAvatarMutation = useUploadAvatarMutation();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
@@ -72,7 +67,6 @@ export default function BtnCta({ user }: { user: User }) {
       setAvatar(avatar);
     }
   };
-  const uploadAvatarMutation = useUploadAvatarMutation();
   const handleUploadAvatarClick = () => {
     if (avatarInputRef.current) avatarInputRef.current.click();
   };
@@ -136,15 +130,16 @@ export default function BtnCta({ user }: { user: User }) {
   const handleFollowClick = () => {
     if (isFollowing) unFollowMutation.mutate(user?._id);
     else followMutation.mutate(user?._id);
+  };
 
-    const res = http.post(
-      '',
-      {},
-      {
-        baseUrl: '/api/revalidate/profile'
-      }
-    );
-    console.log(res);
+  const handleOpenChange = (open: boolean) => {
+    if (open === false && currentUser) {
+      setName(currentUser?.fullName);
+      setUsername(currentUser?.username);
+      setBio(currentUser?.bio);
+      setAvatar(currentUser?.avatar);
+      setFile(null); // Reset file state
+    }
   };
 
   return (
@@ -163,81 +158,76 @@ export default function BtnCta({ user }: { user: User }) {
       )}
 
       {isCurrentUser && (
-        <Dialog>
-          <DialogTrigger asChild>
+        <CustomDialog
+          title='Edit profile'
+          trigger={
             <Button
               className='mt-3.5 w-full text-sm dark:bg-zinc-950 dark:hover:bg-transparent'
               variant={'outline'}
             >
               Edit profile
             </Button>
-          </DialogTrigger>
-          <DialogContent className='dark:bg-zinc-950 sm:max-w-[500px]'>
-            <DialogHeader>
-              <DialogTitle className='flex justify-center text-sm font-bold'>Profile</DialogTitle>
-            </DialogHeader>
-            <div className='flex flex-col gap-1'>
-              <div className='flex flex-row justify-between'>
-                <div className='flex flex-col'>
-                  <Label className='text-sm font-semibold'>Username</Label>
-                  <Input
-                    className='mt-1 w-[378px]'
-                    placeholder='Enter your username'
-                    value={username}
-                    onChange={e => setUsername(e.target.value)}
-                  />
-                </div>
+          }
+          handleOpenChange={handleOpenChange}
+        >
+          <div className='flex flex-col gap-1'>
+            <div className='flex flex-row justify-between'>
+              <div className='flex flex-col'>
+                <Label className='text-sm font-semibold'>Username</Label>
+                <Input
+                  className='mt-1 w-[378px]'
+                  placeholder='Enter your username'
+                  value={username}
+                  onChange={e => setUsername(e.target.value)}
+                />
+              </div>
 
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Avatar className='mt-2.5 h-[50px] w-[50px] cursor-pointer'>
-                      <AvatarImage src={previewAvatar} className='object-cover' alt='@shadcn' />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align='end' className='w-30 rounded-xl dark:bg-zinc-950'>
-                    <DropdownMenuItem
-                      className='rounded-sm font-medium dark:hover:bg-zinc-950'
-                      onClick={handleUploadAvatarClick}
-                    >
-                      Upload
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-              <div className='mt-2 flex flex-col'>
-                <Label className='text-sm font-semibold'>Name</Label>
-                <Input
-                  className='mt-1 w-full'
-                  placeholder='Enter your name'
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                />
-              </div>
-              <div className='mt-2 flex flex-col'>
-                <Label className='text-sm font-semibold'>Bio</Label>
-                <Input
-                  className='mt-1 w-full'
-                  placeholder='Enter your bio'
-                  value={bio}
-                  onChange={e => setBio(e.target.value)}
-                />
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <AvatarUser className='mt-2.5 size-[50px] cursor-pointer' src={previewAvatar} />
+                  <input
+                    type='file'
+                    accept='image/*'
+                    className='hidden'
+                    ref={avatarInputRef}
+                    onChange={handleFileChange}
+                  />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align='end' className='w-30 rounded-xl dark:bg-zinc-950'>
+                  <DropdownMenuItem
+                    className='rounded-sm font-medium dark:hover:bg-zinc-950'
+                    onClick={handleUploadAvatarClick}
+                  >
+                    Upload
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
-            <DialogFooter>
-              <Button className='mt-1 w-full' type='submit' onClick={handleSaveProfile}>
-                Save
-              </Button>
-            </DialogFooter>
-            <input
-              type='file'
-              accept='image/*'
-              className='hidden'
-              ref={avatarInputRef}
-              onChange={handleFileChange}
-            />
-          </DialogContent>
-        </Dialog>
+            <div className='mt-2 flex flex-col'>
+              <Label className='text-sm font-semibold'>Name</Label>
+              <Input
+                className='mt-1 w-full'
+                placeholder='Enter your name'
+                value={name}
+                onChange={e => setName(e.target.value)}
+              />
+            </div>
+            <div className='mt-2 flex flex-col'>
+              <Label className='text-sm font-semibold'>Bio</Label>
+              <Input
+                className='mt-1 w-full'
+                placeholder='Enter your bio'
+                value={bio}
+                onChange={e => setBio(e.target.value)}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button className='mt-1 w-full' type='submit' onClick={handleSaveProfile}>
+              Save
+            </Button>
+          </DialogFooter>
+        </CustomDialog>
       )}
     </>
   );

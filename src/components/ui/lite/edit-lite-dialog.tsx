@@ -1,9 +1,7 @@
 'use client';
 
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
+  AvatarUser,
   Button,
   Dialog,
   DialogClose,
@@ -11,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui';
+import CancelDialog from '@/components/ui/lite/CancelDialog';
 import { http } from '@/lib/http';
 import { useUserStore } from '@/stores/user.stores';
 import { Post } from '@/types/schema-validations/post.schema';
@@ -125,10 +124,7 @@ const EditLiteDialog: React.FC<EditLiteDialogProps> = ({
           </DialogHeader>
           <div className='flex flex-col overflow-hidden'>
             <div className='flex flex-row'>
-              <Avatar className='h-8 w-8 cursor-pointer'>
-                <AvatarImage src={user?.avatar} alt='@shadcn' />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
+              <AvatarUser src={user?.avatar} />
               <div className='ms-2.5 flex max-w-full flex-col'>
                 <div className='text-sm font-semibold'>{user?.username}</div>
                 <textarea
@@ -183,34 +179,12 @@ const EditLiteDialog: React.FC<EditLiteDialogProps> = ({
       </Dialog>
 
       {openCancelDialog && (
-        <Dialog open={openCancelDialog} onOpenChange={setOpenCancelDialog}>
-          <DialogContent className='select-none px-0 pb-0 pt-4 dark:bg-zinc-950 sm:max-w-[20rem]'>
-            <DialogHeader>
-              <DialogTitle className='mb-0 flex justify-center text-sm font-bold'>
-                Close edit?
-              </DialogTitle>
-              <DialogClose asChild>
-                <div className='absolute right-0 top-0 z-10 h-8 w-16 bg-white dark:bg-zinc-950'></div>
-              </DialogClose>
-            </DialogHeader>
-
-            <div className='flex flex-row border-t-2 dark:border-gray-600'>
-              <div
-                className='w-full cursor-pointer rounded-bl-3xl border-r-2 py-4 text-center dark:border-gray-600'
-                onClick={cancelClose}
-              >
-                Cancel
-              </div>
-
-              <div
-                className='w-full cursor-pointer rounded-br-3xl py-4 text-center font-semibold text-red-600'
-                onClick={confirmClose}
-              >
-                Close
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <CancelDialog
+          openCancelDialog={openCancelDialog}
+          setOpenCancelDialog={setOpenCancelDialog}
+          cancelClose={cancelClose}
+          confirmClose={confirmClose}
+        />
       )}
     </>
   );

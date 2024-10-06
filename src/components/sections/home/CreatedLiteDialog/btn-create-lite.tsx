@@ -10,7 +10,7 @@ export default function BtnCreateLite({
 }) {
   return (
     <Button className='rounded-3xl' disabled={disabled} onClick={onClick}>
-      {disabled ? 'Creating...' : 'Post'}
+      Post
     </Button>
   );
 }

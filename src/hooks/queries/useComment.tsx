@@ -1,5 +1,5 @@
 import commentApiRequest from '@/api-request/comment';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useGetAllCommentByPostIdQuery = (postId: string) =>
   useQuery({
@@ -12,11 +12,18 @@ export const useGetAllCommentByPostIdQuery = (postId: string) =>
 //     mutationFn: ({ id, ...body }: { id: string }) => commentApiRequest.updateComment(id, body)
 //   });
 
-export const useCreateCommentMutation = () =>
-  useMutation({
+export const useCreateCommentMutation = (liteId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
     mutationFn: ({ content, parentPostId }: { content: string; parentPostId: string }) =>
       commentApiRequest.createComment({
         content,
         parentPostId
+      }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ['comments', liteId]
       })
   });
+};

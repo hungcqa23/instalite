@@ -94,7 +94,7 @@ export default function Header() {
         <CreateLiteDialog>
           <div
             className={`${cn(
-              'duration-400 flex h-16 w-24 items-center justify-center rounded-lg bg-white transition-colors hover:bg-gray-200 hover:text-black dark:bg-zinc-950 dark:hover:bg-gray-700/40 dark:hover:text-white',
+              'duration-400 flex h-16 w-24 items-center justify-center rounded-lg bg-white transition-colors hover:cursor-pointer hover:bg-gray-200 hover:text-black dark:bg-zinc-950 dark:hover:bg-gray-700/40 dark:hover:text-white',
               {
                 'text-black dark:text-zinc-50': activeTab === 'lite',
                 'text-zinc-400 dark:text-zinc-700': activeTab !== 'lite'
@@ -153,8 +153,8 @@ export default function Header() {
         >
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className='flex h-6 w-56 gap-2 rounded-md py-4 pl-3 text-base font-medium'>
-              <SunIcon className='h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0' />
-              <MoonIcon className='absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100' />
+              <SunIcon className='size-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0' />
+              <MoonIcon className='absolute size-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100' />
               Set Appearance
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
@@ -181,11 +181,11 @@ export default function Header() {
           </DropdownMenuSub>
           <DropdownMenuSeparator />
 
-          {/* <Link href={`/username/${user?.username}/saved`}>
+          <Link href={`/username/${user?.username}?tab=saved`}>
             <DropdownMenuItem className='flex h-6 w-56 gap-2 rounded-md py-4 pl-3 text-base font-medium'>
-              <Bookmark size={22} /> Saved
+              <Bookmark size={20} /> Saved
             </DropdownMenuItem>
-          </Link> */}
+          </Link>
 
           <DropdownMenuSeparator />
           <ButtonLogout />

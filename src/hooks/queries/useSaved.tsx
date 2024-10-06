@@ -15,18 +15,6 @@ export const useSaved = () => {
           postId: Post;
         }[];
       }>('/bookmarks/me')
-    //   {
-    //   const res = await fetch('http://localhost:8000/bookmarks/me', {
-    //     method: 'GET',
-    //     headers: {
-    //       Cookie: `access_token=${accessToken}`
-    //     },
-    //     credentials: 'include'
-    //   });
-
-    //   const data = await res.json();
-    //   return data;
-    // }
   });
 };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { UserAvatar } from '@/components/sections/home/user-avatar';
+import { CurrentUserAvatar } from '@/components/sections/home/current-user-avatar';
 import { useUserStore } from '@/stores/user.stores';
 import Link from 'next/link';
 import React from 'react';
@@ -11,7 +11,7 @@ export default function CurrentProfileSuggest() {
   return (
     <div className='flex items-center gap-2 px-4'>
       <div className='flex items-center gap-2'>
-        <UserAvatar />
+        <CurrentUserAvatar />
         <div>
           <Link href={`/`} className='text-sm font-semibold'>
             {user?.username}

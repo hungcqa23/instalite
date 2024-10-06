@@ -1,4 +1,5 @@
 import envConfig from '@/config';
+import { isClient } from '@/lib/check';
 
 type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string | undefined;
@@ -17,8 +18,18 @@ export class HttpError extends Error {
   }
 }
 
+let refreshTokenPromise: null | Promise<any> = null;
 let clientLogoutRequest: null | Promise<any> = null;
-export const isClient = typeof window !== 'undefined';
+
+const refreshToken = async (baseUrl: string): Promise<Response> => {
+  if (!refreshTokenPromise) {
+    refreshTokenPromise = fetch(`${baseUrl}/auth/refresh-token`, {
+      method: 'POST',
+      credentials: 'include'
+    });
+  }
+  return refreshTokenPromise;
+};
 
 const request = async <Response>(
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
@@ -39,14 +50,8 @@ const request = async <Response>(
           'Content-Type': 'application/json'
         };
 
-  // if (isClient) {
-  //   const accessToken = localStorage.getItem('access_key');
-  //   if (accessToken) {
-  //     baseHeaders.Cookie = `access_token=${accessToken}`;
-  //   }
-  // }
-
-  const baseUrl = options?.baseUrl ? options.baseUrl : envConfig.NEXT_PUBLIC_API_ENDPOINT;
+  const baseUrl =
+    options?.baseUrl === undefined ? envConfig.NEXT_PUBLIC_API_ENDPOINT : options.baseUrl;
   const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
 
   const response = await fetch(fullUrl, {
@@ -78,6 +83,10 @@ const request = async <Response>(
     }
 
     // throw Error(JSON.stringify(result?.message));
+  }
+
+  if (isClient) {
+    // console.log(options?.baseUrl);
   }
 
   return result;

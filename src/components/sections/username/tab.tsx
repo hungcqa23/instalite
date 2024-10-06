@@ -1,27 +1,56 @@
 'use client';
 
+import PostsSkeleton from '@/components/sections/home/posts-skeleton';
 import { List, Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui';
 import LiteItem from '@/components/ui/lite';
 import { usePostByUsername } from '@/hooks/queries/usePost';
 import { useSaved } from '@/hooks/queries/useSaved';
+import { createQueryString, deleteQueryString } from '@/lib/handle-query-string';
 import { useUserStore } from '@/stores/user.stores';
 import { User } from '@/types/schema-validations/account.schema';
 import { Post } from '@/types/schema-validations/post.schema';
 import { Bookmark, Grid2X2 } from 'lucide-react';
-import React from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import React, { useCallback } from 'react';
 
 export default function Tab({ user }: { user: User }) {
-  const { data: savedPostsData } = useSaved();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const value = searchParams.get('tab') || 'post';
+
+  const createQueryStringCallback = useCallback(
+    (name: string, value: string) => createQueryString(name, value, searchParams),
+    [searchParams]
+  );
+
+  const deleteQueryStringCallback = useCallback(
+    (name: string) => deleteQueryString(name, searchParams),
+    [searchParams]
+  );
+
+  const { data: savedPostsData, isLoading: isLoadingSaved } = useSaved();
   const savedPosts = savedPostsData?.data || [];
-  const { data: userPostsData } = usePostByUsername(user.username);
+
+  const { data: userPostsData, isLoading: isLoadingUserPosts } = usePostByUsername(user.username);
   const userPosts = userPostsData?.data || [];
-  const { user: currentUser, setUser } = useUserStore();
+
+  const { user: currentUser } = useUserStore();
 
   const isCurrentUser = user.username === currentUser?.username;
 
   return (
-    <div className='w- mt-[31px]'>
-      <Tabs defaultValue='post' className='w-full'>
+    <div className='mt-8'>
+      <Tabs
+        className='w-full'
+        value={value}
+        onValueChange={value => {
+          if (value === 'saved')
+            router.push(`${pathname}?${createQueryStringCallback('tab', 'saved')}`);
+          else router.push(`${pathname}?${deleteQueryStringCallback('tab')}`);
+        }}
+      >
         <TabsList className='flex w-full rounded-none border-b bg-transparent p-0 dark:bg-transparent'>
           <TabsTrigger
             className='shadow-none data-[state=active]:shadow-none relative flex h-9 w-full gap-1.5 rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 text-base font-semibold uppercase text-muted-foreground transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground'
@@ -41,8 +70,9 @@ export default function Tab({ user }: { user: User }) {
         </TabsList>
 
         <TabsContent value='post' className='w-full text-sm'>
-          {userPosts &&
-            userPosts.length > 0 &&
+          {isLoadingUserPosts && <PostsSkeleton className='mt-6' />}
+
+          {userPosts.length > 0 &&
             List<Post>({
               listItems: userPosts,
               mapFn: (post: Post) => (
@@ -55,12 +85,15 @@ export default function Tab({ user }: { user: User }) {
                   </div>
                 </div>
               ),
-              className: 'mt-8'
+              className: 'mt-6'
             })}
         </TabsContent>
 
         <TabsContent value='saved' className='w-full text-sm'>
+          {isCurrentUser && isLoadingSaved && <PostsSkeleton />}
+
           {isCurrentUser &&
+            !isLoadingSaved &&
             savedPosts.length >= 0 &&
             List({
               listItems: savedPosts,
@@ -74,14 +107,16 @@ export default function Tab({ user }: { user: User }) {
                   </div>
                 </div>
               ),
-              className: 'mt-8'
+              className: 'mt-6'
             })}
 
-          {!isCurrentUser && (
+          {!isCurrentUser && !isLoadingSaved && (
             <div className='mt-14 flex w-full justify-center font-semibold'>
               This area is restricted for you, it belongs to this user only.
             </div>
           )}
+
+          {isLoadingUserPosts && <PostsSkeleton />}
         </TabsContent>
       </Tabs>
     </div>

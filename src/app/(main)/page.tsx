@@ -1,7 +1,7 @@
 import { CreateLiteDialog } from '@/components/sections/home/CreatedLiteDialog';
 import { SuggestedBar } from '@/components/sections/home/SuggestedBar';
+import { CurrentUserAvatar } from '@/components/sections/home/current-user-avatar';
 import ListPost from '@/components/sections/home/list-posts';
-import { UserAvatar } from '@/components/sections/home/user-avatar';
 
 export default function Home() {
   return (

@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage, SkeletonContainer } from '@/compon
 import { useUserStore } from '@/stores/user.stores';
 import React from 'react';
 
-const UserAvatar = () => {
+const CurrentUserAvatar = () => {
   const { user } = useUserStore();
   if (!user) {
     return (
@@ -22,4 +22,4 @@ const UserAvatar = () => {
   );
 };
 
-export { UserAvatar };
+export { CurrentUserAvatar };

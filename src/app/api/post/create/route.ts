@@ -13,7 +13,6 @@ function createPost(text: string): CreatePost {
 export async function POST(request: Request) {
   try {
     const { content }: { content: string } = await request.json();
-    console.log(content);
     const cookieStore = cookies();
     const accessToken = cookieStore.get('access_token');
     const refreshToken = cookieStore.get('refresh_token');
@@ -25,8 +24,6 @@ export async function POST(request: Request) {
           : ''
       }
     });
-    // const { postId }: { postId: string } = res;
-    // console.log(postId);
 
     return NextResponse.json({ message: 'Create post successfully' });
   } catch (error: any) {

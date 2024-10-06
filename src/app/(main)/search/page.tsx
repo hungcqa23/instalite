@@ -5,13 +5,14 @@ import { Input, SkeletonContainer, UserItem } from '@/components/ui';
 import { useSearch } from '@/hooks/queries/useSearch';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useState } from 'react';
+import React from 'react';
 
 export default function SearchPage() {
   const [username, setUsername] = useState('');
   const debouncedUsername = useDebounce(username, 1000);
   const { data: searchData, isPending } = useSearch(debouncedUsername);
 
-  const users = searchData?.data ?? [];
+  const users = searchData?.data || [];
 
   return (
     <>

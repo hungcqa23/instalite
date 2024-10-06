@@ -48,9 +48,7 @@ export default function ResetPassword() {
   }
   return (
     <Form {...form}>
-      <p className='mb-4 h-8 text-center text-xl font-semibold'>
-        Reset Password
-      </p>
+      <p className='mb-4 h-8 text-center text-xl font-semibold'>Reset Password</p>
       <form onSubmit={form.handleSubmit(onSubmit)} className='h-full w-full'>
         <FormField
           control={form.control}
@@ -59,11 +57,7 @@ export default function ResetPassword() {
             <FormItem>
               <FormLabel>New Password</FormLabel>
               <FormControl>
-                <Input
-                  placeholder='Enter your new password'
-                  {...field}
-                  type='password'
-                />
+                <Input placeholder='Enter your new password' {...field} type='password' />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -77,11 +71,7 @@ export default function ResetPassword() {
             <FormItem>
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
-                <Input
-                  placeholder='Confirm your new password'
-                  {...field}
-                  type='password'
-                />
+                <Input placeholder='Confirm your new password' {...field} type='password' />
               </FormControl>
               <FormMessage />
             </FormItem>

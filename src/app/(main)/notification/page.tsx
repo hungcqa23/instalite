@@ -1,5 +1,5 @@
 import { notificationRequest } from '@/api-request/notification';
-import NotificationItem from '@/app/(main)/notification/notification-item';
+import NotificationItem from '@/components/sections/notifications/notification-item';
 import { List } from '@/components/ui';
 import { Notification, NotificationResType } from '@/types/schema-validations/notification.schema';
 

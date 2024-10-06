@@ -8,24 +8,14 @@ import {
 
 const authApiRequest = {
   login: (body: LoginBodyType) => http.post<LoginResType>('auth/login', body),
-  serverLogin: (body: LoginBodyType) => {
-    return http.post<LoginResType>('/auth/login', body, {
+  serverLogin: (body: LoginBodyType) =>
+    http.post<LoginResType>('/auth/login', body, {
       credentials: 'include'
-    });
-  },
+    }),
+
   register: (body: RegisterBodyType) => http.post<RegisterResType>('/auth/sign-up', body),
-  logoutFromNextClientToServer: (force?: boolean | undefined, signal?: AbortSignal | undefined) =>
-    http.post(
-      '/auth/logout',
-      {
-        force,
-        postId: 'helloworld'
-      },
-      {
-        baseUrl: '',
-        signal
-      }
-    )
+  logoutService: () => http.post('/auth/logout', null, { baseUrl: '' }),
+  logoutFromNextClientToNextServer: () => http.post('/api/auth/logout', null, { baseUrl: '' })
 };
 
 export { authApiRequest };

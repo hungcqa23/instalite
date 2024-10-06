@@ -1,5 +1,6 @@
 'use client';
 
+import { CustomDialog } from '@/components/customs';
 import BtnClose from '@/components/sections/home/CreatedLiteDialog/btn-close';
 import BtnCreatePost from '@/components/sections/home/CreatedLiteDialog/btn-create-lite';
 import {
@@ -25,21 +26,23 @@ import {
   useUpdatePostMutation,
   useUpdateVideoMutation
 } from '@/hooks/queries/usePost';
-import { cn } from '@/lib/utils';
 import { useUserStore } from '@/stores/user.stores';
 import { useQueryClient } from '@tanstack/react-query';
+import { set } from 'date-fns';
 import { Clapperboard, ImageIcon, X } from 'lucide-react';
 import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 
 const CreateLiteDialog = ({ children, className }: { children: ReactNode; className?: string }) => {
   const queryClient = useQueryClient();
   const { user } = useUserStore();
-  const [isOpenDialog, setIsOpenDialog] = useState(false);
+  const [isOpenDialog, setIsOpenDialog] = useState({
+    create: false,
+    cancel: false
+  });
   const [text, setText] = useState('');
   const [images, setImages] = useState<string[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
-  const [openCancelDialog, setOpenCancelDialog] = useState(false);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -51,15 +54,6 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
   const updatePostMutation = useUpdatePostMutation();
   const updateVideoMutation = useUpdateVideoMutation();
 
-  const resetDialog = useCallback(() => {
-    setText('');
-    setImages([]);
-    setImageFile(null);
-    setVideoFile(null);
-    setVideoUrl(null);
-    setIsOpenDialog(false);
-  }, []);
-
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
@@ -67,15 +61,31 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
     }
   }, [text]);
 
+  const resetDialog = useCallback(() => {
+    setIsOpenDialog({
+      create: false,
+      cancel: false
+    });
+    setText('');
+    setImages([]);
+    setImageFile(null);
+    setVideoFile(null);
+    setVideoUrl(null);
+  }, []);
+
   const confirmClose = () => {
-    setOpenCancelDialog(false);
-    setIsOpenDialog(false);
+    setIsOpenDialog({
+      create: false,
+      cancel: false
+    });
     resetDialog();
   };
 
   const cancelClose = () => {
-    setOpenCancelDialog(false);
-    setIsOpenDialog(true);
+    setIsOpenDialog({
+      create: true,
+      cancel: false
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -119,10 +129,26 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
   };
 
   const handleDialogChange = (open: boolean) => {
-    if (!open && (text || images.length > 0 || videoUrl)) setOpenCancelDialog(true);
+    if (open) {
+      setIsOpenDialog({
+        create: true,
+        cancel: false
+      });
+      return;
+    }
+
+    const hasContent = Boolean(text.length > 0 || images.length > 0 || videoUrl);
+    if (hasContent)
+      setIsOpenDialog({
+        create: true,
+        cancel: true
+      });
     else {
-      setIsOpenDialog(open);
-      if (!open) resetDialog();
+      setIsOpenDialog({
+        create: false,
+        cancel: false
+      });
+      resetDialog();
     }
   };
 
@@ -178,118 +204,113 @@ const CreateLiteDialog = ({ children, className }: { children: ReactNode; classN
 
   return (
     <>
-      <Dialog open={isOpenDialog} onOpenChange={handleDialogChange}>
-        <DialogTrigger className={cn(className)}>{children}</DialogTrigger>
-        <DialogContent className='select-none dark:bg-zinc-950 sm:max-w-[34rem]'>
-          <DialogHeader>
-            <DialogDescription />
-            <DialogTitle className='flex justify-center text-sm font-bold'>New Lite</DialogTitle>
+      <CustomDialog
+        title='New Post'
+        isOpen={isOpenDialog.create}
+        trigger={children}
+        isDisabledClose={true}
+        handleClose={resetDialog}
+        handleOpenChange={handleDialogChange}
+      >
+        <div className='flex flex-col overflow-hidden'>
+          <div className='flex flex-row'>
+            <AvatarUser src={user?.avatar} />
+            <div className='ms-2.5 flex max-w-full flex-col'>
+              <div className='text-sm font-semibold'>{user?.username}</div>
 
-            <DialogClose asChild>
-              {!isSubmitting && <BtnClose onClick={() => handleDialogChange(false)} />}
-            </DialogClose>
-          </DialogHeader>
+              <textarea
+                ref={textareaRef}
+                placeholder='Write something...'
+                className='max-h-[60vh] w-[28rem] resize-none overflow-y-auto bg-transparent py-1 text-sm font-normal outline-none'
+                rows={1}
+                value={text}
+                autoFocus
+                onChange={handleChange}
+                disabled={isSubmitting}
+              />
 
-          <div className='flex flex-col overflow-hidden'>
-            <div className='flex flex-row'>
-              <AvatarUser src={user?.avatar} />
-              <div className='ms-2.5 flex max-w-full flex-col'>
-                <div className='text-sm font-semibold'>{user?.username}</div>
-
-                <textarea
-                  ref={textareaRef}
-                  placeholder='Write something...'
-                  className='max-h-[60vh] w-[28rem] resize-none overflow-y-auto bg-transparent py-1 text-sm font-normal outline-none'
-                  rows={1}
-                  value={text}
-                  autoFocus
-                  onChange={handleChange}
-                  disabled={isSubmitting}
-                />
-
-                {isDisplayButtonsMedia && (
-                  <div className='flex flex-row gap-2'>
-                    <Button
-                      className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
-                      variant='outline'
-                      onClick={handleImageClick}
-                    >
-                      <ImageIcon /> Add Image
-                    </Button>
-                    <Button
-                      className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
-                      variant='outline'
-                      onClick={handleVideoClick}
-                    >
-                      <Clapperboard /> Add Video
-                    </Button>
-                  </div>
-                )}
-
-                {images.length > 0 && (
-                  <Carousel
-                    opts={{
-                      align: 'start'
-                    }}
-                    className='my-3 w-full max-w-full'
+              {isDisplayButtonsMedia && (
+                <div className='flex flex-row gap-2'>
+                  <Button
+                    className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
+                    variant='outline'
+                    onClick={handleImageClick}
                   >
-                    <CarouselContent className='-ml-1 flex w-full max-w-full'>
-                      {images.map((image, index) => (
-                        <CarouselItem key={index} className='basis-1/2 pl-1 pr-1'>
-                          <ImagePreview src={image} onDelete={() => handleDeleteImage(index)} />
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                  </Carousel>
-                )}
+                    <ImageIcon /> Add Image
+                  </Button>
+                  <Button
+                    className='mt-2 flex w-[8rem] cursor-pointer gap-2 rounded-xl'
+                    variant='outline'
+                    onClick={handleVideoClick}
+                  >
+                    <Clapperboard /> Add Video
+                  </Button>
+                </div>
+              )}
 
-                {videoUrl && (
-                  <div className='relative my-3 max-h-[20rem] w-fit'>
-                    <video controls className='h-auto max-h-[20rem] w-auto rounded' autoPlay>
-                      <source src={videoUrl} type='video/mp4' />
-                      Your browser does not support the video tag.
-                    </video>
-                    <BtnClose
-                      className='absolute right-2 top-2 size-8 rounded-full bg-opacity-75 p-0 hover:bg-white'
-                      onClick={handleDeleteVideo}
-                      disabled={isSubmitting}
-                    />
-                  </div>
-                )}
+              {images.length > 0 && (
+                <Carousel
+                  opts={{
+                    align: 'start'
+                  }}
+                  className='my-3 w-full max-w-full'
+                >
+                  <CarouselContent className='-ml-1 flex w-full max-w-full'>
+                    {images.map((image, index) => (
+                      <CarouselItem key={index} className='basis-1/2 pl-1 pr-1'>
+                        <ImagePreview src={image} onDelete={() => handleDeleteImage(index)} />
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
+              )}
 
-                <>
-                  <Input
-                    type='file'
-                    ref={fileInputRef}
-                    multiple={true}
-                    accept='image/*'
-                    className='hidden'
-                    onChange={handleFileChange}
+              {videoUrl && (
+                <div className='relative my-3 max-h-[20rem] w-fit'>
+                  <video controls className='h-auto max-h-[20rem] w-auto rounded' autoPlay>
+                    <source src={videoUrl} type='video/mp4' />
+                    Your browser does not support the video tag.
+                  </video>
+                  <BtnClose
+                    className='absolute right-2 top-2 size-8 rounded-full bg-opacity-75 p-0 hover:bg-white'
+                    onClick={handleDeleteVideo}
+                    disabled={isSubmitting}
                   />
-                  <Input
-                    type='file'
-                    ref={videoFileInputRef}
-                    accept='video/*'
-                    className='hidden'
-                    onChange={handleVideoChange}
-                  />
-                </>
-              </div>
-            </div>
+                </div>
+              )}
 
-            <div className='mt-2 flex flex-row items-end justify-end'>
-              <BtnCreatePost onClick={() => handleCreatePost(text)} disabled={isDisabledButton} />
+              <>
+                <Input
+                  type='file'
+                  ref={fileInputRef}
+                  multiple={true}
+                  accept='image/*'
+                  className='hidden'
+                  onChange={handleFileChange}
+                />
+                <Input
+                  type='file'
+                  ref={videoFileInputRef}
+                  accept='video/*'
+                  className='hidden'
+                  onChange={handleVideoChange}
+                />
+              </>
             </div>
           </div>
-        </DialogContent>
-      </Dialog>
 
-      {openCancelDialog && (
+          <div className='mt-2 flex flex-row items-end justify-end'>
+            <BtnCreatePost onClick={() => handleCreatePost(text)} disabled={isDisabledButton} />
+          </div>
+        </div>
+      </CustomDialog>
+
+      {isOpenDialog.create && (
         <CancelDialog
           cancelClose={cancelClose}
-          openCancelDialog={openCancelDialog}
+          openCancelDialog={isOpenDialog.cancel}
           confirmClose={confirmClose}
-          setOpenCancelDialog={setOpenCancelDialog}
+          setOpenCancelDialog={() => setIsOpenDialog({ create: false, cancel: true })}
         />
       )}
     </>

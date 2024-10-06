@@ -5,7 +5,6 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   try {
     const { liteId } = await request.json();
-    console.log(liteId);
     const cookieStore = cookies();
     const accessToken = cookieStore.get('access_token');
     const refreshToken = cookieStore.get('refresh_token');

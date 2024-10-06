@@ -8,7 +8,6 @@ import { cookies } from 'next/headers';
 export async function generateMetadata({ params }: { params: { username: string } }) {
   return { title: `@${params.username}` };
 }
-
 export default async function MeProfile({ params }: { params: { username: string } }) {
   const cookieStore = cookies();
   const accessToken = cookieStore.get('access_token');
@@ -32,7 +31,6 @@ export default async function MeProfile({ params }: { params: { username: string
       <div className='mt-4 w-full max-w-[34.9375rem] items-start justify-center'>
         <Profile user={user} username={params.username} />
         <BtnCta user={user} />
-
         <Tab user={user} />
       </div>
     </>
